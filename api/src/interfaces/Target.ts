@@ -1,14 +1,19 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TargetModule } from './target/target.module';
+import { Task } from './Task';
+import { Reward } from './Reward';
+import { Punishment } from './Punishment';
 
-@Module({
-  imports: [TargetModule],
-  controllers: [AppController],
-  providers: [AppService],
-})
-export class AppModule {}
+export interface Target {
+  id: string;
+  title: string;
+  from: Date;
+  to: Date;
+  purpose: string;
+  progress: number;
+  tasks: Array<Task>;
+  rewards?: Array<Reward>;
+  punishments?: Array<Punishment>;
+}
+
 // api/target :: Target<Array>
 // api/target/{id} :: Target
 // api/target/{id}/task :: Task<Array>
