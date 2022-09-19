@@ -1,0 +1,8 @@
+<div class="p-4 bg-dark">
+    <h1 class="text-center text-white">Data Driven Development App</h1>
+</div>
+<ul ngbNav class="nav-tabs mb-4" [ngClass]="{'d-none': windowWidth < mobileMenuBreakopiont}">
+    <li [ngbNavItem]="link.path" *ngFor="let link of links">
+      <a ngbNavLink [routerLink]="link.path">{{ link.path | titlecase }}</a>
+    </li>
+</ul>
