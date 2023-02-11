@@ -1,0 +1,9 @@
+// files to override bootstrap
+@import './colors';
+
+// bootstrap files
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+// custom scss
+@import './global';
+@import './typography';

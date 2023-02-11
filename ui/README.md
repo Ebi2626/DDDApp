@@ -4,7 +4,7 @@ It is a project of application which help modern people to achieve their self-de
 
 ## Install and run
 
-TODO: we will contenerize whole app so you will have to download whole repo and use docker to install your instance of an app
+To run docker in development mode you can use terminal command: `docker run --rm -p 4200:4200 -v "$(pwd -W):/app" -v "//app/node_modules" dddapp/frontend`
 
 ## Main assumptions
 

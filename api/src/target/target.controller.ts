@@ -13,7 +13,7 @@ import { UpdateTargetDto } from './dto/update-target.dto';
 
 @Controller('target')
 export class TargetController {
-  constructor(private readonly targetService: TargetService) {}
+  constructor(private readonly targetService: TargetService) { }
 
   @Post()
   create(@Body() createTargetDto: CreateTargetDto) {
@@ -22,7 +22,8 @@ export class TargetController {
 
   @Get()
   findAll() {
-    return this.targetService.findAll();
+    return ['test', 'test8'];
+    // return this.targetService.findAll();
   }
 
   @Get(':id')

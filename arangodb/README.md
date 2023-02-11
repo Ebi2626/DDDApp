@@ -5,6 +5,8 @@
 2. Open port 8529 and log in
 3. Import collections from this folder manully
 
+Information about contenerization: https://dev.to/sonyarianto/how-to-spin-arangodb-server-with-docker-and-docker-compose-3c00
+
 ## Development data
 Port: 8529
 login: root; pass: {setting in .env}
