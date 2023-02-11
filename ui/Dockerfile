@@ -1,5 +1,5 @@
 # Base image
-FROM node:16-alpine as node
+FROM node:18.10-alpine as node
 
 # Create app directory
 WORKDIR /app/ui
