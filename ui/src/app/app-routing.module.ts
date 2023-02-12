@@ -17,11 +17,12 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     component: AppComponent,
-  }
+  },
 ];
 
 @NgModule({
+  declarations: [],
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

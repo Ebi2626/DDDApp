@@ -15,7 +15,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "ddda",
+      "prefix": "dddapp",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -57,13 +57,19 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
+            "dev": {
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -74,11 +80,11 @@
             "production": {
               "browserTarget": "ui:build:production"
             },
-            "development": {
-              "browserTarget": "ui:build:development"
+            "dev": {
+              "browserTarget": "ui:build:dev"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "dev"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

@@ -15,6 +15,7 @@ services:
       - KEYCLOAK_REALM=dddapp
       - KEYCLOAK_CLIENT_ID=frontend
       - BACKEND_BASE_PATH=http://backend:3001
+      - PORT=4201
     depends_on:
       - keycloak
       - backend
@@ -31,6 +32,7 @@ services:
       - APP_NAME=dddapp
       - KEYCLOAK_URL=http://keycloak:8080
       - KEYCLOAK_REALM=dddapp
+      - PORT=3001
     depends_on:
       - keycloak
 
@@ -47,12 +49,13 @@ services:
       - DB_DATABASE=keycloak
       - DB_USER=keycloak
       - DB_PASSWORD=keycloak
-      - KEYCLOAK_IMPORT=/tmp/realm-test.json
+      - KEYCLOAK_IMPORT=/tmp/realm-dev.json
     volumes:
-      - ./infra/keycloak/realm-test.json:/tmp/realm-test.json
+      - ./infra/keycloak/realm-dev.json:/tmp/realm-dev.json
     command: [ "-Dkeycloak.profile.feature.upload_scripts=enabled" ]
     depends_on:
       - postgres
+      - mailhog
 
   postgres:
     image: postgres:13.0-alpine
@@ -89,6 +92,13 @@ services:
       - ./infra/grafana/dashboards:/var/lib/grafana/dashboards
     depends_on:
       - prometheus
+
+  mailhog:
+    container_name: mailhog
+    build: './mail'
+    ports:
+      - 1025:1025
+      - 8025:8025
 
 volumes:
   postgres:

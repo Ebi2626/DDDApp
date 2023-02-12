@@ -1,5 +1,5 @@
 # Base image
-FROM node:16-alpine as node
+FROM node:18.10-alpine as node
 
 # Create app directory
 WORKDIR /app/api
@@ -8,12 +8,15 @@ WORKDIR /app/api
 COPY package.json /app/api/
 
 # Install app dependencies
-RUN yarn install
+RUN yarn install --network-timeout 100000
 
 # Copy app files
 COPY . /app/api/
 
-# Expose nest.js default port
+# Set default port
+ENV PORT=3001
+
+# Expose configured port
 EXPOSE 3001
 
 # Run development mode
