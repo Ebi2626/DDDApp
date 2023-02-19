@@ -37,7 +37,7 @@ services:
       - keycloak
 
   keycloak:
-    image: jboss/keycloak:11.0.2
+    build: './infra/keycloak'
     container_name: keycloak
     ports:
       - 8080:8080

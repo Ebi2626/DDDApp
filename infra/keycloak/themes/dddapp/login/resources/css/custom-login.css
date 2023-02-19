@@ -1,0 +1,143 @@
+/* Colors */
+:root {
+  --primary: #19647e;
+  --secondary: #28afb0;
+  --danger: #f64055;
+  --secondary-shadow: 0 0 0 0.25rem #28b0b088;
+
+  --bs-body-bg: #1f1f28;
+  --bs-body-color: white;
+
+  --placeholder-color: #19657e80;
+}
+
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+.panel-title {
+  text-align: center;
+  font-size: 32px;
+  color: var(--primary);
+  margin-bottom: 2rem;
+}
+
+.forgot-password {
+  display: block;
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+  color: var(--secondary);
+}
+
+.form-control,
+.form-control:focus {
+  border: solid 2px var(--primary);
+  background-color: transparent;
+  color: white;
+  border-radius: 5px !important;
+}
+
+.form-control:focus {
+  box-shadow: var(--secondary-shadow);
+}
+
+.form-control::placeholder {
+  color: var(--placeholder-color);
+}
+
+.hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+.btn.btn-primary {
+  color: var(--bs-body-color) !important;
+  background-color: var(--primary) !important;
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+#kc-login {
+  width: 100%;
+  background-color: var(--bs-body-color);
+  border-color: var(--bs-body-color);
+  color: var(--primary);
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+#kc-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#kc-content-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: solid 2px var(--primary);
+  border-radius: 25px;
+}
+
+#kc-content-wrapper .container {
+  width: 400px;
+  max-width: 100%;
+}
+
+.input-group {
+  margin-bottom: 25px;
+}
+
+#kc-logo-wrapper {
+  background-image: none;
+  background-repeat: no-repeat;
+  visibility: hidden;
+}
+
+#kc-content-wrapper #kc-form {
+  width: 100%;
+  height: 100%;
+}
+
+.emailVerificationWrapper #kc-content,
+.forgottenPassword #kc-content {
+  width: 500px;
+  max-width: 100vw;
+}
+
+.emailVerificationWrapper #kc-content #kc-content-wrapper,
+.forgottenPassword #kc-content #kc-content-wrapper {
+  flex-direction: column;
+}
+
+.instruction a,
+.forgottenPassword a {
+  color: var(--secondary);
+  text-decoration: none;
+}
