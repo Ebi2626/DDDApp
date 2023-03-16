@@ -1,0 +1,8 @@
+<div class="appWrapper">
+  <dddapp-navbar></dddapp-navbar>
+  <main class="container ">
+    <ng-content></ng-content>
+  </main>
+  <dddapp-footer></dddapp-footer>
+  <dddapp-global-spinner *ngIf="isFetching"></dddapp-global-spinner>
+</div>

@@ -1,0 +1,10 @@
+.welcome {
+  min-height: 100vh;
+  padding: 2rem 0;
+  display: grid;
+  grid-template-rows: min-content auto;
+
+  &__content {
+    align-self: center;
+  }
+}

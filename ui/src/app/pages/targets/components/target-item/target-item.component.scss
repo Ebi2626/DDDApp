@@ -1,0 +1,21 @@
+:host {
+  .container {
+    gap: 1rem;
+  }
+
+  .targetRow {
+    gap: 1rem;
+
+    p,
+    h4 {
+      margin-bottom: 0;
+    }
+  }
+
+  .footer {
+    .btn-group {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
+}

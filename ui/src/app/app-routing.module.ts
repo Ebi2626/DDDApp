@@ -1,22 +1,46 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { AuthGuard } from './guard/auth.guard';
+import { WelcomeGuard } from './guard/welcome.guard';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { DashboardPageComponent } from './pages/dashboard/dashboard-page.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { TargetsComponent } from './pages/targets/targets.component';
+import { TasksComponent } from './pages/tasks/tasks.component';
+import { WelcomePageComponent } from './pages/welcome/welcome-page.component';
 
 const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/welcome',
+  },
+  {
     path: 'welcome',
-    loadChildren: () => import('./modules/welcome/welcome.module').then(m => m.WelcomeModule),
+    component: WelcomePageComponent,
+    canActivate: [WelcomeGuard],
+    data: { customLayout: true },
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule),
-    canActivate: [AuthGuard],
+    component: DashboardPageComponent,
+    // canActivate: [AuthGuard],
   },
   {
-    path: '',
-    pathMatch: 'full',
-    component: AppComponent,
+    path: 'targets',
+    component: TargetsComponent,
+  },
+  {
+    path: 'tasks',
+    component: TasksComponent,
+  },
+  {
+    path: 'categories',
+    component: CategoriesComponent,
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
   },
 ];
 
@@ -24,5 +48,6 @@ const routes: Routes = [
   declarations: [],
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [AuthGuard, WelcomeGuard],
 })
 export class AppRoutingModule { }

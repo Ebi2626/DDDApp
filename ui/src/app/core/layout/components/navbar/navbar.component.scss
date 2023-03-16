@@ -1,0 +1,40 @@
+@import '../../../../style/colors';
+@import 'node_modules/bootstrap/scss/bootstrap-utilities';
+
+button {
+  z-index: 10;
+}
+
+.collapse {
+  background-color: $bg-color;
+}
+
+.nav-item {
+  border-top-width: 0;
+
+  &:first-child {
+    border: solid 1px $primary;
+  }
+
+  &:not(:first-child) {
+    border: solid 1px $primary;
+  }
+
+  @include media-breakpoint-up('lg') {
+    &:first-child {
+      border-left: solid 1px $primary;
+    }
+
+    &:not(:last-child) {
+      border-right: solid 1px $primary;
+    }
+  }
+
+  .nav-link {
+    color: $secondary;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}

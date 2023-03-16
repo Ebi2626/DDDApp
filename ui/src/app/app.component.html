@@ -1,2 +1,9 @@
-<p>App component</p>
-<router-outlet></router-outlet>
+<ng-container *ngIf="!hasCustomLayout else withoutLayout">
+  <dddapp-layout>
+    <router-outlet></router-outlet>
+  </dddapp-layout>
+</ng-container>
+
+<ng-template #withoutLayout>
+  <router-outlet></router-outlet>
+</ng-template>

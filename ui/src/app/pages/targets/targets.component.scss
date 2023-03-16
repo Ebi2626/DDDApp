@@ -1,0 +1,20 @@
+@import '../../style/colors';
+
+:host {
+  .accordion-button {
+    &:not(.collapsed) {
+      box-shadow: none;
+    }
+
+    &.collapsed {
+      &.success {
+        color: $success;
+      }
+
+      &.failed {
+        color: $danger;
+      }
+    }
+  }
+
+}

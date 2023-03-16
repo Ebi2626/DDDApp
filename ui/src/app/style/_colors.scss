@@ -1,3 +1,4 @@
+// General
 $primary: #19647e;
 $secondary: #28afb0;
 $danger: #f64055;
@@ -5,3 +6,13 @@ $danger: #f64055;
 $bg-color: #1f1f28;
 
 $placeholder-color: #19647e33;
+$success: #2BA66D;
+// Components
+
+// Accordion
+$accordion-bg: $bg-color;
+$accordion-border-color: $primary;
+$accordion-color: white;
+$accordion-icon-color: $primary;
+$accordion-button-active-bg: $bg-color;
+$accordion-button-active-color: $secondary;

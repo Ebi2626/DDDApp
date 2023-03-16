@@ -69,30 +69,6 @@ services:
       - postgres:/var/lib/postgresql/data
       - ./infra/postgres:/docker-entrypoint-initdb.d
 
-  prometheus:
-    image: prom/prometheus:v2.22.0
-    container_name: prometheus
-    ports:
-      - 5000:9090
-    volumes:
-      - prometheus:/prometheus
-      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-
-  grafana:
-    image: grafana/grafana:6.7.5
-    container_name: grafana
-    ports:
-      - 3000:3000
-    environment:
-      - PROMETHEUS_URL=http://prometheus:9090
-      - DS_PROMETHEUS=prometheus
-    volumes:
-      - ./infra/grafana/config.ini:/etc/grafana/config.ini
-      - ./infra/grafana/provisioning:/etc/grafana/provisioning
-      - ./infra/grafana/dashboards:/var/lib/grafana/dashboards
-    depends_on:
-      - prometheus
-
   mailhog:
     container_name: mailhog
     build: './mail'
@@ -102,4 +78,3 @@ services:
 
 volumes:
   postgres:
-  prometheus:

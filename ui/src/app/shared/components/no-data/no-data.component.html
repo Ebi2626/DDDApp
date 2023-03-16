@@ -1,0 +1,14 @@
+<ng-container *ngIf="hasContent else noContent">
+  <ng-content></ng-content>
+</ng-container>
+<ng-template #noContent>
+  <div class="d-flex flex-column align-items-center justify-content-center text-muted">
+    <div class="d-flex flex-row align-items-center justify-content-center display-1">
+      <i class="fa fa-ban" aria-hidden="true"></i>
+    </div>
+    <h3 class="my-4">Brak danych</h3>
+    <div *ngIf="ctaText">
+      <button class="btn btn-outline-primary" (click)="ctaAction()">{{ctaText}}</button>
+    </div>
+  </div>
+</ng-template>

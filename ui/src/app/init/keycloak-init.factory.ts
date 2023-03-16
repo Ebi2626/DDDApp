@@ -11,7 +11,6 @@ export function initializeKeycloak(
     firstValueFrom(
       configService.getConfig().pipe(
         switchMap<any, any>((config) => {
-          console.log(config);
           return from(keycloak.init({
             config: {
               url: config['KEYCLOAK_URL'] + '/auth',

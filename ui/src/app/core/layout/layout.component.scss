@@ -1,0 +1,10 @@
+.appWrapper {
+  display: grid;
+  grid-template-rows: 56px auto 51px;
+  min-height: 100vh;
+
+  .container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
