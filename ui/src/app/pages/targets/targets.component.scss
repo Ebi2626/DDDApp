@@ -17,4 +17,11 @@
     }
   }
 
+  .progress {
+    height: .25rem;
+
+    &-bar {
+      background-color: $secondary;
+    }
+  }
 }

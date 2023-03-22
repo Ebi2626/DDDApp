@@ -11,6 +11,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .spinner-border {
+        width: 6rem;
+        height: 6rem;
+      }
     }
   }
 }

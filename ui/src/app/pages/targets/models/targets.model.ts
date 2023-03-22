@@ -8,6 +8,12 @@ export enum TargetWage {
   'Kluczowy'
 }
 
+export const TargetWageNames: Record<number, string>[] = Object.keys(TargetWage)
+  .map((name) => name)
+  .slice(
+    Math.ceil(Object.keys(TargetWage).length / 2)
+  );
+
 export enum TargetStateClass {
   'IN_PROGRESS' = 'inProgress',
   'FAILED' = 'failed',
@@ -19,13 +25,14 @@ export interface Target {
   title: string;
   motivation: string;
   description: string;
-  deadline: Date;
-  tasks: Task[];
+  deadline: Date | string;
+  tasks: string[];
   wage: TargetWage;
-  creationDate: Date;
+  creationDate: Date | string;
   category?: string;
   reward?: string;
   punishment?: string;
+  _progress?: number;
 }
 
 export const mockTargets: Target[] = [
@@ -36,7 +43,7 @@ export const mockTargets: Target[] = [
     description: 'Należy przygotować się odpowiednio i przebiec pełen dystans maratornu.',
     deadline: new Date('2023-09-31'),
     creationDate: new Date('2023-03-15'),
-    tasks: mockTasks,
+    tasks: mockTasks.map((task) => task.id),
     wage: TargetWage.Istotny,
   },
   {

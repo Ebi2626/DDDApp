@@ -1,0 +1,12 @@
+@import './colors';
+
+$modal-backdrop-bg: $overlay-bg-color;
+$modal-content-bg: $bg-color;
+$modal-content-color: white;
+$modal-content-border-color: $primary;
+$modal-header-border-color: $primary;
+$modal-footer-border-color: $primary;
+
+.modal-open {
+  overflow-y: hidden !important;
+}

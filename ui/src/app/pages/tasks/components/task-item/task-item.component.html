@@ -1,0 +1,47 @@
+<div class="container d-flex flex-column">
+  <div class="row d-flex flex-row align-items-center taskRow">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Opis</h4>
+    <p class="py-2 col">{{task.description}}</p>
+  </div>
+  <div class="row d-flex flex-row align-items-center taskRow">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Typ</h4>
+    <p class="py-2 col">{{task.type | taskType}}</p>
+  </div>
+  <div class="row d-flex flex-row align-items-center taskRow">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Sposób potwierdzenia realizacji</h4>
+    <p class="py-2 col">{{task.verification_method | verificationMethod}}</p>
+  </div>
+  <div class="row d-flex flex-row align-items-center taskRow">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Termin realizacji</h4>
+    <p class="py-2 col">{{task.deadline | date: 'dd/M/yyyy'}}</p>
+  </div>
+
+  <div class="row d-flex flex-row align-items-center taskRow" *ngIf="task.category">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Kategoria</h4>
+    <p class="py-2 col">{{task.category}}</p>
+  </div>
+  <div class="row d-flex flex-row align-items-center taskRow" *ngIf="task.reward">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Nagroda</h4>
+    <p class="py-2 col">{{task.reward}}</p>
+  </div>
+  <div class="row d-flex flex-row align-items-center taskRow" *ngIf="task.punishment">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Kara</h4>
+    <p class="py-2 col">{{task.punishment}}</p>
+  </div>
+  <div class="row d-flex flex-row align-items-center justify-content-center mt-3 footer">
+    <div class="btn-group mb-2">
+      <button class="btn btn-outline-secondary" type="button" [disabled]="disabled">
+        Edytuj zadanie
+      </button>
+      <button class="btn btn-outline-danger" type="button" [disabled]="disabled">
+        Usuń zadanie
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #lackOfTasks>
+  <p class="text-center mb-2">Nie masz jeszcze żadnych zadań przypisanych do tego celu. Dodaj jakieś utworzone zadania
+    lub przejdź do zadań, by
+    je utworzyć.</p>
+</ng-template>

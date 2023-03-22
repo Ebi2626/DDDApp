@@ -1,5 +1,6 @@
 import { Update } from '@ngrx/entity/src';
 import { createAction, props } from '@ngrx/store';
+import { Task } from '../../tasks/models/tasks.models';
 import { Target } from '../models/targets.model';
 
 export const fetchTargets = createAction(
@@ -55,4 +56,18 @@ export const updateTarget = createAction(
 
 export const updateTargetFailed = createAction(
   '[Targets] Update target failed',
+);
+
+export const changeTaskRealization = createAction(
+  '[Targets] Change task realization',
+  props<{ task: Partial<Task> }>(),
+);
+
+export const changeTaskRealizationFailed = createAction(
+  '[Targets] Change task realization failed',
+  props<{ task: Partial<Task> }>(),
+);
+
+export const changeTaskRealizationSuccess = createAction(
+  '[Targets] Change task realization success',
 );

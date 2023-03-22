@@ -5,6 +5,7 @@ import { Endpoints } from 'src/app/shared/models/endpoints.model';
 import { Target } from '../models/targets.model';
 import { Update } from '@ngrx/entity';
 import { Observable } from 'rxjs';
+import { Task } from '../../tasks/models/tasks.models';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,15 @@ export class TargetsService {
     return this.http.post(`${environment.api}/${Endpoints.TARGET}`, target);
   }
 
-  deleteTarget(id: string) {
-    return this.http.delete(`${environment.api}/${Endpoints.TARGET}/${id}`)
+  deleteTarget(id: string): Observable<{ id: string }> {
+    return this.http.delete<{ id: string }>(`${environment.api}/${Endpoints.TARGET}/${id}`)
   }
 
   updateTarget(target: Update<Target>) {
-    return this.http.put(`${environment.api}/${Endpoints.TARGET}/${target.id}`, target)
+    return this.http.patch<{ target: Target }>(`${environment.api}/${Endpoints.TARGET}/${target.id}`, target)
+  }
+
+  public static getTargetTasks(target: Target, tasks: Task[] | null) {
+    return tasks?.length ? tasks.filter((task) => target.tasks.includes(task.id)) : [];
   }
 }

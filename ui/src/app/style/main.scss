@@ -1,5 +1,9 @@
 // files to override bootstrap
 @import './colors';
+@import './accordion';
+@import './list-group';
+@import './modal';
+@import './forms';
 
 // bootstrap files
 @import "../../../node_modules/bootstrap/scss/bootstrap";
@@ -7,3 +11,4 @@
 // custom scss
 @import './global';
 @import './typography';
+@import './global-spinner';

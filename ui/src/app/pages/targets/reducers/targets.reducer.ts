@@ -66,13 +66,13 @@ export const targetsReducer = createReducer(
     TargetsActions.updateTargetRequest,
     (state) => ({
       ...state,
-      isFetching: false,
-      hasError: true,
+      isFetching: true,
+      hasError: false,
     })
   ),
   on(
     TargetsActions.updateTarget,
-    (state, { target }) => adapter.updateOne(target, state)
+    (state, { target }) => adapter.updateOne(target, { ...state, isFetching: false })
   ),
   on(
     TargetsActions.updateTargetFailed,
@@ -86,13 +86,13 @@ export const targetsReducer = createReducer(
     TargetsActions.deleteTargetRequest,
     (state) => ({
       ...state,
-      isFetching: false,
-      hasError: true,
+      isFetching: true,
+      hasError: false,
     })
   ),
   on(
     TargetsActions.deleteTarget,
-    (state, { id }) => adapter.removeOne(id, state)
+    (state, { id }) => adapter.removeOne(id, { ...state, isFetching: false })
   ),
   on(
     TargetsActions.deleteTargetFailed,
@@ -102,5 +102,13 @@ export const targetsReducer = createReducer(
       hasError: true,
     })
   ),
-
+  on(
+    TargetsActions.changeTaskRealization,
+    (state) => ({ ...state, isFetching: true })
+  ),
+  on(
+    TargetsActions.changeTaskRealizationSuccess,
+    TargetsActions.changeTaskRealizationFailed,
+    (state) => ({ ...state, isFetching: false })
+  ),
 );

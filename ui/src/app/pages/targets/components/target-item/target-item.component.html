@@ -1,4 +1,6 @@
-<div class="container d-flex flex-column">
+<div class="container d-flex flex-column" *ngIf="{
+  isFetching: isFetching$ | async
+} as ctx">
   <div class="row d-flex flex-row align-items-center targetRow">
     <h4 class="col-12 col-md-2 text-primary fs-6">Motywacja</h4>
     <p class="py-2 col">{{target.motivation}}</p>
@@ -14,17 +16,7 @@
   <div class="row d-flex flex-row align-items-center targetRow">
     <h4 class="col-12 col-md-2 text-primary fs-6">Zadania</h4>
     <div class="py-2 col">
-      <ng-container *ngIf="target.tasks?.length else lackOfTasks">
-        <div class="list-group-flush my-2" *ngFor="let task of target.tasks">
-          <a href="#" class="list-group-item text-secondary">
-            {{task.title}}
-          </a>
-        </div>
-      </ng-container>
-      <div class="btn-group">
-        <button type="button" class="btn btn-outline-primary">Przypisz istniejące zadanie do celu</button>
-        <button type="button" class="btn btn-primary">Utwórz nowe zadanie</button>
-      </div>
+      <dddapp-task-list [target]="target" [tasks]="tasks"></dddapp-task-list>
     </div>
   </div>
   <div class="row d-flex flex-row align-items-center targetRow" *ngIf="target.category">
@@ -41,18 +33,12 @@
   </div>
   <div class="row d-flex flex-row align-items-center justify-content-center mt-3 footer">
     <div class="btn-group mb-2">
-      <button class="btn btn-outline-secondary" type="button" [disabled]="disabled">
+      <button class="btn btn-outline-secondary" (click)="editTarget(target)" type="button" [disabled]="disabled">
         Edytuj cel
       </button>
-      <button class="btn btn-outline-danger" type="button" [disabled]="disabled">
+      <button class="btn btn-outline-danger" (click)="deleteTarget(target.id)" type="button" [disabled]="disabled">
         Usuń cel
       </button>
     </div>
   </div>
 </div>
-
-<ng-template #lackOfTasks>
-  <p class="text-center mb-2">Nie masz jeszcze żadnych zadań przypisanych do tego celu. Dodaj jakieś utworzone zadania
-    lub przejdź do zadań, by
-    je utworzyć.</p>
-</ng-template>

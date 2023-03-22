@@ -27,6 +27,15 @@ import { environment } from 'src/environments/environment';
 import { SharedModule } from './shared/shared.module';
 import { GlobalSpinnerService } from './core/layout/components/global-spinner/global-spinner.service';
 import { TargetItemComponent } from './pages/targets/components/target-item/target-item.component';
+import { tasksReducer } from './pages/tasks/reducers/tasks.reducer';
+import { TasksEffects } from './pages/tasks/effects/tasks.effect';
+import { TaskItemComponent } from './pages/tasks/components/task-item/task-item.component';
+import { TaskModalComponent } from './pages/tasks/components/task-modal/task-modal.component';
+import { TaskListComponent } from './pages/targets/components/task-list/task-list.component';
+import { TargetModalComponent } from './pages/targets/components/target-modal/target-modal.component';
+import { TargetFormComponent } from './pages/targets/components/target-form/target-form.component';
+import '@angular/common/locales/global/pl';
+import { AssignTargetsModalComponent } from './pages/targets/components/target-modal/components/assign-targets-modal/assign-targets-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +47,12 @@ import { TargetItemComponent } from './pages/targets/components/target-item/targ
     CategoriesComponent,
     SettingsComponent,
     TargetItemComponent,
+    TaskItemComponent,
+    TaskModalComponent,
+    TaskListComponent,
+    TargetModalComponent,
+    TargetFormComponent,
+    AssignTargetsModalComponent,
   ],
   imports: [
     KeycloakAngularModule,
@@ -49,8 +64,12 @@ import { TargetItemComponent } from './pages/targets/components/target-item/targ
     SharedModule,
     StoreModule.forRoot({
       targets: targetsReducer,
+      tasks: tasksReducer,
     }),
-    EffectsModule.forRoot([TargetsEffects]),
+    EffectsModule.forRoot([
+      TargetsEffects,
+      TasksEffects,
+    ]),
     StoreDevtoolsModule.instrument({
       maxAge: 50,
       logOnly: environment.production
@@ -66,7 +85,6 @@ import { TargetItemComponent } from './pages/targets/components/target-item/targ
       multi: true,
       deps: [KeycloakService, ConfigInitService],
     },
-    GlobalSpinnerService,
   ],
   bootstrap: [AppComponent]
 })

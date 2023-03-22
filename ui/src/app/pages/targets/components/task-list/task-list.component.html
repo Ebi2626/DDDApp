@@ -1,0 +1,28 @@
+<div class="d-flex flex-column align-items-center position-relative w-100" *ngIf="{
+  isFetching: isFetching$ | async
+} as ctx">
+  <ng-container *ngIf="!ctx.isFetching">
+    <ul class="list-group w-100 mb-3" *ngIf="tasks?.length else lackOfTasks">
+      <li *ngFor="let task of tasks; let i=index" class="list-group-item text-secondary">
+        <div class="d-flex flex-row align-items-center">
+          <button type="button" class="btn btn-outline-danger my-2 me-3" (click)="removeTask.emit(task)">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
+          {{task.title}}
+        </div>
+      </li>
+    </ul>
+    <div class="btn-group">
+      <button type="button" class="btn btn-outline-primary" (click)="assignTask.emit()">Przypisz istniejące zadanie do
+        celu</button>
+      <button type="button" class="btn btn-primary">Utwórz nowe zadanie</button>
+    </div>
+  </ng-container>
+  <dddapp-spinner *ngIf="ctx.isFetching" [hasContent]="!ctx.isFetching" class="targetRow__spinner"></dddapp-spinner>
+</div>
+
+<ng-template #lackOfTasks>
+  <p class="text-center mb-3">Nie masz jeszcze żadnych zadań przypisanych do tego celu. Dodaj jakieś utworzone zadania
+    lub przejdź do zadań, by
+    je utworzyć.</p>
+</ng-template>

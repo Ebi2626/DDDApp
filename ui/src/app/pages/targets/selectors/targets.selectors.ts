@@ -1,7 +1,7 @@
 import { createSelector } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 import { Target } from "../models/targets.model";
-import { targetsReducer, State, adapter } from "../reducers/targets.reducer";
+import { State, adapter } from "../reducers/targets.reducer";
 
 const selectors = adapter.getSelectors();
 

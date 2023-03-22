@@ -8,12 +8,30 @@ export enum TaskType {
   'PROGRESSIVE'
 }
 
+export enum TaskTypeNames {
+  'jednorazowe',
+  'cykliczne',
+  'progresywne'
+}
+
+export const TaskTypeNameMap: Record<number, string> = Object.keys(TaskType).map((_, i) => TaskTypeNames[i]);
+
 export enum TaskRealizationConfirmation {
   'CHECKBOX',
   'TEXT',
   'NUMBER',
   'FILE'
 }
+
+export enum TaskRealizationConfirmationNames {
+  'kliknięcie',
+  'wprowadzenie tekstu',
+  'wprowadzenie liczby',
+  'zamieszczenie pliku'
+}
+
+export const TaskRealizationConfirmationNameMap: Record<number, string> = Object.keys(TaskRealizationConfirmation).map((_, i) => TaskRealizationConfirmationNames[i]);
+
 
 export enum IterationDuration {
   'WEEK' = WEEK_DURATION,
@@ -22,27 +40,24 @@ export enum IterationDuration {
 }
 
 export interface CyclicTaskItemRealization {
-  date: Date;
+  dueDate: Date;
   completed: boolean;
 }
 
-export interface ProgressivTaskItemRealization {
-  date: Date;
+export interface ProgressivTaskItemRealization extends CyclicTaskItemRealization {
   value: number;
-  completed: boolean;
 }
 
 export interface BaseTask {
   id: string;
   targetId: string;
-  instanceId: string;
   title: string;
   description: string;
   type: TaskType;
   deadline: Date;
   verification_method: TaskRealizationConfirmation;
   creationDate: Date;
-  isCompleted: boolean;
+  completed: boolean;
   category?: string;
   reward?: string;
   punishment?: string;
@@ -65,7 +80,7 @@ export interface ProgressiveTask extends BaseTask {
   verification_method: TaskRealizationConfirmation.NUMBER
   initialTaskValue: number;
   progressStep: number;
-  taskCompletions?: ProgressivTaskItemRealization[];
+  taskCompletions: ProgressivTaskItemRealization[];
   iterationDuration: IterationDuration;
   tasksPerIteration: number;
   intervalProgressStepDuration: number; //ms
@@ -74,35 +89,31 @@ export interface ProgressiveTask extends BaseTask {
 
 export type Task = SingleTask | CyclicTask | ProgressiveTask;
 
-export type TaskTemplate = Omit<Task, 'targetId' | 'creationDate' | 'instanceId' | 'isCompleted'>;
-
 export const mockTasks: Task[] = [
   {
     id: '1',
-    instanceId: '1',
     targetId: '123',
-    creationDate: new Date('2023-03-15'),
-    deadline: new Date('2023-03-30'),
+    creationDate: '2023-03-15T00:00:00.000Z' as unknown as Date,
+    deadline: '2023-03-30T00:00:00.000Z' as unknown as Date,
     title: 'Przebiec dystans półmaratonu',
     description: 'Przebiec dystans półmaratonu aby przekonać się, czy mam odpowiednią kondycję fizyczną.',
     isChecked: false,
-    isCompleted: false,
-    type: TaskType.SINGLE,
-    verification_method: TaskRealizationConfirmation.CHECKBOX,
+    completed: false,
+    type: 0,
+    verification_method: 0
   },
   {
     id: '2',
-    instanceId: '2',
     targetId: '123',
-    creationDate: new Date('2023-03-15'),
-    deadline: new Date('2023-03-30'),
+    creationDate: '2023-03-15T00:00:00.000Z' as unknown as Date,
+    deadline: '2023-03-30T00:00:00.000Z' as unknown as Date,
     title: '5x w tygodniu biegać 5km',
     description: 'Wprowadzić rutynę biegania krótkich dystansów codziennie, by przygotować organizm do wysiłku.',
-    isCompleted: false,
-    type: TaskType.CYCLIC,
-    verification_method: TaskRealizationConfirmation.CHECKBOX,
-    iterationDuration: IterationDuration.WEEK,
+    completed: false,
+    type: 1,
+    verification_method: 0,
+    iterationDuration: 604800000,
     tasksPerIteration: 5,
-    taskCompletions: [],
-  },
+    taskCompletions: []
+  }
 ]
