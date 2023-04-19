@@ -30,10 +30,10 @@
   </div>
   <div class="row d-flex flex-row align-items-center justify-content-center mt-3 footer">
     <div class="btn-group mb-2">
-      <button class="btn btn-outline-secondary" type="button" [disabled]="disabled">
+      <button class="btn btn-outline-secondary" (click)="editTask()" type="button" [disabled]="disabled">
         Edytuj zadanie
       </button>
-      <button class="btn btn-outline-danger" type="button" [disabled]="disabled">
+      <button class="btn btn-outline-danger" (click)="deleteTask()" type="button" [disabled]="disabled">
         Usuń zadanie
       </button>
     </div>

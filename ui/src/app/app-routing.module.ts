@@ -24,23 +24,27 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardPageComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'targets',
     component: TargetsComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'tasks',
     component: TasksComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'categories',
     component: CategoriesComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'settings',
     component: SettingsComponent,
+    canActivate: [AuthGuard],
   },
 ];
 

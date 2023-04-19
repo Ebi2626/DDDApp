@@ -19,8 +19,9 @@ export function initializeKeycloak(
             },
             initOptions: {
               redirectUri: 'http://localhost:4201/dashboard',
-              checkLoginIframe: false,
+              enableLogging: true,
             },
+            shouldAddToken: (request) => true
           }));
         }
         )

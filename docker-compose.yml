@@ -5,16 +5,16 @@ services:
     container_name: frontend
     build: './ui'
     ports:
-      - 80:4201
+      - 4201:4201
     volumes:
       - ./ui:/app/ui
       - /app/ui/node_modules
     environment:
       - NODE_ENV=dev
-      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_URL=http://localhost:8080
       - KEYCLOAK_REALM=dddapp
       - KEYCLOAK_CLIENT_ID=frontend
-      - BACKEND_BASE_PATH=http://backend:3001
+      - BACKEND_BASE_PATH=http://localhost:3001
       - PORT=4201
     depends_on:
       - keycloak
@@ -30,17 +30,19 @@ services:
       - /app/api/node_modules
     environment:
       - APP_NAME=dddapp
-      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_URL=http://localhost:8080
       - KEYCLOAK_REALM=dddapp
       - PORT=3001
     depends_on:
       - keycloak
+      - arangodb
 
   keycloak:
     build: './infra/keycloak'
     container_name: keycloak
     ports:
       - 8080:8080
+      - 8787:8787
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
@@ -49,6 +51,9 @@ services:
       - DB_DATABASE=keycloak
       - DB_USER=keycloak
       - DB_PASSWORD=keycloak
+      - DEBUG=true
+      - DEBUG_PORT='*:8787'
+      - KEYCLOAK_LOGLEVEL='ALL'
       - KEYCLOAK_IMPORT=/tmp/realm-dev.json
     volumes:
       - ./infra/keycloak/realm-dev.json:/tmp/realm-dev.json
@@ -56,6 +61,17 @@ services:
     depends_on:
       - postgres
       - mailhog
+
+  arangodb:
+    build: './arangodb'
+    container_name: arangodb
+    restart: always
+    ports:
+      - 8529:8529
+    environment:
+      - ARANGO_ROOT_PASSWORD=password
+    volumes:
+      - arangodb_data:/var/lib/arangodb3
 
   postgres:
     image: postgres:13.0-alpine
@@ -78,3 +94,4 @@ services:
 
 volumes:
   postgres:
+  arangodb_data:

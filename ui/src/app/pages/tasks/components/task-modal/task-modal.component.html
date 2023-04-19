@@ -1,1 +1,60 @@
-<p>task-modal works!</p>
+<div class="modal fade show d-block" id="exampleModal" tabindex="-1" aria-labelledby="taskModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-fullscreen-sm-down modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskModalLabel">
+          {{task ? 'Edytuj zadanie' : 'Utwórz zadanie'}}
+        </h5>
+        <button type="button" (click)="closeModal()" class="btn btn-outline-primary" aria-label="Close">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="task else newTask">
+          <ng-container *ngTemplateOutlet="form"></ng-container>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+          Anuluj
+        </button>
+        <button type="button" (click)="task ? saveChanges() : addTask()" class="btn btn-primary"
+          [disabled]="!isFormValid">Zapisz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #newTask>
+  <ng-container *ngIf="taskType">
+    <ng-container *ngTemplateOutlet="form"></ng-container>
+  </ng-container>
+  <ng-container *ngIf="!taskType">
+    <div class="mb-3">
+      <label for="taskType" class="form-label">Typ zadania</label>
+      <select class="form-select text-capitalize" id="taskType" aria-describedby="taskTypeHelp" [(ngModel)]="taskType">
+        <option type="number" *ngFor="let option of taskTypeOptions" [value]="+option.value">
+          {{option.name}}
+        </option>
+      </select>
+      <div id="taskTypeHelp" class="form-text">
+        <p class="mb-0">Aby utworzyć nowe zadanie musisz najpierw wybrać jego typ z niżej wymienionych:</p>
+        <ul>
+          <li>Jednorazowe - to zadanie, które wymaga wykonania i potwierdzenia tylko jeden raz</li>
+          <li>Cykliczne - to zadanie, które wymaga powtarzania wykonywania dokładnie tego samego zadania kilka razy w
+            tygodniu/miesiącu/roku przez określony czas.</li>
+          <li>Progresywne - to zadanie, które wymaga powtarzania wykonywania zadania kilka razy w tygodniu/miesiącu/roku
+            przez określony czas. Jednak oczekiwana wartość liczbowa jest zwiększana w zdefiniowanym interwale, a więc
+            jest to zadanie, które wymaga postępu, np.: wykonwyania coraz większej liczby pompek (można zdefiniować
+            zwiększanie oczekiwanej wartości o 2 w każdym tygodniu).</li>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #form>
+  <dddapp-task-form (taskForm)="taskForm = $event" (isFormValid)="isFormValid = $event" [task]="task"
+    [taskType]="task?.type || taskType!" [taskTypeOptions]="taskTypeOptions"></dddapp-task-form>
+</ng-template>

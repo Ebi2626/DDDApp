@@ -1,9 +1,10 @@
 import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
+import { TargetModalService } from './pages/targets/services/target-modal.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -36,6 +37,9 @@ import { TargetModalComponent } from './pages/targets/components/target-modal/ta
 import { TargetFormComponent } from './pages/targets/components/target-form/target-form.component';
 import '@angular/common/locales/global/pl';
 import { AssignTargetsModalComponent } from './pages/targets/components/target-modal/components/assign-targets-modal/assign-targets-modal.component';
+import { TaskListRealizationComponent } from './pages/targets/components/task-list-realization/task-list-realization.component';
+import { TaskModalService } from './pages/tasks/services/task-modal.service';
+import { TaskFormComponent } from './pages/tasks/components/task-form/task-form.component';
 
 @NgModule({
   declarations: [
@@ -53,12 +57,15 @@ import { AssignTargetsModalComponent } from './pages/targets/components/target-m
     TargetModalComponent,
     TargetFormComponent,
     AssignTargetsModalComponent,
+    TaskListRealizationComponent,
+    TaskFormComponent,
   ],
   imports: [
     KeycloakAngularModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     CoreModule,
     SharedModule,
@@ -76,6 +83,8 @@ import { AssignTargetsModalComponent } from './pages/targets/components/target-m
     }),
   ],
   providers: [
+    TargetModalService,
+    TaskModalService,
     AuthGuard,
     WelcomeGuard,
     ConfigInitService,

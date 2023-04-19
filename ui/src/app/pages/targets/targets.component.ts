@@ -1,6 +1,7 @@
+import { PopupState, TargetModalService } from './services/target-modal.service';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { distinctUntilChanged, Observable, Subject, Subscription, tap } from 'rxjs';
+import { distinctUntilChanged, Observable, Subject, Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.state';
 import { GlobalSpinnerService } from 'src/app/core/layout/components/global-spinner/global-spinner.service';
 import * as targetsActions from './actions/targets.actions';
@@ -9,9 +10,9 @@ import { Target, TargetStateClass } from './models/targets.model';
 import * as targetsSelectors from './selectors/targets.selectors';
 import * as tasksSelectors from '../tasks/selectors/tasks.selectors';
 import { TargetProgressService } from './services/targetProgress.service';
+import { TargetsService } from './services/targets.service';
 import { Task } from '../tasks/models/tasks.models';
 import * as R from 'ramda';
-import { PopupState, TargetModalService } from './services/target-modal.service';
 
 @Component({
   selector: 'dddapp-targets',
@@ -20,6 +21,7 @@ import { PopupState, TargetModalService } from './services/target-modal.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TargetsComponent implements OnInit, OnDestroy {
+  TargetsService = TargetsService;
   private _sub: Subscription = new Subscription();
   TargetStateClass = TargetStateClass;
 
@@ -35,12 +37,12 @@ export class TargetsComponent implements OnInit, OnDestroy {
     private globalSpinnerService: GlobalSpinnerService,
     private progressService: TargetProgressService,
     private targetModalSerivce: TargetModalService,
+    protected targetsService: TargetsService,
   ) {
     this.isFetching$ = store.select(targetsSelectors.selectTargetsFetching);
 
     this._sub.add(
       this.isFetching$.subscribe((isFetching) => {
-        console.log('fetchujemy?: ', isFetching);
         this.globalSpinnerService.show$.next(isFetching)
       })
     );
@@ -50,7 +52,7 @@ export class TargetsComponent implements OnInit, OnDestroy {
     this._sub.add(
       this.targetModalSerivce.modalState$
         .pipe(
-          distinctUntilChanged(R.equals),
+          distinctUntilChanged(R.equals)
         ).subscribe((modalState) => {
           this.modalState$.next(modalState as PopupState);
         })
@@ -73,19 +75,12 @@ export class TargetsComponent implements OnInit, OnDestroy {
       : this.openElementIndex = elementIndex;
   }
 
-  addTarget() {
+  addTarget = () => {
     this.targetModalSerivce.openModal();
   }
 
-  trackById(_: any, { id }: Target) {
-    return id;
-  }
-
-  validateTarget(date: string | Date): TargetStateClass {
-    const now = Date.now();
-    // const targetDeadline = Date.parse(date);
-
-    return TargetStateClass.IN_PROGRESS;
+  trackById(_: any, { _key }: Target) {
+    return _key;
   }
 
   getTargetProgress(target: Target, tasks: Task[]): number {

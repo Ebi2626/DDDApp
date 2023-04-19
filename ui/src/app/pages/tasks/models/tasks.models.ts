@@ -16,6 +16,11 @@ export enum TaskTypeNames {
 
 export const TaskTypeNameMap: Record<number, string> = Object.keys(TaskType).map((_, i) => TaskTypeNames[i]);
 
+export interface Option {
+  value: number;
+  name: string;
+}
+
 export enum TaskRealizationConfirmation {
   'CHECKBOX',
   'TEXT',
@@ -32,12 +37,27 @@ export enum TaskRealizationConfirmationNames {
 
 export const TaskRealizationConfirmationNameMap: Record<number, string> = Object.keys(TaskRealizationConfirmation).map((_, i) => TaskRealizationConfirmationNames[i]);
 
+export type ITERATION_LENGTH = 'WEEK' | 'MONTH' | 'YEAR';
 
-export enum IterationDuration {
-  'WEEK' = WEEK_DURATION,
-  'MONTH' = MONTH_DURATION,
-  'YEAR' = YEAR_DURATION
+type IterationDurationInterface = {
+  [k in ITERATION_LENGTH]: number;
+};
+type IterationDurationNamesInterface = {
+  [k in ITERATION_LENGTH]: string;
+};
+
+export const IterationDuration: IterationDurationInterface = {
+  WEEK: WEEK_DURATION,
+  MONTH: MONTH_DURATION,
+  YEAR: YEAR_DURATION
 }
+
+export const IterationDurationNames: IterationDurationNamesInterface = {
+  WEEK: 'tydzień',
+  MONTH: 'miesiąc',
+  YEAR: 'rok'
+}
+
 
 export interface CyclicTaskItemRealization {
   dueDate: Date;
@@ -50,7 +70,6 @@ export interface ProgressivTaskItemRealization extends CyclicTaskItemRealization
 
 export interface BaseTask {
   id: string;
-  targetId: string;
   title: string;
   description: string;
   type: TaskType;
@@ -58,20 +77,20 @@ export interface BaseTask {
   verification_method: TaskRealizationConfirmation;
   creationDate: Date;
   completed: boolean;
+  completionDate?: Date;
   category?: string;
   reward?: string;
   punishment?: string;
 }
 
 export interface SingleTask extends BaseTask {
-  isChecked: boolean;
   completionDate?: Date;
   type: TaskType.SINGLE
 }
 
 export interface CyclicTask extends BaseTask {
   taskCompletions: CyclicTaskItemRealization[];
-  iterationDuration: IterationDuration;
+  iterationDuration: number;
   tasksPerIteration: number;
   type: TaskType.CYCLIC
 }
@@ -81,7 +100,7 @@ export interface ProgressiveTask extends BaseTask {
   initialTaskValue: number;
   progressStep: number;
   taskCompletions: ProgressivTaskItemRealization[];
-  iterationDuration: IterationDuration;
+  iterationDuration: number;
   tasksPerIteration: number;
   intervalProgressStepDuration: number; //ms
   type: TaskType.PROGRESSIVE
@@ -92,19 +111,16 @@ export type Task = SingleTask | CyclicTask | ProgressiveTask;
 export const mockTasks: Task[] = [
   {
     id: '1',
-    targetId: '123',
     creationDate: '2023-03-15T00:00:00.000Z' as unknown as Date,
     deadline: '2023-03-30T00:00:00.000Z' as unknown as Date,
     title: 'Przebiec dystans półmaratonu',
     description: 'Przebiec dystans półmaratonu aby przekonać się, czy mam odpowiednią kondycję fizyczną.',
-    isChecked: false,
     completed: false,
     type: 0,
     verification_method: 0
   },
   {
     id: '2',
-    targetId: '123',
     creationDate: '2023-03-15T00:00:00.000Z' as unknown as Date,
     deadline: '2023-03-30T00:00:00.000Z' as unknown as Date,
     title: '5x w tygodniu biegać 5km',

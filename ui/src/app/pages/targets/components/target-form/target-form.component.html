@@ -46,14 +46,14 @@
     <div id="categoryHelp" class="form-text">Kategoria służy do grupowania celów i zadań.</div>
   </div>
   <div class="mb-3">
-    <label for="reward" class="form-label">Nagroda za terminową realizację:</label>
+    <label for="reward" class="form-label">Nagroda za terminową realizację</label>
     <input aria-describedby="rewardHelp" type="text" class="form-control" formControlName="reward" id="reward"
       maxlength="200">
     <div id="rewardHelp" class="form-text">Opcjonalna. Nagroda, która ma pełnić funkcję motywacyjną - powinna być
       niematerialną przyjemnością.</div>
   </div>
   <div class="mb-3">
-    <label for="punishment" class="form-label">Kara za brak realizacji w terminie:</label>
+    <label for="punishment" class="form-label">Kara za brak realizacji w terminie</label>
     <input aria-describedby="punishmentHelp" type="text" class="form-control" formControlName="punishment"
       id="punishment" maxlength="200">
     <div id="punishmentHelp" class="form-text">Opcjonalna. Kara, która ma pełnić funkcję motywacyjną - powinna być
@@ -61,7 +61,7 @@
   </div>
   <section>
     <h6 class="text-primary">Zadania</h6>
-    <dddapp-task-list (removeTask)="removeTask($event)" [target]="target"
-      [tasks]="target ? getCurrentTasks(TargetsService.getTargetTasks(target, ctx.tasks)) : []"></dddapp-task-list>
+    <dddapp-task-list (assignTask)="assignTask.emit()" (removeTask)="removeTask($event)" [target]="target"
+      [tasks]="getCurrentTasks(ctx.tasks || [])"></dddapp-task-list>
   </section>
 </form>

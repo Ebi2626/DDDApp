@@ -3,55 +3,75 @@ import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { Task } from 'src/app/pages/tasks/models/tasks.models';
 import { TargetsService } from 'src/app/pages/targets/services/targets.service';
 import { Target } from 'src/app/pages/targets/models/targets.model';
+import { Update } from '@ngrx/entity';
+import { Store } from '@ngrx/store';
+import * as R from 'ramda';
+import * as TasksSelectors from '../../../../../tasks/selectors/tasks.selectors';
+import { Subscription, Subject, Observable, distinctUntilChanged, combineLatest } from 'rxjs';
+import { AppState } from 'src/app/app.state';
+
+interface TaskExistanceItem {
+  id: string;
+  title: string;
+  isAssigned: boolean;
+}
 
 @Component({
-  selector: 'dddapp-assign-targets-modal[target]',
+  selector: 'dddapp-assign-targets-modal',
   templateUrl: './assign-targets-modal.component.html',
   styleUrls: ['./assign-targets-modal.component.scss']
 })
 export class AssignTargetsModalComponent {
-  @Input() selectedTasksIds: string[] = [];
-  @Input() tasks: Task[] = [];
-  @Input() target?: Target;
+  private _sub: Subscription = new Subscription();
+  private _allTasks$: Observable<Task[]>;
 
-  form = this.fb.group({
-    tasksControls: this.fb.array<boolean>([]),
-  });
+  @Input()
+  set currentTasks(tasks: Task[]) {
+    this.currentTasks$.next(tasks)
+  };
 
-  @Output() changedTasks: EventEmitter<boolean[]> = new EventEmitter<boolean[]>();
-  @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
+  currentTasks$: Subject<Task[]> = new Subject<Task[]>();
 
-  get updatedTasks(): boolean[] {
-    return this.form.controls['tasksControls'].value;
+  tasksExistanceInputs: TaskExistanceItem[] = [];
+
+  isFetching$: Observable<boolean>;
+
+  @Output()
+  assignTasks: EventEmitter<string[]> = new EventEmitter<string[]>();
+
+  @Output()
+  closeModal: EventEmitter<void> = new EventEmitter<void>();
+
+  saveChanges(): void {
+    const newTaskList: string[] = this.tasksExistanceInputs.filter(({ isAssigned }) => isAssigned)?.map(({ id }) => id);
+    this.assignTasks.emit(newTaskList);
+    console.log('nowa lista tasków to: ', newTaskList);
   }
 
-  constructor(private fb: NonNullableFormBuilder) {
-    this.form.valueChanges.subscribe((data) => {
-      console.log(data);
-    })
+  constructor(
+    private store: Store<AppState>
+  ) {
+    this._allTasks$ = store.select(TasksSelectors.selectTasks);
+    this.isFetching$ = store.select(TasksSelectors.selectTasksFetching);
+    this._sub.add(
+      combineLatest([
+        this._allTasks$,
+        this.currentTasks$,
+      ]).pipe<[Task[], Task[]]>(
+        distinctUntilChanged<[Task[], Task[]]>(R.equals)
+      ).subscribe(([tasks, currentTasks]) => {
+        const updatedFields = this.mapToTaskExistanceItem(tasks, currentTasks);
+        this.tasksExistanceInputs = updatedFields;
+      })
+    )
   }
 
-  ngOnInit() {
-    this.setForm(this.tasks);
+  mapToTaskExistanceItem(tasks: Task[], currentTasks: Task[]): TaskExistanceItem[] {
+    console.log('tasks: ', tasks);
+    console.log('currentTasks: ', currentTasks);
+    return tasks.map(({ title, id }) => ({ id, title, isAssigned: !!currentTasks.find((curr) => curr.id === id) }))
   }
-
-  setForm(tasks: Task[]) {
-    if (!this.target) {
-      tasks.forEach((task) => {
-        this.form.controls['tasksControls'].push(this.createFormControl(false));
-      });
-    } else {
-      tasks.forEach((task) => {
-        this.form.controls['tasksControls'].push(this.createFormControl(this.selectedTasksIds.includes(task.id)));
-      });
-    }
-  }
-
-  createFormControl(isChecked: boolean): FormControl<boolean> {
-    return this.fb.control(isChecked);
-  }
-
-  saveChanges() {
-    this.changedTasks.emit(this.updatedTasks);
+  ngOnDestroy(): void {
+    this._sub.unsubscribe();
   }
 }

@@ -1,0 +1,161 @@
+<ng-container *ngIf="form">
+  <form [formGroup]="form">
+    <div class="mb-3">
+      <label for="title" class="form-label required">Tytuł</label>
+      <input type="text" aria-describedby="titleHelp" class="form-control" formControlName="title" id="title"
+        maxlength="200" required>
+      <div id="titleHelp" class="form-text">Czytelny, krótki tytuł jednoznacznie wskazujący istotę zadania.</div>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label required">Opis</label>
+      <textarea aria-describedby="descriptionHelp" rows="3" class="form-control" formControlName="description"
+        id="description" maxlength="500" required></textarea>
+      <div id="descriptionHelp" class="form-text">Szerszy opis zadania.</div>
+    </div>
+    <div class="mb-3">
+      <label for="deadline" class="form-label required">Termin</label>
+      <input type="date" aria-describedby="deadlineHelp" class="form-control" formControlName="deadline" id="deadline"
+        required>
+      <div id="deadlineHelp" class="form-text">Oczekiwana data realizacji zadania. Po jej przekroczeniu zadanie jest
+        oznaczane jako niezrealizowane.</div>
+    </div>
+    <div class="mb-3">
+      <label for="type" class="form-label required">Typ zadania</label>
+      <select class="form-select text-capitalize" aria-describedby="typeHelp" id="type" aria-describedby="typeHelp"
+        formControlName="type" readonly required>
+        <option class="text-capitalize" *ngFor="let option of taskTypeOptions" [value]="option.value"
+          [disabled]="option.value !== +form.controls['type'].value">
+          {{option.name}}
+        </option>
+      </select>
+      <div id="typeHelp" class="form-text">
+        Po utworzeniu zadania nie jest możliwa zmiana jego typu.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label required">Kategoria</label>
+      <select required aria-describedby="categoryHelp" class="form-select" formControlName="category" id="category">
+        <option value="0" selected>Ogólna</option>
+      </select>
+      <div id="categoryHelp" class="form-text">Kategoria służy do grupowania celów i zadań.</div>
+    </div>
+    <div class="mb-3">
+      <label for="reward" class="form-label">Nagroda za terminową realizację</label>
+      <input aria-describedby="rewardHelp" type="text" class="form-control" formControlName="reward" id="reward"
+        maxlength="200">
+      <div id="rewardHelp" class="form-text">Opcjonalna. Nagroda, która ma pełnić funkcję motywacyjną - powinna być
+        niematerialną przyjemnością.</div>
+    </div>
+    <div class="mb-3">
+      <label for="punishment" class="form-label">Kara za brak realizacji w terminie</label>
+      <input aria-describedby="punishmentHelp" type="text" class="form-control" formControlName="punishment"
+        id="punishment" maxlength="200">
+      <div id="punishmentHelp" class="form-text">Opcjonalna. Kara, która ma pełnić funkcję motywacyjną - powinna być
+        niematerialnym ograniczeniem przyjemności.</div>
+    </div>
+    <ng-container [ngSwitch]="taskType">
+      <ng-container *ngSwitchCase="TaskType.PROGRESSIVE">
+        <div class="mb-3">
+          <label for="verification_method" class="form-label required">Sposób potwierdzenia realizacji</label>
+          <select class="form-select text-capitalize" id="verification_method"
+            aria-describedby="verification_methodHelp" formControlName="verification_method" required>
+            <option class="text-capitalize" *ngFor="let option of verificationMethodOptions" [value]="option.value"
+              [disabled]="option.value !== 2">
+              {{option.name}}
+            </option>
+          </select>
+          <div id="verification_methodHelp" class="form-text">
+            Będzie to sposób potwierdzania realizacji danego zadnia. Można potwierdzić realizację zadania poprzez
+            wprowadzenie tekstu, liczby lub pliku albo kliknięcie w kwadracik.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="tasksPerIteration" class="form-label required">Ilość realizacji zadania w interwale</label>
+          <input aria-describedby="tasksPerIterationHelp" type="number" class="form-control"
+            formControlName="tasksPerIteration" id="tasksPerIteration">
+          <div id="tasksPerIterationHelp" class="form-text">
+            Jest to oczekiwana ilość realizacji zadania w zdefiniowanym interwale.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="iterationDuration" class="form-label required">Długość interwału</label>
+          <select class="form-select text-capitalize" id="iterationDuration" aria-describedby="iterationDurationHelp"
+            formControlName="iterationDuration" required>
+            <option class="text-capitalize" *ngFor="let option of iterationDurationOptions" [value]="option.value">
+              {{option.name}}
+            </option>
+          </select>
+          <div id="iterationDurationHelp" class="form-text">
+            Jest to okres w którym należy zrealizować zadanie określoną ilość razy.
+          </div>
+        </div>
+        <div>
+          <label for="progressStep" class="form-label required">Wzrost postępu</label>
+          <input aria-describedby="progressStepHelp" type="number" class="form-control" formControlName="progressStep"
+            id="progressStep">
+          <div id="progressStepHelp" class="form-text">
+            Wartość o jaką będzie powiększana oczekiwana wartość zadania w każdym kolejnym interwale
+          </div>
+        </div>
+        <div>
+          <label for="initialTaskValue" class="form-label required">Wartość początkowa</label>
+          <input aria-describedby="initialTaskValueHelp" type="number" class="form-control"
+            formControlName="initialTaskValue" id="initialTaskValue">
+          <div id="initialTaskValueHelp" class="form-text">
+            Oczekiwana wartość zadania, jaka będzie powiększana w kolejnych interwałach.
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="TaskType.CYCLIC">
+        <div class="mb-3">
+          <label for="verification_method" class="form-label required">Sposób potwierdzenia realizacji</label>
+          <select class="form-select text-capitalize" id="verification_method"
+            aria-describedby="verification_methodHelp" formControlName="verification_method" required>
+            <option class="text-capitalize" *ngFor="let option of verificationMethodOptions" [value]="option.value">
+              {{option.name}}
+            </option>
+          </select>
+          <div id="verification_methodHelp" class="form-text">
+            Będzie to sposób potwierdzania realizacji danego zadnia. Można potwierdzić realizację zadania poprzez
+            wprowadzenie tekstu, liczby lub pliku albo kliknięcie w kwadracik.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="tasksPerIteration" class="form-label required">Ilość realizacji zadania w interwale</label>
+          <input aria-describedby="tasksPerIterationHelp" type="number" class="form-control"
+            formControlName="tasksPerIteration" id="tasksPerIteration">
+          <div id="tasksPerIterationHelp" class="form-text">
+            Jest to oczekiwana ilość realizacji zadania w zdefiniowanym interwale.
+          </div>
+        </div>
+        <div>
+          <label for="iterationDuration" class="form-label required">Długość interwału</label>
+          <select class="form-select text-capitalize" id="iterationDuration" aria-describedby="iterationDurationHelp"
+            formControlName="iterationDuration" required>
+            <option class="text-capitalize" *ngFor="let option of iterationDurationOptions" [value]="option.value">
+              {{option.name}}
+            </option>
+          </select>
+          <div id="iterationDurationHelp" class="form-text">
+            Jest to okres w którym należy zrealizować zadanie określoną ilość razy.
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <div>
+          <label for="verification_method" class="form-label required">Sposób potwierdzenia realizacji</label>
+          <select class="form-select text-capitalize" id="verification_method"
+            aria-describedby="verification_methodHelp" formControlName="verification_method" required>
+            <option class="text-capitalize" *ngFor="let option of verificationMethodOptions" [value]="option.value">
+              {{option.name}}
+            </option>
+          </select>
+          <div id="verification_methodHelp" class="form-text">
+            Będzie to sposób potwierdzania realizacji danego zadnia. Można potwierdzić realizację zadania poprzez
+            wprowadzenie tekstu, liczby lub pliku albo kliknięcie w kwadracik.
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </form>
+</ng-container>

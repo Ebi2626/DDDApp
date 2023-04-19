@@ -23,7 +23,7 @@ export class TargetModalService {
 
   }
 
-  openModal(target?: Target) {
+  public openModal(target?: Target) {
     this.toggleScrollbar();
     console.log('target in service: ', target);
     this.modalState$.next({

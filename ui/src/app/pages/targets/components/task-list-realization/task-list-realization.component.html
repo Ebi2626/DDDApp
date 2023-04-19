@@ -1,0 +1,25 @@
+<div class="d-flex flex-column align-items-center position-relative w-100" *ngIf="{
+  isFetching: isFetching$ | async
+} as ctx">
+  <ul class="list-group w-100 mb-3" *ngIf="tasksInputs?.length else lackOfTasks">
+    <li *ngFor="let task of tasksInputs; let i=index" class="list-group-item text-secondary">
+      <div class="d-flex flex-row align-items-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" (click)="toggleCheckboxState($event, task)"
+            [ngModel]="task.completed" id="{{task.id}}" [disabled]="disabled" />
+          <label class="form-check-label" for="{{task.id}}">
+            {{ task.title }}
+          </label>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <dddapp-spinner *ngIf="ctx.isFetching" [hasContent]="!ctx.isFetching"
+    class="taskListRealization__spinner"></dddapp-spinner>
+</div>
+
+<ng-template #lackOfTasks>
+  <p class="text-center mb-3">Nie masz jeszcze żadnych zadań przypisanych do tego celu. Edytuj cel, aby
+    przypisać istniejące zadania do celu, lub przejdź do <a class="text-secondary" routerLink="/tasks">zadań</a> by je
+    utworzyć</p>
+</ng-template>

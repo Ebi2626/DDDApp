@@ -1,4 +1,4 @@
-import { EntityAdapter } from '@ngrx/entity';
+import { EntityAdapter, Update } from '@ngrx/entity';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import * as TasksActions from '../actions/tasks.actions'
@@ -46,13 +46,13 @@ export const tasksReducer = createReducer(
     TasksActions.createTaskRequest,
     (state) => ({
       ...state,
-      isFetching: false,
-      hasError: true,
+      isFetching: true,
+      hasError: false,
     })
   ),
   on(
     TasksActions.createTask,
-    (state, { task }) => adapter.addOne(task, state)
+    (state, { task }) => adapter.addOne(task, { ...state, isFetching: false })
   ),
   on(
     TasksActions.createTaskFailed,
@@ -72,12 +72,14 @@ export const tasksReducer = createReducer(
   ),
   on(
     TasksActions.updateTask,
-    (state, { updatedTask }) => {
-      console.log('old state: ', state);
-      console.log('zupdateowany task: ', updatedTask);
-      const result = adapter.updateOne(updatedTask, { ...state, isFetching: false });
-      console.log('rezultat', result);
-      return result;
+    (state, { task }) => {
+      const updatedTask: Update<Task> = {
+        changes: {
+          ...task
+        },
+        id: task.id
+      };
+      return adapter.updateOne(updatedTask, { ...state, isFetching: false });
     }
   ),
   on(
@@ -92,13 +94,13 @@ export const tasksReducer = createReducer(
     TasksActions.deleteTaskRequest,
     (state) => ({
       ...state,
-      isFetching: false,
-      hasError: true,
+      isFetching: true,
+      hasError: false,
     })
   ),
   on(
     TasksActions.deleteTask,
-    (state, { id }) => adapter.removeOne(id, state)
+    (state, { id }) => adapter.removeOne(id, { ...state, isFetching: false })
   ),
   on(
     TasksActions.deleteTaskFailed,

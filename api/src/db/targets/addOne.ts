@@ -1,11 +1,17 @@
 import { aql } from 'arangojs';
-import { getCollection } from '../core/getCollection';
 import { getConnection } from '../core/getConnection';
+import { UnauthorizedException } from '@nestjs/common';
 
-export const addOne = async (target) => {
+export const addOne = async (target: any, userId: string) => {
+  if (!userId) {
+    throw new UnauthorizedException('Lack of userId');
+  }
   const db = getConnection();
-  await getCollection('Targets', db);
+  const targetWithUserId = {
+    ...target,
+    userId,
+  }
   const results = await db.query(aql`
-  INSERT ${target} INTO Targets`);
-  return 'Dodano item';
+  INSERT ${targetWithUserId} INTO Targets`);
+  return targetWithUserId;
 };

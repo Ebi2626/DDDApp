@@ -9,24 +9,47 @@ button {
   background-color: $bg-color;
 }
 
-.nav-item {
-  border-top-width: 0;
+.navbar-nav {
+  z-index: 10;
+  position: relative;
+  background: $bg-color;
+  margin-top: 1rem;
 
-  &:first-child {
-    border: solid 1px $primary;
+  @include media-breakpoint-up('lg') {
+    margin-top: 0;
+    border-radius: 0 0 0 5px;
+  }
+}
+
+.nav-item {
+  border: solid 1px $primary;
+  overflow: hidden;
+
+  &.active {
+    .nav-link {
+      background: $secondary;
+      color: $bg-color;
+    }
   }
 
   &:not(:first-child) {
-    border: solid 1px $primary;
+    border-top: 0;
+
+    &:last-child {
+      border-bottom: 0;
+    }
   }
 
   @include media-breakpoint-up('lg') {
-    &:first-child {
-      border-left: solid 1px $primary;
-    }
+    border: 0;
 
     &:not(:last-child) {
       border-right: solid 1px $primary;
+    }
+
+    &:first-child {
+      border-left: solid 1px $primary;
+      border-radius: 0 0 0 5px;
     }
   }
 

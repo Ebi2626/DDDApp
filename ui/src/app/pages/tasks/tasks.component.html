@@ -1,10 +1,15 @@
 <ng-container *ngIf="{
   tasks: tasks$ | async,
-  isFetching: isFetching$ | async
+  isFetching: isFetching$ | async,
+  modalState: modalState$ | async
 } as ctx">
   <h1 class="text-primary text-center mb-4">Zadania</h1>
-  <dddapp-no-data [hasContent]="!!ctx.isFetching || !!ctx.tasks?.length" ctaText="Dodaj zadanie" [ctaAction]="addTask">
-    <div class="accordion accordion-flush" id="accordionFlushExample">
+  <dddapp-no-data [hasContent]="!!ctx.isFetching || !!ctx.tasks?.length" ctaText="Dodaj zadanie"
+    [ctaAction]="addTask.bind(this)">
+    <button [disabled]="ctx.isFetching" (click)="addTask()" class="d-block btn btn-outline-primary mb-4 mx-auto"
+      type="button">Dodaj
+      nowe</button>
+    <div class="accordion accordion-flush" id="taskAccordion">
       <div class="accordion-item" *ngFor="let task of ctx.tasks; index as i; trackBy: trackById">
         <h2 class="accordion-header" id="flush-headingOne">
           <button class="accordion-button fs-5" [class.collapsed]="openElementIndex != i" type="button"
@@ -13,7 +18,7 @@
           </button>
         </h2>
         <div id="flush-collapseOne" class="accordion-collapse collapse" [class.show]="openElementIndex == i"
-          aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+          aria-labelledby="flush-headingOne" data-bs-parent="#taskAccordion">
           <div class="accordion-body">
             <dddapp-task-item [task]="task"></dddapp-task-item>
           </div>
@@ -21,5 +26,6 @@
       </div>
     </div>
   </dddapp-no-data>
+  <dddapp-task-modal *ngIf="ctx.modalState?.isOpen" [task]="ctx.modalState?.task"></dddapp-task-modal>
 
 </ng-container>

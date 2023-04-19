@@ -1,6 +1,7 @@
 <div class="modal fade show d-block" [class.modal-open]="assignTaskModalIsOpen" id="exampleModal" tabindex="-1"
   aria-labelledby="exampleModalLabel" aria-hidden="true" *ngIf="{
-    tasks: tasks$ | async
+    tasks: tasks$ | async,
+    isFetching: isFetching$ | async
   } as ctx">
   <div class="modal-dialog modal-lg modal-fullscreen-sm-down modal-dialog-centered">
     <div class="modal-content">
@@ -13,9 +14,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <dddapp-target-form (removedTaskId)="removeTask($event)" (assignTask)="assignTaskModalIsOpen = true"
-          (isFormValid)="isFormValid = $event" (updatedTarget)="updatedTarget = $event"
-          [target]="target"></dddapp-target-form>
+        <dddapp-target-form [selectedTasksIds]="selectedTasksIds"
+          [tasks]="TargetsService.getTargetTasks(target, ctx.tasks) || []" (removedTaskId)="removeTask($event)"
+          (assignTask)="assignTaskModalIsOpen = true" (isFormValid)="isFormValid = $event"
+          (updatedTarget)="updatedTarget = $event" [target]="target"></dddapp-target-form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
@@ -24,9 +26,8 @@
         <button type="button" (click)="target ? saveChanges() : addTarget()" class="btn btn-primary"
           [disabled]="!isFormValid">Zapisz</button>
       </div>
-      <dddapp-assign-targets-modal [selectedTasksIds]="selectedTasksIds" [target]="target" [tasks]="ctx.tasks || []"
-        (closeModal)="assignTaskModalIsOpen = false" (changedTasks)="patchTasks($event, ctx.tasks || [])"
-        *ngIf="assignTaskModalIsOpen"></dddapp-assign-targets-modal>
+      <dddapp-assign-targets-modal [currentTasks]="currentTasks" (closeModal)="assignTaskModalIsOpen = false"
+        (assignTasks)="patchTasks($event)" *ngIf="assignTaskModalIsOpen"></dddapp-assign-targets-modal>
     </div>
   </div>
 </div>

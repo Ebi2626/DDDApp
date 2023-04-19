@@ -85,6 +85,9 @@
               "browserTarget": "ui:build:dev"
             }
           },
+          "options": {
+            "proxyConfig": "src/assets/proxy.conf.dev.json"
+          },
           "defaultConfiguration": "dev"
         },
         "extract-i18n": {

@@ -16,7 +16,7 @@
   <div class="row d-flex flex-row align-items-center targetRow">
     <h4 class="col-12 col-md-2 text-primary fs-6">Zadania</h4>
     <div class="py-2 col">
-      <dddapp-task-list [target]="target" [tasks]="tasks"></dddapp-task-list>
+      <dddapp-task-list-realization [tasks]="tasks" [disabled]="disabled"></dddapp-task-list-realization>
     </div>
   </div>
   <div class="row d-flex flex-row align-items-center targetRow" *ngIf="target.category">
@@ -36,7 +36,7 @@
       <button class="btn btn-outline-secondary" (click)="editTarget(target)" type="button" [disabled]="disabled">
         Edytuj cel
       </button>
-      <button class="btn btn-outline-danger" (click)="deleteTarget(target.id)" type="button" [disabled]="disabled">
+      <button class="btn btn-outline-danger" (click)="deleteTarget(target._key)" type="button" [disabled]="disabled">
         Usuń cel
       </button>
     </div>

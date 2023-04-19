@@ -50,7 +50,7 @@ export const updateTaskRequest = createAction(
 
 export const updateTask = createAction(
   '[Tasks] Update task successful',
-  props<{ updatedTask: Update<Task> }>(),
+  props<{ task: Task }>(),
 );
 
 export const updateTaskFailed = createAction(

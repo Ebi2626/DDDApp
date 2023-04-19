@@ -46,13 +46,16 @@ export const targetsReducer = createReducer(
     TargetsActions.createTargetRequest,
     (state) => ({
       ...state,
-      isFetching: false,
-      hasError: true,
+      isFetching: true,
+      hasError: false,
     })
   ),
   on(
     TargetsActions.createTarget,
-    (state, { target }) => adapter.addOne(target, state)
+    (state, { target }) => {
+      console.log('tworzony target: ', target);
+      return adapter.addOne(target, { ...state, isFetching: false })
+    }
   ),
   on(
     TargetsActions.createTargetFailed,

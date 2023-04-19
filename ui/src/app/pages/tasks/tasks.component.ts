@@ -6,6 +6,7 @@ import { GlobalSpinnerService } from 'src/app/core/layout/components/global-spin
 import { Task } from './models/tasks.models';
 import * as tasksSelectors from './selectors/tasks.selectors';
 import * as tasksActions from './actions/tasks.actions';
+import { PopupState, TaskModalService } from './services/task-modal.service';
 
 @Component({
   selector: 'dddapp-tasks',
@@ -17,12 +18,15 @@ export class TasksComponent {
 
   tasks$: Observable<Task[]>;
   isFetching$: Observable<boolean>;
+  modalState$: Observable<PopupState>;
 
   constructor(
     private store: Store<AppState>,
     private globalSpinnerService: GlobalSpinnerService,
+    private taskModalSerivce: TaskModalService,
   ) {
     this.tasks$ = store.select(tasksSelectors.selectTasks);
+    this.modalState$ = this.taskModalSerivce.modalState$;
     this.isFetching$ = store.select(tasksSelectors.selectTasksFetching)
       .pipe(tap((isFetching) => this.globalSpinnerService.show$.next(isFetching)))
   }
@@ -38,7 +42,8 @@ export class TasksComponent {
   }
 
   addTask() {
-    console.log('Dodajemy cel');
+    console.log('Dodajemy task');
+    this.taskModalSerivce.openModal();
   }
 
   trackById(_: any, { id }: Task) {

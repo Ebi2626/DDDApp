@@ -2,12 +2,11 @@ import { DatePipe, formatDate } from '@angular/common';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription, take } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.state';
 import * as TasksSelectors from '../../../tasks/selectors/tasks.selectors';
 import { Task } from 'src/app/pages/tasks/models/tasks.models';
 import { Target, TargetWageNames } from '../../models/targets.model';
-import * as R from 'ramda';
 import { TargetsService } from '../../services/targets.service';
 
 @Component({
@@ -18,10 +17,26 @@ import { TargetsService } from '../../services/targets.service';
 })
 export class TargetFormComponent implements OnInit, OnDestroy {
   private _sub: Subscription = new Subscription();
+  private _selectedTasksIds: string[] | undefined;
   targetWageNames = TargetWageNames;
   TargetsService = TargetsService;
 
   private _target?: Target;
+  @Input() tasks: Task[] = [];
+
+  @Input()
+  set selectedTasksIds(taskIds: string[] | undefined) {
+    this._selectedTasksIds = taskIds;
+    if (taskIds) {
+      this.tasksControls.clear();
+      taskIds?.forEach((task) => {
+        this.tasksControls.push(this.fb.control(task));
+      });
+    }
+  }
+  get selectedTasksIds(): string[] | undefined {
+    return this._selectedTasksIds;
+  }
 
   @Input()
   set target(target: Target | undefined) {
@@ -33,9 +48,6 @@ export class TargetFormComponent implements OnInit, OnDestroy {
         creationDate: formatDate(target.creationDate, 'yyyy-MM-dd', 'pl'),
       }
       this.form.patchValue(parsedTarget);
-      target.tasks.forEach((task) => {
-        this.tasksControls.push(this.fb.control(task));
-      });
     }
   }
 
@@ -61,13 +73,14 @@ export class TargetFormComponent implements OnInit, OnDestroy {
   tasks$: Observable<Task[]>
 
   form = this.fb.group({
+    creationDate: new Date().toDateString(),
     title: ['', Validators.required],
     motivation: ['', Validators.required],
     description: ['', Validators.required],
     deadline: ['', Validators.required],
     wage: [4, Validators.required],
     tasks: this.fb.array<string>([]),
-    category: ['0', Validators.required],
+    category: [0, Validators.required],
     reward: [''],
     punishment: [''],
   })
@@ -98,13 +111,19 @@ export class TargetFormComponent implements OnInit, OnDestroy {
   }
 
   getCurrentTasks(tasks: Task[]): Task[] {
-    const currentTaskIds: string[] = this.form.controls['tasks'].value;
-    return tasks.filter((task) => currentTaskIds.includes(task.id));
+    return this.applySelectedTasksIdsFilter(tasks);
   }
 
   removeTask(task: Task) {
     const indexOfRemovedTask = this.tasksControls.value.indexOf(task.id);
     this.tasksControls.removeAt(indexOfRemovedTask);
     this.removedTaskId.emit(task.id);
+  }
+
+  applySelectedTasksIdsFilter(tasks: Task[]): Task[] {
+    if (this.selectedTasksIds) {
+      return tasks.filter(({ id }) => this.selectedTasksIds?.includes(id))
+    }
+    return tasks;
   }
 }

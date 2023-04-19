@@ -2,10 +2,10 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { TargetsService } from "../services/targets.service";
 import * as TargetsActions from "../actions/targets.actions";
-import * as TasksActions from "../../tasks/actions/tasks.actions";
-import { catchError, map, of, switchMap } from "rxjs";
-import { Target } from "../models/targets.model";
-import { Action } from "@ngrx/store";
+import * as TargetsSelectors from "../selectors/targets.selectors";
+import { catchError, map, of, switchMap, withLatestFrom } from "rxjs";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/app.state";
 
 
 
@@ -14,10 +14,20 @@ export class TargetsEffects {
   fetchTargets$ = createEffect(
     () => this.actions$.pipe(
       ofType(TargetsActions.fetchTargets),
-      switchMap(() => this.targetsService.fetchTargets().pipe(
-        map(({ targets }) => TargetsActions.setTargets({ targets })),
-        catchError(() => of(TargetsActions.fetchTargetsFailed()))
-      )),
+      withLatestFrom(
+        this.store.select(TargetsSelectors.selectTargets)
+      ),
+      switchMap(([_, targets]) => {
+        if (targets.length) {
+          return of(targets).pipe(
+            map((targets) => TargetsActions.setTargets({ targets }))
+          )
+        }
+        return this.targetsService.fetchTargets().pipe(
+          map(({ targets }) => TargetsActions.setTargets({ targets })),
+          catchError(() => of(TargetsActions.fetchTargetsFailed()))
+        )
+      }),
     ));
 
   deleteTarget$ = createEffect(
@@ -36,15 +46,27 @@ export class TargetsEffects {
         map(({ target }) => TargetsActions.updateTarget({
           target: {
             changes: target,
-            id: target.id
+            id: target._key
           }
         })),
         catchError(() => of(TargetsActions.updateTargetFailed()))
       ))
     ))
 
+  createTarget$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(TargetsActions.createTargetRequest),
+      switchMap(({ target }) => this.targetsService.createTarget(target).pipe(
+        map(({ target }) => TargetsActions.createTarget({
+          target
+        })),
+        catchError(() => of(TargetsActions.createTargetFailed()))
+      ))
+    ))
+
   constructor(
     private actions$: Actions,
+    private store: Store<AppState>,
     private targetsService: TargetsService,
   ) { }
 }
