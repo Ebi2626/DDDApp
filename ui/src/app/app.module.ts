@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -40,6 +40,7 @@ import { AssignTargetsModalComponent } from './pages/targets/components/target-m
 import { TaskListRealizationComponent } from './pages/targets/components/task-list-realization/task-list-realization.component';
 import { TaskModalService } from './pages/tasks/services/task-modal.service';
 import { TaskFormComponent } from './pages/tasks/components/task-form/task-form.component';
+import { KeyToIdInterceptor } from './core/interceptors/key-to-id.interceptor';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,8 @@ import { TaskFormComponent } from './pages/tasks/components/task-form/task-form.
       multi: true,
       deps: [KeycloakService, ConfigInitService],
     },
+    { provide: HTTP_INTERCEPTORS, useClass: KeyToIdInterceptor, multi: true }
+
   ],
   bootstrap: [AppComponent]
 })

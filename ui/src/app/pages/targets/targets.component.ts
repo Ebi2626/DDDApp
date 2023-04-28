@@ -79,8 +79,8 @@ export class TargetsComponent implements OnInit, OnDestroy {
     this.targetModalSerivce.openModal();
   }
 
-  trackById(_: any, { _key }: Target) {
-    return _key;
+  trackById(_: any, { id }: Target) {
+    return id;
   }
 
   getTargetProgress(target: Target, tasks: Task[]): number {

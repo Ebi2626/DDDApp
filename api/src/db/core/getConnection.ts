@@ -11,6 +11,5 @@ export const getConnection = () => {
       password: `${process.env.DB_PASSWORD}`,
     },
   };
-  console.log('config: ', config);
   return new Database(config);
 };

@@ -8,7 +8,6 @@ import { Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
 
 
-
 @Injectable()
 export class TargetsEffects {
   fetchTargets$ = createEffect(
@@ -46,7 +45,7 @@ export class TargetsEffects {
         map(({ target }) => TargetsActions.updateTarget({
           target: {
             changes: target,
-            id: target._key
+            id: target.id
           }
         })),
         catchError(() => of(TargetsActions.updateTargetFailed()))

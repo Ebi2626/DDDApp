@@ -46,7 +46,7 @@ export const deleteTargetFailed = createAction(
 
 export const updateTargetRequest = createAction(
   '[Targets] Update target request',
-  props<{ target: Update<Target> }>(),
+  props<{ target: Target }>(),
 );
 
 export const updateTarget = createAction(

@@ -28,8 +28,7 @@ export const targetsReducer = createReducer(
   ),
   on(
     TargetsActions.setTargets,
-    (state, { targets }) => (
-      {
+    (state, { targets }) => ({
         ...adapter.setAll(targets, state),
         isFetching: false,
       })
@@ -52,10 +51,7 @@ export const targetsReducer = createReducer(
   ),
   on(
     TargetsActions.createTarget,
-    (state, { target }) => {
-      console.log('tworzony target: ', target);
-      return adapter.addOne(target, { ...state, isFetching: false })
-    }
+    (state, { target }) =>  adapter.addOne(target, { ...state, isFetching: false })
   ),
   on(
     TargetsActions.createTargetFailed,

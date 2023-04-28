@@ -6,7 +6,6 @@ import { FooterComponent } from './layout/components/footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { GlobalSpinnerComponent } from './layout/components/global-spinner/global-spinner.component';
 import { SharedModule } from '../shared/shared.module';
-import { GlobalSpinnerService } from './layout/components/global-spinner/global-spinner.service';
 
 
 @NgModule({

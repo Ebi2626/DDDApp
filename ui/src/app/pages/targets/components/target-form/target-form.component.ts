@@ -100,7 +100,10 @@ export class TargetFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._sub.add(
       this.form.valueChanges.subscribe((form) => {
-        this.updatedTarget.emit(form);
+        this.updatedTarget.emit({
+          ...this.target,
+          ...form
+        });
         this.isFormValid.emit(!this.form.invalid);
       })
     )

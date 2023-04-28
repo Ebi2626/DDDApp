@@ -9,15 +9,16 @@ export const removeOne = async (id: string, userId: string) => {
   }
   const db = getConnection();
   await getCollection('Targets', db);
-  console.log('Usuwamy item o id: ', id);
-  console.log('Dla usera: ', userId);
+  let result = [];
   const results = await db.query(aql`
-  FOR target IN Targets
-    FILTER target.userId == ${userId}
-    FILTER target._key == ${id}
-    REMOVE target IN Targets
-    RETURN target._key
+  FOR c IN Targets
+    FILTER c.userId == ${userId}
+    FILTER c._key == ${id}
+    REMOVE c IN Targets
+  RETURN c
   `);
-  console.log('all: ', await results.next());
-  return { id: await results.next() };
+  for await (let doc of results) {
+    result.push(doc);
+  }
+  return { id: id };
 };

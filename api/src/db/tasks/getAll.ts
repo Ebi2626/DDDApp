@@ -2,22 +2,18 @@ import { aql } from 'arangojs';
 import { getConnection } from '../core/getConnection';
 import { UnauthorizedException } from '@nestjs/common';
 
-export const addOne = async (target: any, userId: string) => {
+export const getAll = async (userId: string) => {
   if (!userId) {
     throw new UnauthorizedException('Lack of userId');
   }
+  const result = [];
   const db = getConnection();
-  const targetWithUserId = {
-    ...target,
-    userId,
-  }
-  let result = [];
-
   const results = await db.query(aql`
-  INSERT ${targetWithUserId} INTO Targets RETURN NEW`);
-
+  FOR c IN Tasks
+    FILTER c.userId == ${userId}
+  RETURN c`);
   for await (let doc of results) {
     result.push(doc);
   }
-  return await result[0];
+  return result;
 };

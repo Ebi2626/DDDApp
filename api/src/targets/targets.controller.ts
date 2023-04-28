@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TargetsService } from './targets.service';
 import { CreateTargetDto } from './dto/create-target.dto';
 import { UpdateTargetDto } from './dto/update-target.dto';
@@ -20,13 +20,12 @@ export class TargetsController {
 
   @Get(':id')
   findOne(@Param('id') id: string, @UserId() userId: string | undefined) {
-    console.log(`O zasób z numerem: ${id} pyta użytkownik o id: ${userId}`);
-    return this.targetsService.findOne(id);
+    return this.targetsService.findOne(id, userId);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTargetDto: UpdateTargetDto) {
-    return this.targetsService.update(id, updateTargetDto);
+  update(@Param('id') id: string, @Body() updateTargetDto: UpdateTargetDto,  @UserId() userId: string | undefined) {
+    return this.targetsService.update(id, updateTargetDto, userId);
   }
 
   @Delete(':id')

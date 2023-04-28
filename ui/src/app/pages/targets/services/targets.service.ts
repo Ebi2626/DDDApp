@@ -30,7 +30,7 @@ export class TargetsService {
     return this.http.delete<{ id: string }>(`${environment.api}/${Endpoints.TARGETS}/${id}`)
   }
 
-  updateTarget(target: Update<Target>) {
+  updateTarget(target: Target) {
     return this.http.patch<{ target: Target }>(`${environment.api}/${Endpoints.TARGETS}/${target.id}`, target)
   }
 

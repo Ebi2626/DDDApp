@@ -59,11 +59,7 @@ export class TargetModalComponent {
   }
 
   saveChanges() {
-    const updatedTarget: Update<Target> = {
-      changes: this.updatedTarget as Partial<Target>,
-      id: this.updatedTarget?._key as string
-    }
-    this.store.dispatch(TargetActions.updateTargetRequest({ target: updatedTarget }));
+    this.store.dispatch(TargetActions.updateTargetRequest({target: { ...this.updatedTarget, id: this.updatedTarget?.id } as Target}));
     this.isFetching$.pipe(
       filter((isFetching) => !isFetching),
       take(1),

@@ -21,7 +21,7 @@ export enum TargetStateClass {
 }
 
 export interface Target {
-  _key: string;
+  id: string;
   title: string;
   motivation: string;
   description: string;
@@ -37,7 +37,7 @@ export interface Target {
 
 export const mockTargets: Target[] = [
   {
-    _key: '123',
+    id: '123',
     title: 'Przebiec maraton',
     motivation: 'Udowodnienie sobie, że mimo upływających lat nadal jestem w formie.',
     description: 'Należy przygotować się odpowiednio i przebiec pełen dystans maratornu.',
@@ -47,7 +47,7 @@ export const mockTargets: Target[] = [
     wage: TargetWage.Istotny,
   },
   {
-    _key: '124',
+    id: '124',
     title: 'Nauczyć się angielskiego na C1',
     motivation: 'Przygotowane do pracy dla międzynarodowych korporacji.',
     description: 'Opanowanie języka angielskiego na wysokim poziomie gwarantujące wysoką jakość komunikacji.',

@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { addOne } from 'src/db/tasks/addOne';
+import { getAll } from 'src/db/tasks/getAll';
+import { getMany } from 'src/db/tasks/getMany';
+import { getOne } from 'src/db/tasks/getOne';
+import { removeOne } from 'src/db/tasks/removeOne';
+import { updateOne } from 'src/db/tasks/updateOne';
 
 @Injectable()
 export class TasksService {
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+  async create(createTaskDto: CreateTaskDto, userId: string) {
+    return await addOne(createTaskDto, userId)
   }
 
-  findAll() {
-    return { tasks: [] };
+  async findMany(userId: string, taskIds: string[]){
+    return { tasks: await getMany(userId, taskIds)}
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} task`;
+  async findAll(userId: string) {
+    return await getAll(userId);
   }
 
-  update(id: string, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async findOne(id: string, userId: string) {
+    return await getOne(id, userId);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} task`;
+  async update(id: string, updateTaskDto: UpdateTaskDto, userId: string) {
+    return await updateOne(id, updateTaskDto, userId);
+  }
+
+  async remove(id: string, userId: string) {
+    return await removeOne(id, userId);
   }
 }

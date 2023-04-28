@@ -4,29 +4,28 @@ import { UpdateTargetDto } from './dto/update-target.dto';
 import { getAll } from 'src/db/targets/getAll';
 import { addOne } from 'src/db/targets/addOne';
 import { removeOne } from 'src/db/targets/removeOne';
+import { getOne } from 'src/db/targets/getOne';
+import { updateOne } from 'src/db/targets/updateOne';
 
 @Injectable()
 export class TargetsService {
   async create(createTargetDto: CreateTargetDto, userId: string) {
-    const newTarget = await addOne(createTargetDto, userId);
-    return { target: newTarget };
+    return { target: await addOne(createTargetDto, userId) };
   }
 
   async findAll(userId: string) {
-    const targets = await getAll(userId);
-    return { targets };
+    return { targets: await getAll(userId) };
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} target`;
+  async findOne(id: string, userId: string) {
+    return await getOne(id, userId);
   }
 
-  update(id: string, updateTargetDto: UpdateTargetDto) {
-    return `This action updates a #${id} target`;
+  async update(id: string, updateTargetDto: UpdateTargetDto, userId: string) {
+    return await updateOne(id, updateTargetDto, userId)
   }
 
   async remove(id: string, userId: string) {
-    const removedItem = await removeOne(id, userId)
-    return removedItem;
+    return await removeOne(id, userId);
   }
 }
