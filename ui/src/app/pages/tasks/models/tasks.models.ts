@@ -2,6 +2,12 @@ export const WEEK_DURATION = 604800000;
 export const MONTH_DURATION = 4 * WEEK_DURATION;
 export const YEAR_DURATION = 12 * MONTH_DURATION;
 
+export enum TaskPeriod {
+   WEEK_DURATION,
+   MONTH_DURATION,
+   YEAR_DURATION
+}
+
 export enum TaskType {
   'SINGLE',
   'CYCLIC',
@@ -59,14 +65,33 @@ export const IterationDurationNames: IterationDurationNamesInterface = {
 }
 
 
-export interface CyclicTaskItemRealization {
+export interface BaseCyclicTaskItemRealization {
   dueDate: Date;
-  completed: boolean;
+  index?: number;
 }
 
-export interface ProgressivTaskItemRealization extends CyclicTaskItemRealization {
-  value: number;
+export interface CyclicTaskItemRealizationCheckbox extends BaseCyclicTaskItemRealization {
+  value: boolean;
 }
+
+export interface CyclicTaskItemRealizationText extends BaseCyclicTaskItemRealization {
+  value: string;
+}
+
+export interface CyclicTaskItemRealizationFile extends  BaseCyclicTaskItemRealization {
+  value: string;
+}
+
+export interface CyclicTaskItemRealizationNumber extends  BaseCyclicTaskItemRealization {
+  value: number | null;
+}
+
+export interface ProgressiveTaskItemRealization extends BaseCyclicTaskItemRealization {
+  goal: number;
+  value: number | null;
+}
+
+export type CyclicTaskItemRealization = CyclicTaskItemRealizationCheckbox | CyclicTaskItemRealizationText | CyclicTaskItemRealizationFile | CyclicTaskItemRealizationNumber;
 
 export interface BaseTask {
   id: string;
@@ -99,7 +124,7 @@ export interface ProgressiveTask extends BaseTask {
   verification_method: TaskRealizationConfirmation.NUMBER
   initialTaskValue: number;
   progressStep: number;
-  taskCompletions: ProgressivTaskItemRealization[];
+  taskCompletions: ProgressiveTaskItemRealization[];
   iterationDuration: number;
   tasksPerIteration: number;
   intervalProgressStepDuration: number; //ms

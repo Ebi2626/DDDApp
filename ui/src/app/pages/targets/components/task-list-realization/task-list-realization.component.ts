@@ -1,26 +1,53 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged, Observable, Subject, Subscription } from 'rxjs';
 import { AppState } from 'src/app/app.state';
 import * as TasksSelectors from '../../../tasks/selectors/tasks.selectors';
 import * as TasksActions from '../../../tasks/actions/tasks.actions';
-import { Task } from 'src/app/pages/tasks/models/tasks.models';
+import { CyclicTaskItemRealization, ProgressiveTaskItemRealization, Task, TaskType, IterationDuration, TaskPeriod, TaskRealizationConfirmation, WEEK_DURATION } from 'src/app/pages/tasks/models/tasks.models';
 import * as R from 'ramda';
 import { Update } from '@ngrx/entity';
+import { MONTH_DURATION } from 'src/app/pages/tasks/models/tasks.models';
+import { YEAR_DURATION } from 'src/app/pages/tasks/models/tasks.models';
 
-interface TaskRealizationItem {
+interface BaseTaskRealizationItem {
   id: string;
   title: string;
   completed: boolean;
+  type: TaskType;
+  verification_method: TaskRealizationConfirmation;
 }
+
+export interface CyclicTaskRealizationItem extends BaseTaskRealizationItem {
+  period: {
+    duration: number;
+    currentPeriodStart: Date;
+    currentPeriodEnd: Date;
+  };
+  taskCompletions: CyclicTaskItemRealization[];
+}
+
+export interface ProgressiveTaskRealizationItem extends BaseTaskRealizationItem {
+  period: {
+    duration: number;
+    currentPeriodStart: Date;
+    currentPeriodEnd: Date;
+  };
+  taskCompletions: ProgressiveTaskItemRealization[];
+}
+
+type TaskRealizationItem = ProgressiveTaskRealizationItem | CyclicTaskRealizationItem | BaseTaskRealizationItem;
 
 @Component({
   selector: 'dddapp-task-list-realization',
   templateUrl: './task-list-realization.component.html',
-  styleUrls: ['./task-list-realization.component.scss']
+  styleUrls: ['./task-list-realization.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskListRealizationComponent implements OnDestroy {
+  TaskType = TaskType;
   private _sub: Subscription = new Subscription();
+
   @Input()
   set tasks(tasks: Task[]) {
     this.tasks$.next(tasks)
@@ -31,7 +58,7 @@ export class TaskListRealizationComponent implements OnDestroy {
 
   tasks$: Subject<Task[]> = new Subject<Task[]>();
 
-  tasksInputs: TaskRealizationItem[] = [];
+  tasksInputs?: TaskRealizationItem[];
 
   isFetching$: Observable<boolean>;
 
@@ -46,7 +73,7 @@ export class TaskListRealizationComponent implements OnDestroy {
       this.tasks$.pipe<Task[]>(
         distinctUntilChanged<Task[]>(R.equals)
       ).subscribe((tasks: Task[]) => {
-        this.tasksInputs = tasks.map(({ title, completed, id }) => ({ id, title, completed }));
+        this.tasksInputs = tasks.map((task) => this.mapTaskItemToTaskRealizationItem(task));
       })
     )
   }
@@ -54,15 +81,83 @@ export class TaskListRealizationComponent implements OnDestroy {
     this._sub.unsubscribe();
   }
 
-  toggleCheckboxState(e: Event, task: TaskRealizationItem) {
+  toggleCheckboxState(e: Event, task: BaseTaskRealizationItem) {
     e.preventDefault();
-    const updatedTask: Update<Task> = {
-      changes: {
-        completed: !task.completed
-      },
-      id: task.id
+    const updatedTask: Partial<Task>= {
+      id: task.id,
+      completed: !task.completed
     }
-    this.store.dispatch(TasksActions.updateTaskRequest({ task: updatedTask }));
+    this.store.dispatch(TasksActions.updateTaskRequest({task: updatedTask}));
   }
 
+  mapTaskItemToTaskRealizationItem(task: Task): TaskRealizationItem {
+    switch(task.type) {
+      case TaskType.CYCLIC:
+      case TaskType.PROGRESSIVE:
+        return {
+          id: task.id,
+          title: task.title,
+          completed: task.completed,
+          type: task.type,
+          taskCompletions: task?.taskCompletions || [],
+          verification_method: task.verification_method,
+          period: {
+            duration: task.iterationDuration,
+            currentPeriodEnd: this.computeDates(task.iterationDuration)[1],
+            currentPeriodStart: this.computeDates(task.iterationDuration)[0],
+
+          },
+        } as CyclicTaskRealizationItem | ProgressiveTaskRealizationItem
+      default:
+        return {
+          id: task.id,
+          title: task.title,
+          completed: task.completed,
+          type: task.type,
+          verification_method: task.verification_method,
+        } as BaseTaskRealizationItem;
+    }
+  }
+
+  getTasksPerPeriod(tasks: Array<CyclicTaskItemRealization | ProgressiveTaskItemRealization>, period: number): Array<CyclicTaskItemRealization | ProgressiveTaskItemRealization> {
+    if(!tasks || !period) {
+      return [];
+    }
+    console.log('getTasksPerPeriod: ', tasks, period);
+    const [periodBegin, periodEnd] = this.computeDates(period);
+    const tasksPerPeriod = tasks.map((task, index) => ({...task, index})).filter(({dueDate}) => {
+      const taskDate = new Date(dueDate).getTime();
+      return taskDate >= periodBegin.getTime() && taskDate <= periodEnd.getTime();
+    });
+    return tasksPerPeriod || [];
+  }
+
+  private computeDates = (period: number): [beginningDate: Date, endDate: Date] => {
+    const today = new Date();
+
+    switch(+period) {
+      case MONTH_DURATION:
+        console.log('Miesiąc', period);
+        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+        const monthEnd = new Date(monthStart);
+        monthEnd.setMonth(monthEnd.getMonth() + 1);
+        monthEnd.setDate(monthEnd.getDate() - 1);
+        return [monthStart, monthEnd];
+      case YEAR_DURATION:
+        console.log('Rok', period)
+        const yearStart = new Date(today.getFullYear(), 0, 1);
+        const yearEnd = new Date(yearStart);
+        yearEnd.setFullYear(yearEnd.getFullYear() + 1);
+        return [yearStart, yearEnd];
+      case WEEK_DURATION:
+        console.log('Tydzień', period)
+        const weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+        weekStart.setDate(weekStart.getDate() + 1); // Set first day to monday instead of sunday
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6); // Last day Sunday
+        return [weekStart, weekEnd];
+      default:
+        throw new Error('Invalid period');
+    }
+  }
 }

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Target } from '../models/targets.model';
-import { Task, TaskType } from '../../tasks/models/tasks.models';
+import { Task, TaskRealizationConfirmation, TaskType } from '../../tasks/models/tasks.models';
 import {
   CyclicTask,
   CyclicTaskItemRealization,
   ProgressiveTask,
-  ProgressivTaskItemRealization,
+  ProgressiveTaskItemRealization,
   SingleTask
 } from '../../tasks/models/tasks.models';
 
@@ -16,7 +16,7 @@ export class TargetProgressService {
 
   getTargetProgress(target: Target, tasks: Task[]): number {
 
-    const targetTasks = tasks.filter((task) => target.tasks.includes(task.id))
+    const targetTasks = tasks?.filter((task) => target.tasks?.includes(task.id)) || [];
 
     const tasksQuantity = targetTasks?.length || 0;
 
@@ -48,8 +48,27 @@ export class TargetProgressService {
     if (taskItemsQuantity === 0) {
       return 0;
     }
-    const completedItemsQuantity: number = task.taskCompletions.filter(({ completed }: CyclicTaskItemRealization | ProgressivTaskItemRealization) => completed).length;
-
+    let completedItemsQuantity: number;
+    if(task.type === TaskType.PROGRESSIVE) {
+      completedItemsQuantity = task.taskCompletions.filter(({value, goal}) => value && value > goal).length;
+    } else {
+      switch(task.verification_method) {
+        case TaskRealizationConfirmation.CHECKBOX:
+          completedItemsQuantity = task.taskCompletions.filter(({value}) => value).length;
+        break;
+        case TaskRealizationConfirmation.FILE:
+          completedItemsQuantity = task.taskCompletions.filter(({value}) => value).length;
+        break;
+        case TaskRealizationConfirmation.NUMBER:
+          completedItemsQuantity = task.taskCompletions.filter(({value}) => value !== null).length;
+        break;
+        case TaskRealizationConfirmation.TEXT:
+          completedItemsQuantity = task.taskCompletions.filter(({value}) => (value as string)?.length).length;
+        break;
+        default:
+          throw new Error('Unknown verification method');
+      }
+    }
     return completedItemsQuantity / taskItemsQuantity;
   }
 }

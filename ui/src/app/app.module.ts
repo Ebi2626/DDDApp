@@ -41,6 +41,7 @@ import { TaskListRealizationComponent } from './pages/targets/components/task-li
 import { TaskModalService } from './pages/tasks/services/task-modal.service';
 import { TaskFormComponent } from './pages/tasks/components/task-form/task-form.component';
 import { KeyToIdInterceptor } from './core/interceptors/key-to-id.interceptor';
+import { CyclicCompletionsComponent } from './pages/targets/components/task-list-realization/components/cyclic-completions/cyclic-completions.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { KeyToIdInterceptor } from './core/interceptors/key-to-id.interceptor';
     AssignTargetsModalComponent,
     TaskListRealizationComponent,
     TaskFormComponent,
+    CyclicCompletionsComponent,
   ],
   imports: [
     KeycloakAngularModule,

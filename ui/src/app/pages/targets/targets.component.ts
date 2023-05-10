@@ -66,7 +66,7 @@ export class TargetsComponent implements OnInit, OnDestroy {
   }
 
   getTargetTasks(target: Target, tasks: Task[]): Task[] {
-    return tasks.filter((task) => target.tasks.includes(task.id));
+    return tasks.filter((task) => target.tasks?.includes(task.id));
   }
 
   openElement(elementIndex: number) {

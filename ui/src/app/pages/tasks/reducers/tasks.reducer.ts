@@ -73,11 +73,12 @@ export const tasksReducer = createReducer(
   on(
     TasksActions.updateTask,
     (state, { task }) => {
+      console.log('aktualizujemy task: ', task);
       const updatedTask: Update<Task> = {
         changes: {
           ...task
         },
-        id: task.id
+        id: task.id as string
       };
       return adapter.updateOne(updatedTask, { ...state, isFetching: false });
     }

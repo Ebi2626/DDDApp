@@ -19,5 +19,6 @@ export const removeOne = async (id: string, userId: string) => {
   for await (let doc of results) {
     result.push(doc);
   }
+  console.log(await result);
   return { id: id };
 };

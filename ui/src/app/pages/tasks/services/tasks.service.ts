@@ -4,7 +4,7 @@ import { Update } from '@ngrx/entity';
 import { Observable, of, throwError } from 'rxjs';
 import { Endpoints } from 'src/app/shared/models/endpoints.model';
 import { environment } from 'src/environments/environment';
-import { CyclicTask, CyclicTaskItemRealization, mockTasks, ProgressiveTask, ProgressivTaskItemRealization, Task, TaskType } from '../models/tasks.models';
+import { CyclicTask, CyclicTaskItemRealization, mockTasks, ProgressiveTask, ProgressiveTaskItemRealization, Task, TaskRealizationConfirmation, TaskType } from '../models/tasks.models';
 
 @Injectable({
   providedIn: 'root'
@@ -15,27 +15,27 @@ export class TasksService {
     private http: HttpClient
   ) { }
 
-  fetchTasks(taskIds?: string[]): Observable<{ tasks: Task[] }> {
-    return this.http.get<{ tasks: Task[] }>(`${environment.api}/${Endpoints.TASKS}`, taskIds?.length ? {
+  fetchTasks(taskIds?: string[]): Observable<Task[]> {
+    return this.http.get<Task[]>(`${environment.api}/${Endpoints.TASKS}`, taskIds?.length ? {
       params: {
         id: taskIds.join(',')
       }
     } : {});
   }
 
-  createTask(task: Task): Observable<{ task: Task }> {
-    return this.http.post<{ task: Task }>(`${environment.api}/${Endpoints.TASKS}`, task);
+  createTask(task: Task): Observable<Task> {
+    return this.http.post<Task>(`${environment.api}/${Endpoints.TASKS}`, task);
   }
 
   deleteTask(id: string): Observable<{ id: string }> {
     return this.http.delete<{ id: string }>(`${environment.api}/${Endpoints.TASKS}/${id}`)
   }
 
-  updateTask(task: Partial<Task>): Observable<Task> {
-    return this.http.patch<Task>(`${environment.api}/${Endpoints.TASKS}/${task.id}`, task)
+  updateTask(task: Partial<Task>): Observable<{task: Partial<Task>}> {
+    return this.http.patch<{task: Partial<Task>}>(`${environment.api}/${Endpoints.TASKS}/${task.id}`, task)
   }
 
-  public static createTaskCompletionsArray(task: CyclicTask | ProgressiveTask): CyclicTaskItemRealization[] | ProgressivTaskItemRealization[] {
+  public static createTaskCompletionsArray(task: CyclicTask | ProgressiveTask): CyclicTaskItemRealization[] | ProgressiveTaskItemRealization[] {
     const iterationDuration: number = task.iterationDuration; //ms
     const startDate = task.creationDate.getTime(); //ms
     const endDate = task.deadline.getTime(); //ms
@@ -43,18 +43,18 @@ export class TasksService {
     const tasksPerIteration = task.tasksPerIteration;
     const numberOfIterations = Math.floor(diff / iterationDuration);
     const cyclicResultArray: CyclicTaskItemRealization[] = [];
-    const progressiveResultArray: ProgressivTaskItemRealization[] = [];
+    const progressiveResultArray: ProgressiveTaskItemRealization[] = [];
 
     if (task.type == TaskType.CYCLIC) {
 
-      for (let i = 1; i <= numberOfIterations; i++) {
+      for (let i = 0; i < numberOfIterations; i++) {
 
         const dueDate = new Date(startDate + iterationDuration * i);
 
         for (let j = 0; j < tasksPerIteration; j++) {
           const cyclicTaskItemRealizaton: CyclicTaskItemRealization = {
-            completed: false,
-            dueDate
+            value: false,
+            dueDate,
           }
           cyclicResultArray.push(cyclicTaskItemRealizaton);
         }
@@ -69,13 +69,13 @@ export class TasksService {
       for (let i = 0; i < numberOfIterations; i++) {
 
         const dueDate = new Date(startDate + iterationDuration * (i + 1));
-        const value = task.initialTaskValue + task.progressStep * i;
+        const goal = task.initialTaskValue + task.progressStep * i;
 
         for (let j = 0; j < tasksPerIteration; j++) {
-          const progressiveTaskItemRealizaton: ProgressivTaskItemRealization = {
-            completed: false,
+          const progressiveTaskItemRealizaton: ProgressiveTaskItemRealization = {
             dueDate,
-            value
+            goal,
+            value: null,
           }
           progressiveResultArray.push(progressiveTaskItemRealizaton);
         }

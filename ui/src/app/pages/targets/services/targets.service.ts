@@ -35,7 +35,7 @@ export class TargetsService {
   }
 
   public static getTargetTasks(target?: Target, tasks?: Task[] | null) {
-    return target && tasks?.length ? tasks.filter((task) => target?.tasks.includes(task.id)) : [];
+    return target && tasks?.length ? tasks.filter((task) => target?.tasks?.includes(task.id)) : [];
   }
 
   public validateTarget(target: Target, tasks: Task[] | null): TargetStateClass {

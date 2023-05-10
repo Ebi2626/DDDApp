@@ -5,6 +5,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { NoDataComponent } from './components/no-data/no-data.component';
 import { TaskTypePipe } from './pipes/task-type.pipe';
 import { VerificationMethodPipe } from './pipes/verification-method.pipe';
+import { PeriodToTextPipe } from './pipes/period-to-text.pipe';
 
 
 
@@ -14,7 +15,8 @@ import { VerificationMethodPipe } from './pipes/verification-method.pipe';
     SpinnerComponent,
     NoDataComponent,
     TaskTypePipe,
-    VerificationMethodPipe
+    VerificationMethodPipe,
+    PeriodToTextPipe,
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { VerificationMethodPipe } from './pipes/verification-method.pipe';
     SpinnerComponent,
     NoDataComponent,
     TaskTypePipe,
-    VerificationMethodPipe
+    VerificationMethodPipe,
+    PeriodToTextPipe
   ]
 })
 export class SharedModule { }

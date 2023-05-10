@@ -24,7 +24,7 @@ export class TasksEffects {
           );
         }
         return this.tasksService.fetchTasks().pipe(
-          mergeMap(({ tasks }) => [
+          mergeMap(( tasks ) => [
             TasksActions.setTasks({ tasks }),
           ]),
           catchError(() => of(
@@ -39,7 +39,7 @@ export class TasksEffects {
       ofType(TasksActions.updateTaskRequest),
       switchMap(
         ({ task }) => this.tasksService.updateTask(task).pipe(
-          switchMap((task) => [TasksActions.updateTask({ task })]),
+          switchMap(({ task }) => [TasksActions.updateTask({ task })]),
           catchError((e) => [
             TasksActions.updateTaskFailed(),
           ]
@@ -67,7 +67,7 @@ export class TasksEffects {
       ofType(TasksActions.createTaskRequest),
       switchMap(
         ({ task }) => this.tasksService.createTask(task).pipe(
-          switchMap(({ task }) => [TasksActions.createTask({ task })]),
+          switchMap(( task ) => [TasksActions.createTask({ task })]),
           catchError((e) => [
             TasksActions.createTaskFailed(),
           ]

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { Task, TaskType, TaskTypeNameMap, Option, TaskRealizationConfirmationNameMap, IterationDuration, IterationDurationNames, ITERATION_LENGTH, CyclicTask, ProgressiveTask, SingleTask, CyclicTaskItemRealization, ProgressivTaskItemRealization } from '../../models/tasks.models';
+import { Task, TaskType, TaskTypeNameMap, Option, TaskRealizationConfirmationNameMap, IterationDuration, IterationDurationNames, ITERATION_LENGTH, CyclicTask, ProgressiveTask, SingleTask, CyclicTaskItemRealization, ProgressiveTaskItemRealization } from '../../models/tasks.models';
 import { v4 as uuidv4 } from 'uuid';
 import { Subscription, distinctUntilChanged, Observable } from 'rxjs';
 import * as R from 'ramda';
@@ -70,10 +70,9 @@ export class TaskFormComponent implements OnDestroy {
 
   private formFactory(taskType: TaskType = TaskType.SINGLE, task?: Task) {
 
-    const taskCompletions: CyclicTaskItemRealization[] | ProgressivTaskItemRealization[] | undefined = (task as CyclicTask | ProgressiveTask)?.taskCompletions || undefined;
+    const taskCompletions: CyclicTaskItemRealization[] | ProgressiveTaskItemRealization[] | undefined = (task as CyclicTask | ProgressiveTask)?.taskCompletions || undefined;
 
     const singleForm = this.fb.group({
-      id: [task?.id || uuidv4()],
       title: [task?.title || '', Validators.required],
       description: [task?.description || '', Validators.required],
       type: [0, Validators.required],
@@ -88,7 +87,6 @@ export class TaskFormComponent implements OnDestroy {
     })
 
     const cyclicForm = this.fb.group({
-      id: [task?.id || uuidv4()],
       title: [task?.title || '', Validators.required],
       description: [task?.description || '', Validators.required],
       type: [1, Validators.required],
@@ -106,7 +104,6 @@ export class TaskFormComponent implements OnDestroy {
     });
 
     const progressiveForm = this.fb.group({
-      id: [task?.id || uuidv4()],
       title: [task?.title || '', Validators.required],
       description: [task?.description || '', Validators.required],
       type: [2, Validators.required],
@@ -129,10 +126,10 @@ export class TaskFormComponent implements OnDestroy {
 
     switch (taskType) {
       case 2:
-        (taskCompletions as ProgressivTaskItemRealization[])?.forEach((taskCompletion) => {
+        (taskCompletions as ProgressiveTaskItemRealization[])?.forEach((taskCompletion) => {
           const newControl = this.fb.group({
             dueDate: this.fb.control(taskCompletion.dueDate),
-            completed: this.fb.control(taskCompletion.completed),
+            goal: this.fb.control(taskCompletion.goal),
             value: this.fb.control(taskCompletion.value)
           });
           (progressiveForm.get('taskCompletions') as FormArray).push(newControl);
@@ -142,7 +139,7 @@ export class TaskFormComponent implements OnDestroy {
         (taskCompletions as CyclicTaskItemRealization[])?.forEach((taskCompletion) => {
           const newControl = this.fb.group({
             dueDate: this.fb.control(taskCompletion.dueDate),
-            completed: this.fb.control(taskCompletion.completed),
+            value: this.fb.control(taskCompletion.value),
           });
           (cyclicForm.get('taskCompletions') as FormArray).push(newControl);
         })

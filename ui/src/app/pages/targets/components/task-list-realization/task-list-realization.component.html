@@ -3,15 +3,17 @@
 } as ctx">
   <ul class="list-group w-100 mb-3" *ngIf="tasksInputs?.length else lackOfTasks">
     <li *ngFor="let task of tasksInputs; let i=index" class="list-group-item text-secondary">
-      <div class="d-flex flex-row align-items-center">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" (click)="toggleCheckboxState($event, task)"
-            [ngModel]="task.completed" id="{{task.id}}" [disabled]="disabled" />
-          <label class="form-check-label" for="{{task.id}}">
-            {{ task.title }}
-          </label>
-        </div>
-      </div>
+      <ng-container [ngSwitch]="task.type">
+        <ng-container *ngSwitchCase="TaskType.CYCLIC">
+          <ng-container *ngTemplateOutlet="cyclicTask; context: {task}"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="TaskType.PROGRESSIVE">
+          <ng-container *ngTemplateOutlet="progressiveTask; context: {task}"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <ng-container *ngTemplateOutlet="singleTask; context: {task}"></ng-container>
+        </ng-container>
+      </ng-container>
     </li>
   </ul>
   <dddapp-spinner *ngIf="ctx.isFetching" [hasContent]="!ctx.isFetching"
@@ -22,4 +24,40 @@
   <p class="text-center mb-3">Nie masz jeszcze żadnych zadań przypisanych do tego celu. Edytuj cel, aby
     przypisać istniejące zadania do celu, lub przejdź do <a class="text-secondary" routerLink="/tasks">zadań</a> by je
     utworzyć</p>
+</ng-template>
+<ng-template #singleTask let-task="task">
+  <div class="d-flex flex-row align-items-center">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" (click)="toggleCheckboxState($event, task)"
+        [ngModel]="task?.completed" id="{{task?.id}}" [disabled]="disabled" />
+      <label class="form-check-label" for="{{task?.id}}">
+        {{ task?.title }}
+      </label>
+    </div>
+  </div>
+</ng-template>
+<ng-template #cyclicTask let-task="task">
+  <dddapp-cyclic-completions [task]="task" [tasksPerPeriod]="getTasksPerPeriod(task?.taskCompletions, task?.period?.duration)" ></dddapp-cyclic-completions>
+  <!-- <div class="d-flex flex-row align-items-center">
+    <div class="form-check">
+      <ng-container *ngFor="let taskCompletion of getTasksPerPeriod(task?.taskCompletions, task.iterationDuration)">
+        <input class="form-check-input" type="checkbox" (click)="toggleCheckboxState($event, task)"
+        [ngModel]="task.completed" id="{{task.id}}" [disabled]="disabled" />
+      </ng-container>
+      <label class="form-check-label" for="{{task.id}}">
+        {{ task.title }}
+      </label>
+    </div>
+  </div> -->
+</ng-template>
+<ng-template #progressiveTask let-task="task">
+  <div class="d-flex flex-row align-items-center">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" (click)="toggleCheckboxState($event, task)"
+        [ngModel]="task.completed" id="{{task.id}}" [disabled]="disabled" />
+      <label class="form-check-label" for="{{task.id}}">
+        {{ task.title }}
+      </label>
+    </div>
+  </div>
 </ng-template>
