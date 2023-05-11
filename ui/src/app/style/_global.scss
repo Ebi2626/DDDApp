@@ -6,3 +6,9 @@ body {
 a {
   text-decoration: none;
 }
+.input-group-append {
+  .btn {
+  border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}

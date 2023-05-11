@@ -35,6 +35,21 @@ export class TasksService {
     return this.http.patch<{task: Partial<Task>}>(`${environment.api}/${Endpoints.TASKS}/${task.id}`, task)
   }
 
+  static getDefaultValueForTaskType(verification_method: TaskRealizationConfirmation) {
+    switch (+verification_method) {
+      case TaskRealizationConfirmation.TEXT:
+        return '';
+      case TaskRealizationConfirmation.NUMBER:
+        return null;
+      case TaskRealizationConfirmation.CHECKBOX:
+        return false;
+      case TaskRealizationConfirmation.FILE:
+        return ''
+      default:
+        throw new Error('Wrong verification method');
+    }
+  }
+
   public static createTaskCompletionsArray(task: CyclicTask | ProgressiveTask): CyclicTaskItemRealization[] | ProgressiveTaskItemRealization[] {
     const iterationDuration: number = task.iterationDuration; //ms
     const startDate = task.creationDate.getTime(); //ms
@@ -53,7 +68,7 @@ export class TasksService {
 
         for (let j = 0; j < tasksPerIteration; j++) {
           const cyclicTaskItemRealizaton: CyclicTaskItemRealization = {
-            value: false,
+            value: this.getDefaultValueForTaskType(task.verification_method),
             dueDate,
           }
           cyclicResultArray.push(cyclicTaskItemRealizaton);

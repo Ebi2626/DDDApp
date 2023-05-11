@@ -1,26 +1,21 @@
 <ng-container [ngSwitch]="task.verification_method">
   <ng-container *ngSwitchCase="TaskRealizationConfirmation.CHECKBOX">
-    <ng-container *ngTemplateOutlet="checkbox; context {task}"></ng-container>
+    <ng-container *ngTemplateOutlet="checkbox; context: {task}"></ng-container>
   </ng-container>
   <ng-container *ngSwitchCase="TaskRealizationConfirmation.FILE">
-    <ng-container *ngTemplateOutlet="file; context {task}"></ng-container>
+    <ng-container *ngTemplateOutlet="file; context: {task}"></ng-container>
   </ng-container>
   <ng-container *ngSwitchCase="TaskRealizationConfirmation.TEXT">
-    <ng-container *ngTemplateOutlet="text; context {task}"></ng-container>
+    <ng-container *ngTemplateOutlet="text; context: {task}"></ng-container>
   </ng-container>
   <ng-container *ngSwitchCase="TaskRealizationConfirmation.NUMBER">
-    <ng-container *ngTemplateOutlet="number; context {task}"></ng-container>
+    <ng-container *ngTemplateOutlet="number; context: {task}"></ng-container>
   </ng-container>
 </ng-container>
 
 
 <ng-template #checkbox let-task="task">
-  <h4>
-    {{task.title}}
-  </h4>
-  <section>
-    <h5> Okres: {{ task?.period?.duration | periodToText}} <span class="small">({{task?.period?.currentPeriodStart | date: "YYYY-MM-dd" }} - {{task?.period?.currentPeriodEnd | date: "YYYY-MM-dd"}})</span></h5>
-  </section>
+    <ng-container *ngTemplateOutlet="heading; context: {task}"></ng-container>
     <div class="form-check form-check-inline" *ngFor="let taskCompletion of tasksPerPeriod; index as i; trackBy: trackByIndex">
       <input
         class="form-check-input"
@@ -33,21 +28,50 @@
 </ng-template>
 
 <ng-template #file let-task="task">
-  <h4>
-    {{task.title}}
-  </h4>
+      <ng-container *ngTemplateOutlet="heading; context: {task}"></ng-container>
+
 </ng-template>
 
 <ng-template #text let-task="task">
-  <h4>
-    {{task.title}}
-  </h4>
+  <ng-container *ngTemplateOutlet="heading; context: {task}"></ng-container>
+  <ng-container *ngIf="valueForm.formFields.length !== 0">
+    <div class="input-group mb-3" *ngFor="let formControl of valueForm.formFields; index as i; trackBy: trackByIndex">
+      <input
+        type="text"
+        class="form-control form-control-sm"
+        id={{formControl.index}}
+        [(ngModel)]="formControl.value"
+        />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="setNewValue(task, formControl.index, formControl.value)" type="button">Zapisz</button>
+      </div>
+  </div>
+  </ng-container>
 </ng-template>
 
 <ng-template #number let-task="task">
-  <h4>
-    {{task.title}}
-  </h4>
+  <ng-container *ngTemplateOutlet="heading; context: {task}"></ng-container>
+  <ng-container *ngIf="valueForm.formFields.length !== 0">
+    <div class="input-group mb-3" *ngFor="let formControl of valueForm.formFields; index as i; trackBy: trackByIndex">
+      <input
+        type="number"
+        class="form-control form-control-sm"
+        id={{formControl.index}}
+        [(ngModel)]="formControl.value"
+        />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="setNewValue(task, formControl.index, formControl.value)" type="button">Zapisz</button>
+      </div>
+  </div>
+  </ng-container>
 </ng-template>
 
 
+<ng-template #heading let-task="task">
+  <h4>
+    {{task.title}}
+  </h4>
+  <section>
+    <h5> Okres: {{ task?.period?.duration | periodToText}} <span class="small">({{task?.period?.currentPeriodStart | date: "YYYY-MM-dd" }} - {{task?.period?.currentPeriodEnd | date: "YYYY-MM-dd"}})</span></h5>
+  </section>
+</ng-template>

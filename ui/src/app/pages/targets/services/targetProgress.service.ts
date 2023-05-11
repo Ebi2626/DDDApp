@@ -52,7 +52,7 @@ export class TargetProgressService {
     if(task.type === TaskType.PROGRESSIVE) {
       completedItemsQuantity = task.taskCompletions.filter(({value, goal}) => value && value > goal).length;
     } else {
-      switch(task.verification_method) {
+      switch(+task.verification_method) {
         case TaskRealizationConfirmation.CHECKBOX:
           completedItemsQuantity = task.taskCompletions.filter(({value}) => value).length;
         break;

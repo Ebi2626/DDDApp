@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
-import { CyclicTask, CyclicTaskItemRealization, CyclicTaskItemRealizationCheckbox, Task, TaskRealizationConfirmation, TaskType } from 'src/app/pages/tasks/models/tasks.models';
+import { CyclicTask, CyclicTaskItemRealization, CyclicTaskItemRealizationCheckbox, ProgressiveTask, Task, TaskRealizationConfirmation, TaskType } from 'src/app/pages/tasks/models/tasks.models';
 import { ProgressiveTaskRealizationItem, CyclicTaskRealizationItem } from '../../task-list-realization.component';
 import * as TasksActions from '../../../../../tasks/actions/tasks.actions';
 
@@ -12,11 +12,35 @@ import * as TasksActions from '../../../../../tasks/actions/tasks.actions';
   changeDetection:  ChangeDetectionStrategy.OnPush,
 })
 export class CyclicCompletionsComponent {
+  private _tasksPerPeriod?: Array<CyclicTaskItemRealization>;
 
   TaskRealizationConfirmation = TaskRealizationConfirmation;
 
-  @Input() task!: Task;
-  @Input() tasksPerPeriod!: Array<CyclicTaskItemRealization>;
+  valueForm: {
+    formFields: CyclicTaskItemRealization[]
+  } = {
+    formFields: []
+  };
+
+  @Input() task!: CyclicTask | ProgressiveTask;
+  @Input()
+  set tasksPerPeriod(tasksPerPeriod: Array<CyclicTaskItemRealization>) {
+    this._tasksPerPeriod = tasksPerPeriod;
+    if(this.task && (+this.task.verification_method === TaskRealizationConfirmation.NUMBER || +this.task.verification_method === TaskRealizationConfirmation.TEXT)) {
+      if(this.valueForm.formFields.length === 0) {
+        tasksPerPeriod.forEach((task) => {
+          this.valueForm.formFields.push({
+          value: task.value,
+          index: task.index,
+          dueDate: task.dueDate,
+        })});
+      }
+    };
+  }
+  get tasksPerPeriod() {
+    return this._tasksPerPeriod || [];
+  }
+
 
   constructor(private store: Store<AppState>) {
 
@@ -49,7 +73,10 @@ export class CyclicCompletionsComponent {
       this.updateTaskList(task.id, updatedTaskCompletions);
   }
 
-  setNewValue(task: CyclicTaskRealizationItem, index: number, value: string | number) {
+  setNewValue(task: CyclicTaskRealizationItem, index: number | undefined, value: any) {
+    if(index == undefined) {
+      throw new Error('index is undefined');
+    }
     const updatedTaskCompletions = task.taskCompletions.map((taskCompletion, taskCompletionIndex) => {
       if (taskCompletionIndex === index) {
         return {
@@ -59,13 +86,14 @@ export class CyclicCompletionsComponent {
       }
       return taskCompletion;
     });
-
     this.updateTaskList(task.id, updatedTaskCompletions);
   }
 
   trackByIndex(index: number, obj: any): any {
-    console.log('trackBy: ', obj.index)
     return obj.index;
+  }
+  log(data: any){
+    console.log(data);
   }
 
 }

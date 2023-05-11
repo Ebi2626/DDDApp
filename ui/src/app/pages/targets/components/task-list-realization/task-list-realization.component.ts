@@ -123,7 +123,6 @@ export class TaskListRealizationComponent implements OnDestroy {
     if(!tasks || !period) {
       return [];
     }
-    console.log('getTasksPerPeriod: ', tasks, period);
     const [periodBegin, periodEnd] = this.computeDates(period);
     const tasksPerPeriod = tasks.map((task, index) => ({...task, index})).filter(({dueDate}) => {
       const taskDate = new Date(dueDate).getTime();
@@ -137,20 +136,17 @@ export class TaskListRealizationComponent implements OnDestroy {
 
     switch(+period) {
       case MONTH_DURATION:
-        console.log('Miesiąc', period);
         const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
         const monthEnd = new Date(monthStart);
         monthEnd.setMonth(monthEnd.getMonth() + 1);
         monthEnd.setDate(monthEnd.getDate() - 1);
         return [monthStart, monthEnd];
       case YEAR_DURATION:
-        console.log('Rok', period)
         const yearStart = new Date(today.getFullYear(), 0, 1);
         const yearEnd = new Date(yearStart);
         yearEnd.setFullYear(yearEnd.getFullYear() + 1);
         return [yearStart, yearEnd];
       case WEEK_DURATION:
-        console.log('Tydzień', period)
         const weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
         weekStart.setDate(weekStart.getDate() + 1); // Set first day to monday instead of sunday
         const weekEnd = new Date(weekStart);
