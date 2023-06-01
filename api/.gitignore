@@ -36,3 +36,6 @@ lerna-debug.log*
 
 # environment secret
 .env
+
+# user files
+./uploads/* 
