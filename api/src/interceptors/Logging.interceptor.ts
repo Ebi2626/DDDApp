@@ -6,7 +6,6 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     console.group("REQUEST");
     console.log("Before reaching the request handler:");
-    // console.log(context.switchToHttp().getRequest());
     console.groupEnd();
 
     const methodName = context.getHandler().name;

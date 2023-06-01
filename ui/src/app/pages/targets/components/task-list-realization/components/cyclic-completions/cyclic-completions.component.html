@@ -1,21 +1,26 @@
-<ng-container [ngSwitch]="task.verification_method">
-  <ng-container *ngSwitchCase="TaskRealizationConfirmation.CHECKBOX">
-    <ng-container *ngTemplateOutlet="checkbox; context: {task}"></ng-container>
+<h4 class="mb-3">
+  {{task.title}}
+</h4>
+<section>
+  <h5 class="mb-4"> Okres: {{ task.period.duration | periodToText}} <span class="small">({{task.period.currentPeriodStart | date: "YYYY-MM-dd" }} - {{task.period.currentPeriodEnd | date: "YYYY-MM-dd"}})</span></h5>
+  <ng-container [ngSwitch]="task.verification_method">
+    <ng-container *ngSwitchCase="TaskRealizationConfirmation.CHECKBOX">
+      <ng-container *ngTemplateOutlet="checkbox; context: {task}"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="TaskRealizationConfirmation.FILE">
+      <ng-container *ngTemplateOutlet="file; context: {task}"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="TaskRealizationConfirmation.TEXT">
+      <ng-container *ngTemplateOutlet="text; context: {task}"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="TaskRealizationConfirmation.NUMBER">
+      <ng-container *ngTemplateOutlet="number; context: {task}"></ng-container>
+    </ng-container>
   </ng-container>
-  <ng-container *ngSwitchCase="TaskRealizationConfirmation.FILE">
-    <ng-container *ngTemplateOutlet="file; context: {task}"></ng-container>
-  </ng-container>
-  <ng-container *ngSwitchCase="TaskRealizationConfirmation.TEXT">
-    <ng-container *ngTemplateOutlet="text; context: {task}"></ng-container>
-  </ng-container>
-  <ng-container *ngSwitchCase="TaskRealizationConfirmation.NUMBER">
-    <ng-container *ngTemplateOutlet="number; context: {task}"></ng-container>
-  </ng-container>
-</ng-container>
+</section>
 
 
 <ng-template #checkbox let-task="task">
-    <ng-container *ngTemplateOutlet="heading; context: {task}"></ng-container>
     <div class="form-check form-check-inline" *ngFor="let taskCompletion of tasksPerPeriod; index as i; trackBy: trackByIndex">
       <input
         class="form-check-input"
@@ -28,12 +33,59 @@
 </ng-template>
 
 <ng-template #file let-task="task">
-      <ng-container *ngTemplateOutlet="heading; context: {task}"></ng-container>
+      <ng-container *ngIf="files.length">
+        <ul class="realizationList d-flex flex-column gap-3">
+        <li class="realizationList__item" *ngFor="let file of files; last as isLast"
+          [class.realizationList__item--last]="isLast"
+        >
+          <ng-container *ngIf="!file?.file?.fileName; else fileTitle">
+          <form class="input-group mb-3" (ngSubmit)="submitFile(task, file.index)" enctype="multipart/form-data">
+            <input
+              type="file"
+              class="form-control"
+              id="inputGroupFile04"
+              aria-describedby="inputGroupFileAddon04"
+              aria-label="Upload"
+              name="file"
+              (change)="selectFile($event, file.index, task)"
+              />
+            <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Wyślij</button>
+          </form>
+          </ng-container>
+
+
+      <ng-template #fileTitle>
+        <ng-container *ngIf="task && file">
+        <div class="fileRealization d-flex flex-row align-items-center justify-content-between pb-3 border-bottom border-primary border-1">
+          <div class="fileRealization__content d-flex flex-row align-items-center gap-3 me-3">
+            <a class="text-secondary d-flex flex-row align-items-center gap-3" [href]="getFileAddress(task, file?.file?.fileName)" target="_blank">
+            <ng-container *ngIf="getFileType(file?.file?.originalName) === FileType.IMAGE; else textFile">
+              <img class="fileRealization__image" [src]="getFileAddress(task, file?.file?.fileName)" [alt]="file.file.originalName" />
+            </ng-container>
+              <span class="fileRealization__name">
+                {{file?.file?.originalName}}
+              </span>
+            </a>
+          </div>
+          <button type="button" class="btn btn-outline-danger" title="Usuń plik" (click)="removeFile(file.file.fileName, task, file.index)">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <span class="visually-hidden">Usuń plik</span>
+          </button>
+        </div>
+      </ng-container>
+
+      </ng-template>
+
+      <ng-template #textFile>
+        <i class="fa fa-file-o fileRealization__image" aria-hidden="true"></i>
+      </ng-template>
+        </li>
+        </ul>
+      </ng-container>
 
 </ng-template>
 
 <ng-template #text let-task="task">
-  <ng-container *ngTemplateOutlet="heading; context: {task}"></ng-container>
   <ng-container *ngIf="valueForm.formFields.length !== 0">
     <div class="input-group mb-3" *ngFor="let formControl of valueForm.formFields; index as i; trackBy: trackByIndex">
       <input
@@ -50,7 +102,6 @@
 </ng-template>
 
 <ng-template #number let-task="task">
-  <ng-container *ngTemplateOutlet="heading; context: {task}"></ng-container>
   <ng-container *ngIf="valueForm.formFields.length !== 0">
     <div class="input-group mb-3" *ngFor="let formControl of valueForm.formFields; index as i; trackBy: trackByIndex">
       <input
@@ -66,12 +117,3 @@
   </ng-container>
 </ng-template>
 
-
-<ng-template #heading let-task="task">
-  <h4>
-    {{task.title}}
-  </h4>
-  <section>
-    <h5> Okres: {{ task?.period?.duration | periodToText}} <span class="small">({{task?.period?.currentPeriodStart | date: "YYYY-MM-dd" }} - {{task?.period?.currentPeriodEnd | date: "YYYY-MM-dd"}})</span></h5>
-  </section>
-</ng-template>

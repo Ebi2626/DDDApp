@@ -42,7 +42,6 @@ export class TasksComponent {
   }
 
   addTask() {
-    console.log('Dodajemy task');
     this.taskModalSerivce.openModal();
   }
 

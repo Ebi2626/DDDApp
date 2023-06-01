@@ -1,0 +1,97 @@
+<h4 class="mb-3">
+  {{task.title}}
+</h4>
+<ng-container [ngSwitch]="task.verification_method">
+  <ng-container *ngSwitchCase="TaskRealizationConfirmation.CHECKBOX">
+    <ng-container *ngTemplateOutlet="checkbox; context: {task}"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="TaskRealizationConfirmation.FILE">
+    <ng-container *ngTemplateOutlet="fileTemp; context: {task, file}"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="TaskRealizationConfirmation.TEXT">
+    <ng-container *ngTemplateOutlet="text; context: {task}"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="TaskRealizationConfirmation.NUMBER">
+    <ng-container *ngTemplateOutlet="number; context: {task}"></ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #checkbox>
+  <div class="d-flex flex-row align-items-center mb-3">
+    <div class="form-check">
+      <label class="form-check-label" [for]="task.id">
+      <input class="form-check-input" type="checkbox"
+        [ngModel]="formControl" [id]="task.id"
+        (click)="toggleCheckboxState($event, task)"
+        />
+        {{ task.title }}
+      </label>
+    </div>
+  </div>
+</ng-template>
+<ng-template #fileTemp>
+  <ng-container *ngIf="file else fileForm">
+  <div class="fileRealization d-flex flex-row align-items-center justify-content-between pb-3">
+    <div class="fileRealization__content d-flex flex-row align-items-center gap-3 me-3">
+      <a class="text-secondary d-flex flex-row align-items-center gap-3" [href]="getFileAddress(task, file.fileName)" target="_blank">
+      <ng-container *ngIf="getFileType(file.originalName) === FileType.IMAGE; else textFile">
+        <img class="fileRealization__image" [src]="getFileAddress(task, file.fileName)" [alt]="file.originalName" />
+      </ng-container>
+      <ng-template #textFile>
+        <i class="fa fa-file-o fileRealization__image" aria-hidden="true"></i>
+      </ng-template>
+        <span class="fileRealization__name">
+          {{file.originalName}}
+        </span>
+      </a>
+    </div>
+    <button type="button" class="btn btn-outline-danger" title="Usuń plik" (click)="removeFile()">
+      <i class="fa fa-trash-o" aria-hidden="true"></i>
+      <span class="visually-hidden">Usuń plik</span>
+    </button>
+  </div>
+</ng-container>
+
+<ng-template #fileForm>
+
+  <form class="input-group mb-3" (ngSubmit)="submitFile(task)" enctype="multipart/form-data">
+    <input
+      type="file"
+      class="form-control"
+      id="inputGroupFile04"
+      aria-describedby="inputGroupFileAddon04"
+      aria-label="Upload"
+      name="file"
+      (change)="selectFile($event)"
+      />
+    <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Wyślij</button>
+  </form>
+</ng-template>
+
+</ng-template>
+<ng-template #text>
+  <div class="input-group mb-3">
+    <input
+      type="text"
+      class="form-control form-control-sm"
+      id={{task.id}}
+      [(ngModel)]="formControl"
+      />
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" (click)="setNewValue()" type="button">Zapisz</button>
+    </div>
+</div>
+</ng-template>
+<ng-template #number>
+  <div class="input-group mb-3">
+    <input
+      type="number"
+      class="form-control form-control-sm"
+      id={{task.id}}
+      [(ngModel)]="formControl"
+      />
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" (click)="setNewValue()" type="button">Zapisz</button>
+    </div>
+</div>
+</ng-template>

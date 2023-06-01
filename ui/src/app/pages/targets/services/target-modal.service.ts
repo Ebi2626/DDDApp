@@ -25,7 +25,6 @@ export class TargetModalService {
 
   public openModal(target?: Target) {
     this.toggleScrollbar();
-    console.log('target in service: ', target);
     this.modalState$.next({
       isOpen: true,
       ...(target ? { target } : {}),

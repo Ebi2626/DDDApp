@@ -26,29 +26,10 @@
     utworzyć</p>
 </ng-template>
 <ng-template #singleTask let-task="task">
-  <div class="d-flex flex-row align-items-center">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" (click)="toggleCheckboxState($event, task)"
-        [ngModel]="task?.completed" id="{{task?.id}}" [disabled]="disabled" />
-      <label class="form-check-label" for="{{task?.id}}">
-        {{ task?.title }}
-      </label>
-    </div>
-  </div>
+  <dddapp-single-completions [task]="task"></dddapp-single-completions>
 </ng-template>
 <ng-template #cyclicTask let-task="task">
-  <dddapp-cyclic-completions [task]="task" [tasksPerPeriod]="getTasksPerPeriod(task?.taskCompletions, task?.period?.duration)" ></dddapp-cyclic-completions>
-  <!-- <div class="d-flex flex-row align-items-center">
-    <div class="form-check">
-      <ng-container *ngFor="let taskCompletion of getTasksPerPeriod(task?.taskCompletions, task.iterationDuration)">
-        <input class="form-check-input" type="checkbox" (click)="toggleCheckboxState($event, task)"
-        [ngModel]="task.completed" id="{{task.id}}" [disabled]="disabled" />
-      </ng-container>
-      <label class="form-check-label" for="{{task.id}}">
-        {{ task.title }}
-      </label>
-    </div>
-  </div> -->
+  <dddapp-cyclic-completions [task]="task" [tasksPerPeriod]="getTasksPerPeriod(task?.taskCompletions, task?.period?.duration)"></dddapp-cyclic-completions>
 </ng-template>
 <ng-template #progressiveTask let-task="task">
   <div class="d-flex flex-row align-items-center">

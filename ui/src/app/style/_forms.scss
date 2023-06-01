@@ -1,9 +1,13 @@
-@import './colors';
+@import "./colors";
 
 $input-bg: $bg-color;
 $input-color: white;
 $input-border-color: $primary;
 $input-focus-border-color: $secondary;
+
+$input-group-addon-color: white;
+$input-group-addon-bg: $primary;
+$input-group-addon-border-color: $primary;
 
 .form-control {
   &[type="date"] {
@@ -16,7 +20,7 @@ $input-focus-border-color: $secondary;
 
     &:after {
       position: absolute;
-      font-family: 'FontAwesome';
+      font-family: "FontAwesome";
       top: 50%;
       transform: translateY(-50%);
       right: 10px;
@@ -36,11 +40,11 @@ $input-focus-border-color: $secondary;
   &.required {
     &:after {
       display: inline-block;
-      content: '*';
+      content: "*";
       font-size: 1rem;
       color: $danger;
       position: relative;
-      margin-left: .25rem;
+      margin-left: 0.25rem;
     }
   }
 }

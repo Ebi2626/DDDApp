@@ -1,9 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { Task } from 'src/app/pages/tasks/models/tasks.models';
-import { TargetsService } from 'src/app/pages/targets/services/targets.service';
-import { Target } from 'src/app/pages/targets/models/targets.model';
-import { Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
 import * as R from 'ramda';
 import * as TasksSelectors from '../../../../../tasks/selectors/tasks.selectors';
@@ -45,7 +41,6 @@ export class AssignTargetsModalComponent {
   saveChanges(): void {
     const newTaskList: string[] = this.tasksExistanceInputs.filter(({ isAssigned }) => isAssigned)?.map(({ id }) => id);
     this.assignTasks.emit(newTaskList);
-    console.log('nowa lista tasków to: ', newTaskList);
   }
 
   constructor(
@@ -67,8 +62,6 @@ export class AssignTargetsModalComponent {
   }
 
   mapToTaskExistanceItem(tasks: Task[], currentTasks: Task[]): TaskExistanceItem[] {
-    console.log('tasks: ', tasks);
-    console.log('currentTasks: ', currentTasks);
     return tasks.map(({ title, id }) => ({ id, title, isAssigned: !!currentTasks.find((curr) => curr.id === id) }))
   }
   ngOnDestroy(): void {

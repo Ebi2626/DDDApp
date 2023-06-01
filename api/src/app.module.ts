@@ -8,6 +8,10 @@ import { AuthGuard, KeycloakConnectModule, PolicyEnforcementMode, TokenValidatio
 import { TargetsModule } from './targets/targets.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TasksModule } from './tasks/tasks.module';
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
 
 @Module({
   imports: [
@@ -23,8 +27,12 @@ import { TasksModule } from './tasks/tasks.module';
       policyEnforcement: PolicyEnforcementMode.ENFORCING, // optional
       tokenValidation: TokenValidation.OFFLINE, // optional
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+    }),
     TargetsModule,
-    TasksModule
+    TasksModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [
@@ -40,11 +48,3 @@ import { TasksModule } from './tasks/tasks.module';
   ],
 })
 export class AppModule { }
-// api/target :: Target<Array>
-// api/target/{id} :: Target
-// api/target/{id}/task :: Task<Array>
-// api/target/{id}/task/{id} :: Task
-// api/target/{id}/reward :: Reward<Array>
-// api/target/{id}/reward/{id} :: Reward
-// api/target/{id}/punishment :: Punishment<Array>
-// api/target/{id}/punishment/{id} :: Punishment

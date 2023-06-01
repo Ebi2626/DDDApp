@@ -30,7 +30,6 @@ export class TargetItemComponent {
   }
 
   editTarget(target: Target) {
-    console.log('Edytuj target: ', target);
     this.targetModalService.openModal(target);
   }
 }

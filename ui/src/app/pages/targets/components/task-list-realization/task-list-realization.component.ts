@@ -18,6 +18,10 @@ interface BaseTaskRealizationItem {
   verification_method: TaskRealizationConfirmation;
 }
 
+export interface SingleTaskRealization extends BaseTaskRealizationItem {
+  value: any;
+}
+
 export interface CyclicTaskRealizationItem extends BaseTaskRealizationItem {
   period: {
     duration: number;
@@ -105,7 +109,6 @@ export class TaskListRealizationComponent implements OnDestroy {
             duration: task.iterationDuration,
             currentPeriodEnd: this.computeDates(task.iterationDuration)[1],
             currentPeriodStart: this.computeDates(task.iterationDuration)[0],
-
           },
         } as CyclicTaskRealizationItem | ProgressiveTaskRealizationItem
       default:
@@ -115,7 +118,8 @@ export class TaskListRealizationComponent implements OnDestroy {
           completed: task.completed,
           type: task.type,
           verification_method: task.verification_method,
-        } as BaseTaskRealizationItem;
+          value: task.value,
+        } as SingleTaskRealization;
     }
   }
 
@@ -150,7 +154,7 @@ export class TaskListRealizationComponent implements OnDestroy {
         const weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
         weekStart.setDate(weekStart.getDate() + 1); // Set first day to monday instead of sunday
         const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekEnd.getDate() + 6); // Last day Sunday
+        weekEnd.setDate(weekEnd.getDate() + 7); // Last day Sunday
         return [weekStart, weekEnd];
       default:
         throw new Error('Invalid period');

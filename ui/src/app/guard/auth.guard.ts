@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
+import { TokenService } from '../core/services/token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,9 @@ export class AuthGuard extends KeycloakAuthGuard {
 
   constructor(
     protected override readonly router: Router,
-    protected readonly keycloak: KeycloakService
+    protected readonly keycloak: KeycloakService,
   ) {
     super(router, keycloak);
-    console.log('auth');
   }
 
   async isAccessAllowed(

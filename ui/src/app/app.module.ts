@@ -42,6 +42,8 @@ import { TaskModalService } from './pages/tasks/services/task-modal.service';
 import { TaskFormComponent } from './pages/tasks/components/task-form/task-form.component';
 import { KeyToIdInterceptor } from './core/interceptors/key-to-id.interceptor';
 import { CyclicCompletionsComponent } from './pages/targets/components/task-list-realization/components/cyclic-completions/cyclic-completions.component';
+import { TokenService } from './core/services/token.service';
+import { SingleCompletionsComponent } from './pages/targets/components/task-list-realization/components/single-completions/single-completions.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { CyclicCompletionsComponent } from './pages/targets/components/task-list
     TaskListRealizationComponent,
     TaskFormComponent,
     CyclicCompletionsComponent,
+    SingleCompletionsComponent,
   ],
   imports: [
     KeycloakAngularModule,
@@ -91,6 +94,7 @@ import { CyclicCompletionsComponent } from './pages/targets/components/task-list
     AuthGuard,
     WelcomeGuard,
     ConfigInitService,
+    TokenService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
