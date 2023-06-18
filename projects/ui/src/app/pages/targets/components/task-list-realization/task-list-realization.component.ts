@@ -120,7 +120,7 @@ export class TaskListRealizationComponent implements OnDestroy {
     }
   }
 
-  getTasksPerPeriod(tasks: Array<CyclicTaskItemRealization | ProgressiveTaskItemRealization>, period: number): Array<CyclicTaskItemRealization | ProgressiveTaskItemRealization> {
+  getTasksPerPeriod(tasks: Array<CyclicTaskItemRealization | ProgressiveTaskItemRealization>, period: number): Array<CyclicTaskItemRealization> | Array<ProgressiveTaskItemRealization> {
     if(!tasks || !period) {
       return [];
     }
@@ -129,7 +129,10 @@ export class TaskListRealizationComponent implements OnDestroy {
       const taskDate = new Date(dueDate).getTime();
       return taskDate >= periodBegin.getTime() && taskDate <= periodEnd.getTime();
     });
-    return tasksPerPeriod || [];
+    if(tasks.some((task) => "goal" in task)) {
+      return (tasksPerPeriod || []) as Array<ProgressiveTaskItemRealization>
+    }
+    return (tasksPerPeriod || []) as Array<CyclicTaskItemRealization>;
   }
 
   private computeDates = (period: number): [beginningDate: Date, endDate: Date] => {

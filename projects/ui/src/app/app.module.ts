@@ -44,6 +44,7 @@ import { KeyToIdInterceptor } from './core/interceptors/key-to-id.interceptor';
 import { CyclicCompletionsComponent } from './pages/targets/components/task-list-realization/components/cyclic-completions/cyclic-completions.component';
 import { TokenService } from './core/services/token.service';
 import { SingleCompletionsComponent } from './pages/targets/components/task-list-realization/components/single-completions/single-completions.component';
+import { ProgressiveCompletionsComponent } from './pages/targets/components/task-list-realization/components/progressive-completions/progressive-completions.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { SingleCompletionsComponent } from './pages/targets/components/task-list
     TaskFormComponent,
     CyclicCompletionsComponent,
     SingleCompletionsComponent,
+    ProgressiveCompletionsComponent,
   ],
   imports: [
     KeycloakAngularModule,

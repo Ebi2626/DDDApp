@@ -32,13 +32,5 @@
   <dddapp-cyclic-completions [task]="task" [tasksPerPeriod]="getTasksPerPeriod(task?.taskCompletions, task?.period?.duration)"></dddapp-cyclic-completions>
 </ng-template>
 <ng-template #progressiveTask let-task="task">
-  <div class="d-flex flex-row align-items-center">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" (click)="toggleCheckboxState($event, task)"
-        [ngModel]="task.completed" id="{{task.id}}" [disabled]="disabled" />
-      <label class="form-check-label" for="{{task.id}}">
-        {{ task.title }}
-      </label>
-    </div>
-  </div>
+  <dddapp-progressive-completions [task]="task" [tasksPerPeriod]="$any(getTasksPerPeriod(task?.taskCompletions, task?.period?.duration))"></dddapp-progressive-completions>
 </ng-template>

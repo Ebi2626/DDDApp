@@ -1,0 +1,24 @@
+:host {
+  .small {
+    font-size: 16px;
+  }
+  .realizationList {
+    list-style-type: none;
+    padding: 0;
+    &__item {
+      &--last {
+        .fileRealization {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  .fileRealization {
+    &__image {
+      font-size: 50px;
+      height: 50px;
+      width: 50px;
+    }
+  }
+}

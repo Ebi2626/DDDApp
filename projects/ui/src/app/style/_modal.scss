@@ -9,4 +9,5 @@ $modal-footer-border-color: $primary;
 
 .modal-open {
   overflow-y: hidden !important;
+  --bs-secondary-color: #{$primary};
 }

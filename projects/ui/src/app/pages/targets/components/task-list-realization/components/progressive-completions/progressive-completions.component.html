@@ -1,0 +1,21 @@
+<h4 class="mb-3">
+  {{task.title}}
+</h4>
+<section>
+  <h5 class="mb-4"> Okres: {{ task.period.duration | periodToText}} <span class="small">({{task.period.currentPeriodStart | date: "YYYY-MM-dd" }} - {{task.period.currentPeriodEnd | date: "YYYY-MM-dd"}})</span></h5>
+  <ng-container *ngIf="valueForm.formFields.length !== 0">
+    <div class="input-group mb-3" *ngFor="let formControl of valueForm.formFields; index as i; trackBy: trackByIndex">
+      <span class="input-group-text" [id]="'goal-'+i"><b class="d-inline-block me-1">Cel: </b> {{formControl.goal}} </span>
+      <input
+        type="number"
+        class="form-control form-control-sm"
+        id={{formControl.index}}
+        [(ngModel)]="formControl.value"
+        />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="setNewValue(task, formControl.index, formControl.value)" type="button">Zapisz</button>
+      </div>
+  </div>
+  </ng-container>
+</section>
+

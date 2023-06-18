@@ -35,7 +35,7 @@ export class TargetProgressService {
     }, 0);
 
 
-    return sumOfProgress;
+    return Math.min(sumOfProgress, 1);
   }
 
 
@@ -44,13 +44,21 @@ export class TargetProgressService {
   }
 
   private countCyclicTaskProgress(task: CyclicTask | ProgressiveTask): number {
-    const taskItemsQuantity: number = task.taskCompletions?.length || 0;
+    let taskItemsQuantity: number = task.taskCompletions?.length || 0;
     if (taskItemsQuantity === 0) {
       return 0;
     }
     let completedItemsQuantity: number;
     if(task.type === TaskType.PROGRESSIVE) {
-      completedItemsQuantity = task.taskCompletions.filter(({value, goal}) => value && value > goal).length;
+      taskItemsQuantity = task.taskCompletions
+        .map(({goal}) => goal)
+        .reduce((acc, curr) => acc + curr, 0);
+
+      completedItemsQuantity = task.taskCompletions
+      .map(({value}) => value ?? 0)
+      .reduce((acc: number, curr: number) => {
+        return acc + curr;
+      }, 0);
     } else {
       switch(+task.verification_method) {
         case TaskRealizationConfirmation.CHECKBOX:
