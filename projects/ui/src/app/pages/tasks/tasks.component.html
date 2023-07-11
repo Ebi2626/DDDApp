@@ -11,14 +11,14 @@
       nowe</button>
     <div class="accordion accordion-flush" id="taskAccordion">
       <div class="accordion-item" *ngFor="let task of ctx.tasks; index as i; trackBy: trackById">
-        <h2 class="accordion-header" id="flush-headingOne">
+        <h2 class="accordion-header" [id]="'taskTitle-'+i">
           <button class="accordion-button fs-5" [class.collapsed]="openElementIndex != i" type="button"
             (click)="openElement(i)">
             {{ task.title }}
           </button>
         </h2>
-        <div id="flush-collapseOne" class="accordion-collapse collapse" [class.show]="openElementIndex == i"
-          aria-labelledby="flush-headingOne" data-bs-parent="#taskAccordion">
+        <div [id]="'task-'+i" class="accordion-collapse collapse" [class.show]="openElementIndex == i"
+          [attr.aria-labelledby]="'taskTitle-'+i" data-bs-parent="#taskAccordion">
           <div class="accordion-body">
             <dddapp-task-item [task]="task"></dddapp-task-item>
           </div>

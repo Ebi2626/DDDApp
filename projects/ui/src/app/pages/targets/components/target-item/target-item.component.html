@@ -19,7 +19,6 @@
   <div class="row d-flex flex-row align-items-center targetRow">
     <h4 class="col-12 col-md-2 text-primary fs-6">Zadania</h4>
     <div class="py-2 col">
-      isOnDashboard: {{ isOnDashboard | json}}
       <ng-container *ngIf="isOnDashboard; else titleList">
         <dddapp-task-list-realization
           [tasks]="tasks"
