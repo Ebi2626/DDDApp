@@ -5,4 +5,5 @@ export interface Category {
   color: string;
   targets: string[];
   tasks: string[];
+  isDefault: boolean;
 }
