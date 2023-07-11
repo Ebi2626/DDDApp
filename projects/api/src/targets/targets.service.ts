@@ -22,7 +22,7 @@ export class TargetsService {
   }
 
   async update(id: string, updateTargetDto: UpdateTargetDto, userId: string) {
-    return await updateOne(id, updateTargetDto, userId)
+    return await updateOne(id, updateTargetDto, userId);
   }
 
   async remove(id: string, userId: string) {

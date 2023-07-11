@@ -44,6 +44,7 @@ export class ProgressiveCompletionsComponent implements OnDestroy {
             dueDate: task.dueDate,
             goal: task.goal,
         })});
+        console.log('tasksPerPeriod: ', tasksPerPeriod);
       }
   }
 

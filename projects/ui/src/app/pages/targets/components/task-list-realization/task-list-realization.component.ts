@@ -6,6 +6,7 @@ import * as TasksSelectors from '../../../tasks/selectors/tasks.selectors';
 import * as TasksActions from '../../../tasks/actions/tasks.actions';
 import { WEEK_DURATION, MONTH_DURATION, YEAR_DURATION, CyclicTaskItemRealization, ProgressiveTaskItemRealization, Task, TaskType, TaskRealizationConfirmation } from 'dddapp-common';
 import * as R from 'ramda';
+import { DateTime } from 'luxon';
 
 interface BaseTaskRealizationItem {
   id: string;
@@ -104,8 +105,8 @@ export class TaskListRealizationComponent implements OnDestroy {
           verification_method: task.verification_method,
           period: {
             duration: task.iterationDuration,
-            currentPeriodEnd: this.computeDates(task.iterationDuration)[1],
-            currentPeriodStart: this.computeDates(task.iterationDuration)[0],
+            currentPeriodEnd: this.computeDates(task.iterationDuration)[1].toJSDate(),
+            currentPeriodStart: this.computeDates(task.iterationDuration)[0].toJSDate(),
           },
         } as CyclicTaskRealizationItem | ProgressiveTaskRealizationItem
       default:
@@ -120,41 +121,47 @@ export class TaskListRealizationComponent implements OnDestroy {
     }
   }
 
-  getTasksPerPeriod(tasks: Array<CyclicTaskItemRealization | ProgressiveTaskItemRealization>, period: number): Array<CyclicTaskItemRealization> | Array<ProgressiveTaskItemRealization> {
+  getCyclicTasksPerPeriod(tasks: Array<CyclicTaskItemRealization>, period: number): Array<CyclicTaskItemRealization> {
     if(!tasks || !period) {
       return [];
     }
     const [periodBegin, periodEnd] = this.computeDates(period);
     const tasksPerPeriod = tasks.map((task, index) => ({...task, index})).filter(({dueDate}) => {
-      const taskDate = new Date(dueDate).getTime();
-      return taskDate >= periodBegin.getTime() && taskDate <= periodEnd.getTime();
+      const taskDate = DateTime.fromISO(`${dueDate}`);
+      return taskDate > periodBegin && taskDate <= periodEnd;
     });
-    if(tasks.some((task) => "goal" in task)) {
-      return (tasksPerPeriod || []) as Array<ProgressiveTaskItemRealization>
-    }
     return (tasksPerPeriod || []) as Array<CyclicTaskItemRealization>;
   }
 
-  private computeDates = (period: number): [beginningDate: Date, endDate: Date] => {
-    const today = new Date();
+  getProgressiveTasksPerPeriod(tasks: Array<ProgressiveTaskItemRealization>, period: number): Array<ProgressiveTaskItemRealization> {
+    if(!tasks || !period) {
+      return [];
+    }
+    const [periodBegin, periodEnd] = this.computeDates(period);
+    const tasksPerPeriod = tasks.map((task, index) => ({...task, index})).filter(({dueDate}) => {
+      const taskDate = DateTime.fromISO(`${dueDate}`);
+      return taskDate > periodBegin && taskDate <= periodEnd;
+    });
+    console.log(tasksPerPeriod);
+    return (tasksPerPeriod || []) as Array<ProgressiveTaskItemRealization>
+
+  }
+
+  private computeDates = (period: number): [beginningDate: DateTime, endDate: DateTime] => {
+    const today = DateTime.now();
 
     switch(+period) {
       case MONTH_DURATION:
-        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-        const monthEnd = new Date(monthStart);
-        monthEnd.setMonth(monthEnd.getMonth() + 1);
-        monthEnd.setDate(monthEnd.getDate() - 1);
+        const monthStart = today.startOf('month');
+        const monthEnd = today.endOf('month');
         return [monthStart, monthEnd];
       case YEAR_DURATION:
-        const yearStart = new Date(today.getFullYear(), 0, 1);
-        const yearEnd = new Date(yearStart);
-        yearEnd.setFullYear(yearEnd.getFullYear() + 1);
+        const yearStart = today.startOf('year');
+        const yearEnd = today.endOf('year');
         return [yearStart, yearEnd];
       case WEEK_DURATION:
-        const weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
-        weekStart.setDate(weekStart.getDate() + 1); // Set first day to monday instead of sunday
-        const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekEnd.getDate() + 7); // Last day Sunday
+        const weekStart = today.startOf('week');
+        const weekEnd = today.endOf('week')
         return [weekStart, weekEnd];
       default:
         throw new Error('Invalid period');

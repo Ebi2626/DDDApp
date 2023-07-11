@@ -1,1 +1,13 @@
-<p>categories works!</p>
+<ng-container *ngIf="{
+  categories: categories$ | async,
+  isFetching: fetching$ | async
+} as ctx">
+  <h1 class="text-primary text-center mb-4">Kategorie</h1>
+  <dddapp-no-data [hasContent]="!!ctx.isFetching || !!ctx.categories?.length" ctaText="Dodaj kategorię"
+    [ctaAction]="addCategory.bind(this)">
+    <button [disabled]="ctx.isFetching" (click)="addCategory()" class="d-block btn btn-outline-primary mb-4 mx-auto"
+      type="button">Dodaj
+      nowy</button>
+  </dddapp-no-data>
+  <!-- <dddapp-target-modal *ngIf="ctx.modalState?.isOpen" [target]="ctx.modalState?.target"></dddapp-target-modal> -->
+</ng-container>

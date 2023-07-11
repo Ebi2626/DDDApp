@@ -1,0 +1,16 @@
+<div class="d-flex flex-column align-items-center position-relative w-100" *ngIf="{
+  isFetching: isFetching$ | async
+} as ctx">
+  <ul class="list-group w-100 mb-3" *ngIf="tasks?.length else lackOfTasks">
+    <li *ngFor="let task of tasks; let i=index" class="list-group-item text-secondary">
+      <a [routerLink]="['..', 'tasks']" [queryParams]="{id: task.id}">{{task.title}}</a>
+    </li>
+  </ul>
+  <dddapp-spinner *ngIf="ctx.isFetching" [hasContent]="!ctx.isFetching"
+    class="taskListRealization__spinner"></dddapp-spinner>
+</div>
+<ng-template #lackOfTasks>
+  <p class="text-center mb-3">Nie masz jeszcze żadnych zadań przypisanych do tego celu. Edytuj cel, aby
+    przypisać istniejące zadania do celu, lub przejdź do <a class="text-secondary" routerLink="/tasks">zadań</a> by je
+    utworzyć</p>
+</ng-template>

@@ -1,0 +1,44 @@
+<article class="row" *ngIf="{
+  targetDatasetsPerState: targetDatasetsPerState$ | async,
+  tasksDatasetsPerState: tasksDatasetsPerState$ | async,
+  targetDatasetsProgressPerMonth: targetDatasetsProgressPerMonth$ | async,
+  tasksDatasetsPerType: tasksDatasetsPerType$ | async,
+  targetDatasetsProgress: targetDatasetsProgress$ | async
+} as ctx">
+<div class="col-12 mb-4">
+  <h2 class="text-primary text-center">Statystyki</h2>
+</div>
+<section class="col-12 col-md-6 col-xl-4">
+  <h3 class="text-primary">Cele - ogólny postęp</h3>
+  <ng-container *ngIf="ctx.targetDatasetsProgress">
+    <dddapp-bar-chart
+      [isPercentage]="true"
+      [barChartData]="ctx.targetDatasetsProgress"
+      >
+    </dddapp-bar-chart>
+  </ng-container>
+</section>
+<section class="col-12 col-md-6 col-xl-4">
+  <h3 class="text-primary">Cele po stanie</h3>
+  <ng-container *ngIf="ctx.targetDatasetsPerState">
+    <dddapp-bar-chart [barChartData]="ctx.targetDatasetsPerState"></dddapp-bar-chart>
+  </ng-container>
+</section>
+<section class="col-12 col-md-6 col-xl-4">
+  <h3 class="text-primary">Cele - postęp na miesiąc</h3>
+  <ng-container *ngIf="ctx.targetDatasetsProgressPerMonth">
+    <dddapp-line-chart [lineChartData]="ctx.targetDatasetsProgressPerMonth"></dddapp-line-chart>
+  </ng-container>
+</section>
+<section class="col-12 col-md-6 col-xl-6">
+  <h3 class="text-primary">Zadania po stanie</h3>
+  <ng-container *ngIf="ctx.tasksDatasetsPerState">
+    <dddapp-bar-chart [barChartData]="ctx.tasksDatasetsPerState"></dddapp-bar-chart>
+  </ng-container>
+</section>
+<section class="col-12 col-xl-6">
+  <h3 class="text-primary">Zadania po typie</h3>
+  <ng-container *ngIf="ctx.tasksDatasetsPerType">
+    <dddapp-bar-chart [barChartData]="ctx.tasksDatasetsPerType"></dddapp-bar-chart>
+  </ng-container>
+</section>

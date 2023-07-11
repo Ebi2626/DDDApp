@@ -1,42 +1,76 @@
-<div class="container d-flex flex-column" *ngIf="{
-  isFetching: isFetching$ | async
-} as ctx">
+<div
+  class="container d-flex flex-column"
+  *ngIf="{
+    isFetching: isFetching$ | async
+  } as ctx"
+>
   <div class="row d-flex flex-row align-items-center targetRow">
     <h4 class="col-12 col-md-2 text-primary fs-6">Motywacja</h4>
-    <p class="py-2 col">{{target.motivation}}</p>
+    <p class="py-2 col">{{ target.motivation }}</p>
   </div>
   <div class="row d-flex flex-row align-items-center targetRow">
     <h4 class="col-12 col-md-2 text-primary fs-6">Opis</h4>
-    <p class="py-2 col">{{target.description}}</p>
+    <p class="py-2 col">{{ target.description }}</p>
   </div>
   <div class="row d-flex flex-row align-items-center targetRow">
     <h4 class="col-12 col-md-2 text-primary fs-6">Termin realizacji</h4>
-    <p class="py-2 col">{{target.deadline | date: 'dd/M/yyyy'}}</p>
+    <p class="py-2 col">{{ target.deadline | date : "dd/M/yyyy" }}</p>
   </div>
   <div class="row d-flex flex-row align-items-center targetRow">
     <h4 class="col-12 col-md-2 text-primary fs-6">Zadania</h4>
     <div class="py-2 col">
-      <dddapp-task-list-realization [tasks]="tasks" [disabled]="disabled"></dddapp-task-list-realization>
+      isOnDashboard: {{ isOnDashboard | json}}
+      <ng-container *ngIf="isOnDashboard; else titleList">
+        <dddapp-task-list-realization
+          [tasks]="tasks"
+          [disabled]="disabled"
+        ></dddapp-task-list-realization>
+      </ng-container>
+      <ng-template #titleList>
+        <dddapp-task-title-list [tasks]="tasks"></dddapp-task-title-list>
+      </ng-template>
     </div>
   </div>
-  <div class="row d-flex flex-row align-items-center targetRow" *ngIf="target.category">
+  <div
+    class="row d-flex flex-row align-items-center targetRow"
+    *ngIf="target.category"
+  >
     <h4 class="col-12 col-md-2 text-primary fs-6">Kategoria</h4>
-    <p class="py-2 col">{{target.category}}</p>
+    <p class="py-2 col">{{ target.category }}</p>
   </div>
-  <div class="row d-flex flex-row align-items-center targetRow" *ngIf="target.reward">
+  <div
+    class="row d-flex flex-row align-items-center targetRow"
+    *ngIf="target.reward"
+  >
     <h4 class="col-12 col-md-2 text-primary fs-6">Nagroda</h4>
-    <p class="py-2 col">{{target.reward}}</p>
+    <p class="py-2 col">{{ target.reward }}</p>
   </div>
-  <div class="row d-flex flex-row align-items-center targetRow" *ngIf="target.punishment">
+  <div
+    class="row d-flex flex-row align-items-center targetRow"
+    *ngIf="target.punishment"
+  >
     <h4 class="col-12 col-md-2 text-primary fs-6">Kara</h4>
-    <p class="py-2 col">{{target.punishment}}</p>
+    <p class="py-2 col">{{ target.punishment }}</p>
   </div>
-  <div class="row d-flex flex-row align-items-center justify-content-center mt-3 footer">
+  <div
+    class="row d-flex flex-row align-items-center justify-content-center mt-3 footer"
+    *ngIf="!isOnDashboard"
+  >
     <div class="btn-group mb-2">
-      <button class="btn btn-outline-secondary" (click)="editTarget(target)" type="button" [disabled]="disabled">
+      <button
+        class="btn btn-outline-secondary"
+        (click)="editTarget(target)"
+        type="button"
+        [disabled]="disabled"
+      >
         Edytuj cel
       </button>
-      <button class="btn btn-outline-danger" (click)="deleteTarget(target.id)" type="button" [disabled]="disabled">
+      <button
+        class="btn btn-outline-danger"
+        (click)="deleteTarget(target.id)"
+        type="button"
+        [disabled]="disabled"
+      >
         Usuń cel
       </button>
     </div>

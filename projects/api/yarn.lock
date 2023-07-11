@@ -2570,9 +2570,9 @@ crypto-random-string@^4.0.0:
   dependencies:
     type-fest "^1.0.1"
 
-dddapp-common@../../dist/dddapp-common/dddapp-common-v0.0.3.tgz:
-  version "0.0.3"
-  resolved "../../dist/dddapp-common/dddapp-common-v0.0.3.tgz#21cbe96455a6dab14e1408fe9438556512a47663"
+dddapp-common@../../dist/dddapp-common/dddapp-common-v0.0.4.tgz:
+  version "0.0.4"
+  resolved "../../dist/dddapp-common/dddapp-common-v0.0.4.tgz#8e09fdd88d21182857a22a8a1d47c1f1004a0e42"
   dependencies:
     tslib "^2.3.0"
 

@@ -12,7 +12,7 @@ export class NavbarComponent {
   isOpen: boolean = false;
   navigation: NavItem[] = [
     {
-      name: "Dashboard",
+      name: "Pulpit",
       route: "dashboard",
     },
     {

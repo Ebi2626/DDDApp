@@ -11,6 +11,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { CategoriesModule } from './categories/categories.module';
 
 
 @Module({
@@ -33,6 +34,7 @@ import { join } from 'path';
     TargetsModule,
     TasksModule,
     FilesModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [

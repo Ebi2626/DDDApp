@@ -23,10 +23,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { TargetsEffects } from './pages/targets/effects/targets.effect';
 import { targetsReducer } from './pages/targets/reducers/targets.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { AppState } from './app.state';
 import { environment } from 'src/environments/environment';
 import { SharedModule } from './shared/shared.module';
-import { GlobalSpinnerService } from './core/layout/components/global-spinner/global-spinner.service';
 import { TargetItemComponent } from './pages/targets/components/target-item/target-item.component';
 import { tasksReducer } from './pages/tasks/reducers/tasks.reducer';
 import { TasksEffects } from './pages/tasks/effects/tasks.effect';
@@ -45,6 +43,13 @@ import { CyclicCompletionsComponent } from './pages/targets/components/task-list
 import { TokenService } from './core/services/token.service';
 import { SingleCompletionsComponent } from './pages/targets/components/task-list-realization/components/single-completions/single-completions.component';
 import { ProgressiveCompletionsComponent } from './pages/targets/components/task-list-realization/components/progressive-completions/progressive-completions.component';
+import { DashboardStatisticsComponent } from './pages/dashboard/components/dashboard-statistics/dashboard-statistics.component';
+import { NgChartsModule } from 'ng2-charts';
+import { CommonModule } from '@angular/common';
+import { TargetListComponent } from './pages/targets/components/target-list/target-list.component';
+import { DashboardTargetsComponent } from './pages/dashboard/components/dashboard-targets/dashboard-targets.component';
+import { TaskTitleList } from './pages/targets/components/task-title-list/task-title-list.component';
+import { categoriesReducer } from './pages/categories/reducers/categories.reducer';
 
 @NgModule({
   declarations: [
@@ -52,11 +57,13 @@ import { ProgressiveCompletionsComponent } from './pages/targets/components/task
     WelcomePageComponent,
     DashboardPageComponent,
     TargetsComponent,
+    TargetListComponent,
     TasksComponent,
     CategoriesComponent,
     SettingsComponent,
     TargetItemComponent,
     TaskItemComponent,
+    TaskTitleList,
     TaskModalComponent,
     TaskListComponent,
     TargetModalComponent,
@@ -67,8 +74,12 @@ import { ProgressiveCompletionsComponent } from './pages/targets/components/task
     CyclicCompletionsComponent,
     SingleCompletionsComponent,
     ProgressiveCompletionsComponent,
+    DashboardStatisticsComponent,
+    DashboardTargetsComponent,
   ],
   imports: [
+    CommonModule,
+    NgChartsModule,
     KeycloakAngularModule,
     BrowserModule,
     AppRoutingModule,
@@ -80,6 +91,7 @@ import { ProgressiveCompletionsComponent } from './pages/targets/components/task
     StoreModule.forRoot({
       targets: targetsReducer,
       tasks: tasksReducer,
+      categories: categoriesReducer,
     }),
     EffectsModule.forRoot([
       TargetsEffects,

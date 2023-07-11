@@ -18,6 +18,7 @@ export class TargetItemComponent {
   @Input() target!: Target;
   @Input() tasks!: Task[];
   @Input() disabled: boolean = false;
+  @Input() isOnDashboard: boolean = false;
   isFetching$: Observable<boolean>;
 
   constructor(private store: Store<AppState>, private targetModalService: TargetModalService) {

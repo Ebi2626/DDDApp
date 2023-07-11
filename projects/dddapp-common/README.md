@@ -15,10 +15,6 @@ Run `ng build dddapp-common` to build the project. The build artifacts will be s
 
 After building your library with `ng build dddapp-common`, go to the dist folder `cd dist/dddapp-common` and run `npm publish`.
 
-## Running unit tests
+## Exporting local package
 
-Run `ng test dddapp-common` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Go to the `dist/dddapp-common` folder. Pack it with `yarn pack` - it will result with `.tgz` file. Go to the `projects/ui` and `projects/api` and replace in `package.json` source of `dddapp-common`. Reinstall packages eg. `yarn install`.
