@@ -15,6 +15,7 @@ export class CategoriesService {
   ) { }
 
   fetchCategories(): Observable<{ categories: Category[] }> {
+    console.log('getchujey kategorie');
     return this.http.get<{ categories: Category[] }>(`${environment.api}/${Endpoints.CATEGORIES}`);
   }
 

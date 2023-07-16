@@ -1,0 +1,34 @@
+<div class="container d-flex flex-column">
+  <div class="row d-flex flex-row align-items-center taskRow">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Opis</h4>
+    <p class="py-2 col">{{category.descritpion}}</p>
+  </div>
+  <div class="row d-flex flex-row align-items-center taskRow">
+    <h4 class="col-12 col-md-2 text-primary fs-6">Kolor</h4>
+    <p class="py-2 col d-flex flex-row align-items-end"><span>{{category.color}}</span><span [style]="{backgroundColor: category.color}" class="categoryColor"></span></p>
+  </div>
+  <div class="row d-flex flex-row align-items-center justify-content-center mt-3 footer">
+    <div
+      class="btn-group mb-2"
+      [class.disabled]="category.isDefault"
+      [title]="category.isDefault ? 'Nie można edytować ani usunąć domyślnej kategorii' : ''"
+    >
+      <button
+        class="btn btn-outline-secondary"
+        (click)="editTask()"
+        type="button"
+        [disabled]="category.isDefault"
+        >
+        Edytuj kategorię
+      </button>
+      <button
+        class="btn btn-outline-danger"
+        (click)="deleteTask()"
+        type="button"
+        [disabled]="category.isDefault"
+        >
+        Usuń kategorię
+      </button>
+    </div>
+  </div>
+</div>

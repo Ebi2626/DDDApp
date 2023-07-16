@@ -1,13 +1,30 @@
 <ng-container *ngIf="{
   categories: categories$ | async,
-  isFetching: fetching$ | async
+  isFetching: fetching$ | async,
+  modalState: modalState$ | async
 } as ctx">
   <h1 class="text-primary text-center mb-4">Kategorie</h1>
   <dddapp-no-data [hasContent]="!!ctx.isFetching || !!ctx.categories?.length" ctaText="Dodaj kategorię"
     [ctaAction]="addCategory.bind(this)">
     <button [disabled]="ctx.isFetching" (click)="addCategory()" class="d-block btn btn-outline-primary mb-4 mx-auto"
       type="button">Dodaj
-      nowy</button>
+      nową</button>
+      <div class="accordion accordion-flush" id="categoryAccordion">
+        <div class="accordion-item" *ngFor="let category of ctx.categories; index as i; trackBy: trackById">
+          <h2 class="accordion-header" [id]="'categoryTitle-'+i">
+            <button class="accordion-button fs-5" [class.collapsed]="openElementIndex != i" type="button"
+              (click)="openElement(i)">
+              {{ category.title }}
+            </button>
+          </h2>
+          <div [id]="'category-'+i" class="accordion-collapse collapse" [class.show]="openElementIndex == i"
+            [attr.aria-labelledby]="'categoryTitle-'+i" data-bs-parent="#categoryAccordion">
+            <div class="accordion-body">
+              <dddapp-category-item [category]="category"></dddapp-category-item>
+            </div>
+          </div>
+        </div>
+      </div>
   </dddapp-no-data>
-  <!-- <dddapp-target-modal *ngIf="ctx.modalState?.isOpen" [target]="ctx.modalState?.target"></dddapp-target-modal> -->
+  <dddapp-category-modal *ngIf="ctx.modalState?.isOpen" [category]="ctx.modalState?.category"></dddapp-category-modal>
 </ng-container>

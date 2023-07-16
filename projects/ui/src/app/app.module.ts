@@ -50,6 +50,11 @@ import { TargetListComponent } from './pages/targets/components/target-list/targ
 import { DashboardTargetsComponent } from './pages/dashboard/components/dashboard-targets/dashboard-targets.component';
 import { TaskTitleList } from './pages/targets/components/task-title-list/task-title-list.component';
 import { categoriesReducer } from './pages/categories/reducers/categories.reducer';
+import { CategorieEffects } from './pages/categories/effects/categories.effect';
+import { CategoryItemComponent } from './pages/categories/components/category-item/category-item.component';
+import { CategoryFormComponent } from './pages/categories/components/category-form/category-form.component';
+import { CategoryModalComponent } from './pages/categories/components/category-modal/category-modal.component';
+import { CategoriesModalService } from './pages/categories/services/categories-modal.service';
 
 @NgModule({
   declarations: [
@@ -76,6 +81,9 @@ import { categoriesReducer } from './pages/categories/reducers/categories.reduce
     ProgressiveCompletionsComponent,
     DashboardStatisticsComponent,
     DashboardTargetsComponent,
+    CategoryItemComponent,
+    CategoryFormComponent,
+    CategoryModalComponent,
   ],
   imports: [
     CommonModule,
@@ -96,6 +104,7 @@ import { categoriesReducer } from './pages/categories/reducers/categories.reduce
     EffectsModule.forRoot([
       TargetsEffects,
       TasksEffects,
+      CategorieEffects,
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 50,
@@ -105,6 +114,7 @@ import { categoriesReducer } from './pages/categories/reducers/categories.reduce
   providers: [
     TargetModalService,
     TaskModalService,
+    CategoriesModalService,
     AuthGuard,
     WelcomeGuard,
     ConfigInitService,

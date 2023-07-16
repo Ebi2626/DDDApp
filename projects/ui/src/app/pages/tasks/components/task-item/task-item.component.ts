@@ -24,6 +24,5 @@ export class TaskItemComponent {
   }
   deleteTask() {
     this.store.dispatch(TaskActions.deleteTaskRequest({ id: this.task.id }));
-    console.log('usuwamy task: ', this.task);
   }
 }

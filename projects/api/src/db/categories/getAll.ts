@@ -10,7 +10,7 @@ export const getAll = async (userId: string) => {
   const db = getConnection();
   const results = await db.query(aql`
   FOR c IN Categories
-    FILTER c.userId == ${userId}
+    FILTER c.userId == ${userId} || c.isDefault == true
   RETURN c`);
   for await (let doc of results) {
     result.push(doc);

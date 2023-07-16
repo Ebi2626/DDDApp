@@ -1,0 +1,22 @@
+<ng-container *ngIf="form">
+  <form [formGroup]="form">
+    <div class="mb-3">
+      <label for="title" class="form-label required">Tytuł</label>
+      <input type="text" aria-describedby="titleHelp" class="form-control" formControlName="title" id="title"
+        maxlength="200" required>
+      <div id="titleHelp" class="form-text">Czytelny, krótki tytuł jednoznacznie wskazujący istotę kategorii.</div>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label required">Opis</label>
+      <textarea aria-describedby="descriptionHelp" rows="3" class="form-control" formControlName="description"
+        id="description" maxlength="500" required></textarea>
+      <div id="descriptionHelp" class="form-text">Szerszy opis kategorii.</div>
+    </div>
+    <div class="mb-3">
+      <label for="color" class="form-label required">Kolor</label>
+      <input type="color" aria-describedby="colorHelp" class="form-control" formControlName="color" id="color"
+        required>
+      <div id="deadlineHelp" class="form-text">Kolor etykiety służący do wizualnego rozróżniania elementów przypisanych do określonej kategorii.</div>
+    </div>
+  </form>
+</ng-container>

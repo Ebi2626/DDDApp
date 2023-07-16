@@ -2783,9 +2783,9 @@ date-format@^4.0.14:
   resolved "https://registry.yarnpkg.com/date-format/-/date-format-4.0.14.tgz#7a8e584434fb169a521c8b7aa481f355810d9400"
   integrity sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==
 
-dddapp-common@../../dist/dddapp-common/dddapp-common-v0.0.4.tgz:
-  version "0.0.4"
-  resolved "../../dist/dddapp-common/dddapp-common-v0.0.4.tgz#8e09fdd88d21182857a22a8a1d47c1f1004a0e42"
+dddapp-common@../../dist/dddapp-common/dddapp-common-v0.0.5.tgz:
+  version "0.0.5"
+  resolved "../../dist/dddapp-common/dddapp-common-v0.0.5.tgz#15a65ed0a59450197095ff578094245bda49c4c3"
   dependencies:
     tslib "^2.3.0"
 

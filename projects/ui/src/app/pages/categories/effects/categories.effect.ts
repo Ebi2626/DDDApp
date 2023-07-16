@@ -17,9 +17,10 @@ export class CategorieEffects {
         this.store.select(CategoriesSelectors.selectCategories)
       ),
       switchMap(([_, categories]) => {
+        console.log('fetchujemy kategorie w switchmapie');
         if (categories.length) {
           return of(categories).pipe(
-            map((categories$) => CategoriesActions.setCategories({ categories }))
+            map((categories) => CategoriesActions.setCategories({ categories }))
           )
         }
         return this.categoriesService.fetchCategories().pipe(
