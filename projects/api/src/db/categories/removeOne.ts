@@ -9,7 +9,7 @@ export const removeOne = async (id: string, userId: string) => {
   }
   const db = getConnection();
   await getCollection('Categories', db);
-  let result = [];
+  const result = [];
   const results = await db.query(aql`
   FOR c IN Categories
     FILTER c.userId == ${userId}
@@ -17,7 +17,7 @@ export const removeOne = async (id: string, userId: string) => {
     REMOVE c IN Categories
   RETURN c
   `);
-  for await (let doc of results) {
+  for await (const doc of results) {
     result.push(doc);
   }
   return { id: id };

@@ -6,6 +6,7 @@ import { AppState } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
 import * as categoriesSelectors from '../../selectors/categories.selectors';
 import * as categoriesActions from '../../actions/categories.actions';
+import { NewCategoryForRequest } from '../../models/category.model';
 
 @Component({
   selector: 'dddapp-category-modal',
@@ -15,7 +16,8 @@ import * as categoriesActions from '../../actions/categories.actions';
 export class CategoryModalComponent {
 
   isFetching$: Observable<boolean>;
-  updatedCategory?: Partial<Category>;
+  newCategory?: NewCategoryForRequest;
+  updatedCategory?: Category;
 
 
   @Input()
@@ -34,16 +36,18 @@ export class CategoryModalComponent {
   }
 
   saveChanges() {
-    this.store.dispatch(categoriesActions.updateCategoryRequest({category: { ...this.updatedCategory, id: this.updatedCategory?.id } as Category}));
-    this.isFetching$.pipe(
-      filter((isFetching) => !isFetching),
-      take(1),
-    ).subscribe(() => this.closeModal());
+    if(this.updatedCategory) {
+      this.store.dispatch(categoriesActions.updateCategoryRequest({category: { ...this.updatedCategory, id: this.updatedCategory.id }}));
+      this.isFetching$.pipe(
+        filter((isFetching) => !isFetching),
+        take(1),
+      ).subscribe(() => this.closeModal());
+    }
   };
 
   addCategory() {
-    if(this.category){
-      this.store.dispatch(categoriesActions.createCategory({ category: this.category }))
+    if(this.newCategory){
+      this.store.dispatch(categoriesActions.createCategoryRequest({ category: this.newCategory }))
       this.isFetching$.pipe(
         filter((isFetching) => !isFetching),
         take(1),

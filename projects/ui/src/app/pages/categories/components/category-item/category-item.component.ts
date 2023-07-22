@@ -17,14 +17,12 @@ export class CategoryItemComponent {
   constructor(
     private categoryModalService: CategoriesModalService,
     private store: Store<AppState>
-    ){
+    ){}
 
-  }
-
-  editTask() {
+  editCategory() {
     this.categoryModalService.openModal(this.category);
   }
-  deleteTask() {
+  deleteCategory() {
     this.store.dispatch(categoriesActions.deleteCategoryRequest({ id: this.category.id }));
   }
 

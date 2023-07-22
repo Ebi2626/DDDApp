@@ -12,7 +12,7 @@ export const getAll = async (userId: string) => {
   FOR c IN Categories
     FILTER c.userId == ${userId} || c.isDefault == true
   RETURN c`);
-  for await (let doc of results) {
+  for await (const doc of results) {
     result.push(doc);
   }
   return result;

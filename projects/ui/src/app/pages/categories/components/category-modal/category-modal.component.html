@@ -13,7 +13,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <dddapp-category-form></dddapp-category-form>
+        <dddapp-category-form
+          [category]="category"
+          (newCategory)="newCategory = $event"
+          (editedCategory)="updatedCategory = $event"
+          ></dddapp-category-form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-primary" (click)="closeModal()">

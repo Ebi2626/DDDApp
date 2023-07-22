@@ -51,7 +51,6 @@ export class TaskModalComponent {
       filter((isFetching) => !isFetching),
       take(1),
     ).subscribe(() => this.closeModal());
-    console.log('zapisujemy zmiany: ', this.taskForm)
   }
 
   addTask() {
@@ -76,7 +75,6 @@ export class TaskModalComponent {
       filter((isFetching) => !isFetching),
       take(1),
     ).subscribe(() => this.closeModal());
-    console.log('tworzymy nowe zadanie: ', task);
   }
 
   closeModal() {

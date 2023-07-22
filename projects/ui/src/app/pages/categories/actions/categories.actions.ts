@@ -1,6 +1,7 @@
 import { Update } from '@ngrx/entity/src';
 import { createAction, props } from '@ngrx/store';
 import { Task, Category } from 'dddapp-common';
+import { NewCategoryForRequest } from '../models/category.model';
 
 export const fetchCategories = createAction(
   '[Categories] Fetch categories',
@@ -17,7 +18,7 @@ export const fetchCategoriesFailed = createAction(
 
 export const createCategoryRequest = createAction(
   '[Categories] Create category request',
-  props<{ category: Category }>(),
+  props<{ category: NewCategoryForRequest }>(),
 );
 
 export const createCategory = createAction(

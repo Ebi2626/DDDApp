@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Endpoints } from 'src/app/shared/models/endpoints.model';
 import { Observable } from 'rxjs';
 import { Category } from 'dddapp-common';
+import { NewCategoryForRequest } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class CategoriesService {
     return this.http.get<{ categories: Category[] }>(`${environment.api}/${Endpoints.CATEGORIES}`);
   }
 
-  createTarget(category: Category): Observable<{ category: Category }> {
+  createTarget(category: NewCategoryForRequest): Observable<{ category: Category }> {
     return this.http.post<{ category: Category }>(`${environment.api}/${Endpoints.CATEGORIES}`, category);
   }
 

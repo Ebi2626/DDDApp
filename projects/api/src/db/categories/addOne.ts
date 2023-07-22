@@ -11,12 +11,12 @@ export const addOne = async (category: any, userId: string) => {
     ...category,
     userId,
   };
-  let result = [];
+  const result = [];
 
   const results = await db.query(aql`
   INSERT ${categoryWithUserId} INTO Categories RETURN NEW`);
 
-  for await (let doc of results) {
+  for await (const doc of results) {
     result.push(doc);
   }
   return await result[0];

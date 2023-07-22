@@ -39,7 +39,7 @@ export class CategorieEffects {
       ))
     ));
 
-  updateTarget$ = createEffect(
+  updateCategory$ = createEffect(
     () => this.actions$.pipe(
       ofType(CategoriesActions.updateCategoryRequest),
       switchMap(({ category }) => this.categoriesService.updateCategory(category).pipe(
@@ -53,7 +53,7 @@ export class CategorieEffects {
       ))
     ))
 
-  createTarget$ = createEffect(
+  createCategory$ = createEffect(
     () => this.actions$.pipe(
       ofType(CategoriesActions.createCategoryRequest),
       switchMap(({ category }) => this.categoriesService.createTarget(category).pipe(
