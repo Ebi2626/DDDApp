@@ -132,7 +132,7 @@ export interface BaseTask {
   creationDate: Date;
   completed: boolean;
   completionDate?: Date;
-  category?: string;
+  categories: string[];
   reward?: string;
   punishment?: string;
 }0
@@ -171,3 +171,5 @@ export interface TaskFile {
   userId: string;
   taskCompletionIndex?: number;
 }
+
+export interface NewTaskForRequest extends Omit<Task, 'id'>{}

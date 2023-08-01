@@ -9,7 +9,7 @@ export class CreateTargetDto implements Target {
   tasks: string[];
   wage: TargetWage;
   creationDate: string | Date;
-  category?: number;
+  categories: string[];
   reward?: string;
   punishment?: string;
   _progress?: number;

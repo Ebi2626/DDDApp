@@ -6,7 +6,9 @@ import * as TasksSelectors from '../selectors/tasks.selectors';
 import { catchError, map, mergeMap, of, switchMap, withLatestFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
-import { CyclicTask, CyclicTaskItemRealization } from 'dddapp-common';
+import { CyclicTask, CyclicTaskItemRealization, ProgressiveTask, SingleTask } from 'dddapp-common';
+import { Update } from '@ngrx/entity';
+import { UpdateStr } from '@ngrx/entity/src/models';
 
 @Injectable()
 export class TasksEffects {
@@ -130,8 +132,8 @@ export class TasksEffects {
     this.actions$.pipe(
       ofType(TasksActions.updateTaskRequest),
       switchMap(({ task }) =>
-        this.tasksService.updateTask(task).pipe(
-          switchMap(({ task }) => [TasksActions.updateTask({ task })]),
+        this.tasksService.updateTask(task, task.id as string).pipe(
+          switchMap((task) => [TasksActions.updateTask(task)]),
           catchError((e) => [TasksActions.updateTaskFailed()])
         )
       )

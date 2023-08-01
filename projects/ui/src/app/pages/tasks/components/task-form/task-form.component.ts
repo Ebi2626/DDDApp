@@ -1,13 +1,16 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { FormArray, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { FormArray, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { formatDate } from '@angular/common';
-import { Task, TaskType, TaskTypeNameMap, Option, TaskRealizationConfirmationNameMap, IterationDuration, IterationDurationNames, ITERATION_LENGTH, CyclicTask, ProgressiveTask, SingleTask, CyclicTaskItemRealization, ProgressiveTaskItemRealization } from 'dddapp-common';
+import { Task, TaskType, TaskTypeNameMap, Option, TaskRealizationConfirmationNameMap, IterationDuration, IterationDurationNames, ITERATION_LENGTH, CyclicTask, ProgressiveTask, SingleTask, CyclicTaskItemRealization, ProgressiveTaskItemRealization, Category } from 'dddapp-common';
+import { NewTaskForRequest, TaskForm } from '../../models/task.model';
+import { SelectListItem } from 'src/app/shared/components/select-list/select-list.component';
 
 @Component({
-  selector: 'dddapp-task-form[taskType]',
+  selector: 'dddapp-task-form[taskType][categories]',
   templateUrl: './task-form.component.html',
-  styleUrls: ['./task-form.component.scss']
+  styleUrls: ['./task-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskFormComponent implements OnDestroy {
   private _taskType: TaskType = TaskType.SINGLE;
@@ -44,24 +47,56 @@ export class TaskFormComponent implements OnDestroy {
   }
 
   @Input()
+  categories!: Category[];
+
+  @Input()
   taskTypeOptions!: Option[];
 
-  form: any;
+  form?: FormGroup;
+
+  selectList: SelectListItem[] = [];
 
   @Output()
   isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output()
-  taskForm: EventEmitter<Task> = new EventEmitter<Task>();
+  editedTask: EventEmitter<Task> = new EventEmitter<Task>();
+
+  @Output()
+  newTask: EventEmitter<NewTaskForRequest> = new EventEmitter<NewTaskForRequest>();
 
   constructor(private fb: NonNullableFormBuilder) { }
 
+  private getSelectList(categories: Category[]): SelectListItem[] {
+    return categories.map((cat) => ({
+      id: cat.id,
+      label: cat.title,
+      value: !!this.task?.categories.includes(cat.id) ,
+      disabled: cat.title === 'Ogólna'
+    }))
+  }
+
   ngAfterContentInit() {
     this.form = this.task ? this.formFactory(+this.task.type, this.task) : (this.taskType ? this.formFactory(+this.taskType) : this.formFactory());
+    this.selectList = this.getSelectList(this.categories);
     this._sub.add(
-      this.form.valueChanges.subscribe((form: unknown) => {
-        this.isFormValid.emit(!this.form.invalid);
-        this.taskForm.emit(form as Task);
+      this.form.valueChanges.subscribe((form: TaskForm) => {
+        this.isFormValid.emit(!this.form?.invalid);
+        if(this.task) {
+          const updatedTask = {
+            ...this.task,
+            ...form,
+            categories: this.categories.filter((_, i) => form.categories[i]).map(({id}) => id)
+          }
+          this.editedTask.emit(updatedTask as Task);
+        } else {
+          const updatedForm = {
+            ...form,
+            categories: this.categories.filter((_, i) => form.categories[i]).map(({id}) => id)
+          }
+          this.newTask.emit(updatedForm);
+        }
+
       })
     );
   }
@@ -69,6 +104,7 @@ export class TaskFormComponent implements OnDestroy {
   private formFactory(taskType: TaskType = TaskType.SINGLE, task?: Task) {
 
     const taskCompletions: CyclicTaskItemRealization[] | ProgressiveTaskItemRealization[] | undefined = (task as CyclicTask | ProgressiveTask)?.taskCompletions || undefined;
+    const taskCategories: string[] = task?.categories || [];
 
     const singleForm = this.fb.group({
       title: [task?.title || '', Validators.required],
@@ -78,7 +114,7 @@ export class TaskFormComponent implements OnDestroy {
       verification_method: [task?.verification_method || 0, Validators.required],
       creationDate: [task?.creationDate ? formatDate(task.creationDate, 'yyyy-MM-dd', 'pl') : formatDate(new Date(), 'yyyy-MM-dd', 'pl'), Validators.required],
       completed: [task?.completed ?? false],
-      category: [task?.category || 0, Validators.required],
+      categories: this.fb.array<boolean>([]),
       reward: [task?.reward || ''],
       punishment: [task?.punishment || ''],
       completionDate: [task?.completionDate || ''],
@@ -92,7 +128,7 @@ export class TaskFormComponent implements OnDestroy {
       verification_method: [task?.verification_method || 0, Validators.required],
       creationDate: [task?.creationDate ? formatDate(task.creationDate, 'yyyy-MM-dd', 'pl') : formatDate(new Date(), 'yyyy-MM-dd', 'pl'), Validators.required],
       completed: [task?.completed ?? false],
-      category: [task?.category || 0, Validators.required],
+      categories: this.fb.array<boolean>([]),
       reward: [task?.reward || ''],
       punishment: [task?.punishment || ''],
       completionDate: [task?.completionDate || ''],
@@ -109,7 +145,7 @@ export class TaskFormComponent implements OnDestroy {
       verification_method: [2, Validators.required],
       creationDate: [task?.creationDate ? formatDate(task.creationDate, 'yyyy-MM-dd', 'pl') : formatDate(new Date(), 'yyyy-MM-dd', 'pl'), Validators.required],
       completed: [task?.completed ?? false],
-      category: [task?.category || 0, Validators.required],
+      categories: this.fb.array<boolean>([]),
       reward: [task?.reward || ''],
       punishment: [task?.punishment || ''],
       completionDate: [task?.completionDate || ''],
@@ -122,6 +158,8 @@ export class TaskFormComponent implements OnDestroy {
     });
 
 
+
+
     switch (taskType) {
       case 2:
         (taskCompletions as ProgressiveTaskItemRealization[])?.forEach((taskCompletion) => {
@@ -131,6 +169,10 @@ export class TaskFormComponent implements OnDestroy {
             value: this.fb.control(taskCompletion.value)
           });
           (progressiveForm.get('taskCompletions') as FormArray).push(newControl);
+          this.categories.forEach((category) => {
+            const newControl = this.fb.control(taskCategories.includes(category.id));
+            (progressiveForm.get('categories') as FormArray).push(newControl);
+          });
         })
         return progressiveForm;
       case 1:
@@ -140,13 +182,27 @@ export class TaskFormComponent implements OnDestroy {
             value: this.fb.control(taskCompletion.value),
           });
           (cyclicForm.get('taskCompletions') as FormArray).push(newControl);
+          (cyclicForm.get('taskCompletions') as FormArray).push(newControl);
+          this.categories.forEach((category) => {
+            const newControl = this.fb.control(taskCategories.includes(category.id));
+            (cyclicForm.get('categories') as FormArray).push(newControl);
+          });
         })
         return cyclicForm;
       case 0:
+        this.categories.forEach((category) => {
+          const newControl = this.fb.control(taskCategories.includes(category.id));
+          (singleForm.get('categories') as FormArray).push(newControl);
+        });
         return singleForm;
       default:
         throw new Error('Wrong taskType');
     }
+  }
+
+  updateCategories(selectList: SelectListItem[]) {
+    const catFormArray = this.form?.get('categories') as FormArray;
+    catFormArray.setValue(selectList.map(({value}) => value));
   }
 
   ngOnDestroy() {

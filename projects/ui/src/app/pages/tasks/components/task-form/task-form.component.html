@@ -33,11 +33,11 @@
       </div>
     </div>
     <div class="mb-3">
-      <label for="category" class="form-label required">Kategoria</label>
-      <select required aria-describedby="categoryHelp" class="form-select" formControlName="category" id="category">
-        <option value="0" selected>Ogólna</option>
-      </select>
-      <div id="categoryHelp" class="form-text">Kategoria służy do grupowania celów i zadań.</div>
+      <h2 for="category" class="form-label required">Kategorie</h2>
+      <p id="categoryHelp" class="form-text">Kategorie służą do grupowania celów i zadań.</p>
+      <dddapp-dropdown [label]="'Kategorie'">
+        <dddapp-select-list [list]="selectList" (changedList)="updateCategories($event)"></dddapp-select-list>
+      </dddapp-dropdown>
     </div>
     <div class="mb-3">
       <label for="reward" class="form-label">Nagroda za terminową realizację</label>

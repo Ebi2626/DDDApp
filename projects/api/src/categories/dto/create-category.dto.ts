@@ -7,4 +7,5 @@ export class CreateCategoryDto implements Category {
   color: string;
   targets: string[];
   tasks: string[];
+  isDefault: boolean;
 }

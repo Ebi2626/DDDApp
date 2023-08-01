@@ -1,31 +1,68 @@
-<ng-container *ngIf="{
-  tasks: tasks$ | async,
-  isFetching: isFetching$ | async,
-  modalState: modalState$ | async
-} as ctx">
+<ng-container
+  *ngIf="{
+    tasks: tasks$ | async,
+    isFetching: isFetching$ | async,
+    modalState: modalState$ | async,
+    categories: categories$ | async
+  } as ctx"
+>
   <h1 class="text-primary text-center mb-4">Zadania</h1>
-  <dddapp-no-data [hasContent]="!!ctx.isFetching || !!ctx.tasks?.length" ctaText="Dodaj zadanie"
-    [ctaAction]="addTask.bind(this)">
-    <button [disabled]="ctx.isFetching" (click)="addTask()" class="d-block btn btn-outline-primary mb-4 mx-auto"
-      type="button">Dodaj
-      nowe</button>
+  <dddapp-no-data
+    [hasContent]="!!ctx.isFetching || !!ctx.tasks?.length"
+    ctaText="Dodaj zadanie"
+    [ctaAction]="addTask.bind(this)"
+  >
+    <button
+      [disabled]="ctx.isFetching"
+      (click)="addTask()"
+      class="d-block btn btn-outline-primary mb-4 mx-auto"
+      type="button"
+    >
+      Dodaj nowe
+    </button>
     <div class="accordion accordion-flush" id="taskAccordion">
-      <div class="accordion-item" *ngFor="let task of ctx.tasks; index as i; trackBy: trackById">
-        <h2 class="accordion-header" [id]="'taskTitle-'+i">
-          <button class="accordion-button fs-5" [class.collapsed]="openElementIndex != i" type="button"
-            (click)="openElement(i)">
+      <div
+        class="accordion-item"
+        *ngFor="let task of ctx.tasks; index as i; trackBy: trackById"
+      >
+        <h2 class="accordion-header" [id]="'taskTitle-' + i">
+          <div class="categories" *ngIf="ctx.categories">
+            <div
+              *ngFor="let category of ctx.categories | categoriesPerTask : task"
+              class="categories__item"
+              [ngStyle]="{ 'background-color': category.color }"
+              [attr.title]="category.title"
+            ></div>
+          </div>
+          <button
+            class="accordion-button fs-5"
+            [class.collapsed]="openElementIndex != i"
+            type="button"
+            (click)="openElement(i)"
+          >
             {{ task.title }}
           </button>
         </h2>
-        <div [id]="'task-'+i" class="accordion-collapse collapse" [class.show]="openElementIndex == i"
-          [attr.aria-labelledby]="'taskTitle-'+i" data-bs-parent="#taskAccordion">
+        <div
+          [id]="'task-' + i"
+          class="accordion-collapse collapse"
+          [class.show]="openElementIndex == i"
+          [attr.aria-labelledby]="'taskTitle-' + i"
+          data-bs-parent="#taskAccordion"
+        >
           <div class="accordion-body">
-            <dddapp-task-item [task]="task"></dddapp-task-item>
+            <dddapp-task-item
+              [task]="task"
+              [categories]="ctx.categories || []"
+            ></dddapp-task-item>
           </div>
         </div>
       </div>
     </div>
   </dddapp-no-data>
-    <dddapp-task-modal *ngIf="ctx.modalState?.isOpen" [task]="ctx.modalState?.task"></dddapp-task-modal>
-
+  <dddapp-task-modal
+    *ngIf="ctx.modalState?.isOpen"
+    [task]="ctx.modalState?.task"
+    [categories]="ctx.categories || []"
+  ></dddapp-task-modal>
 </ng-container>

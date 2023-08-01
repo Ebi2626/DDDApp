@@ -55,6 +55,7 @@ import { CategoryItemComponent } from './pages/categories/components/category-it
 import { CategoryFormComponent } from './pages/categories/components/category-form/category-form.component';
 import { CategoryModalComponent } from './pages/categories/components/category-modal/category-modal.component';
 import { CategoriesModalService } from './pages/categories/services/categories-modal.service';
+import { CategoriesPerTask } from './pages/tasks/pipes/categoriesPerTask.pipe';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { CategoriesModalService } from './pages/categories/services/categories-m
     CategoryItemComponent,
     CategoryFormComponent,
     CategoryModalComponent,
+    CategoriesPerTask,
   ],
   imports: [
     CommonModule,

@@ -27,7 +27,7 @@
     "bootstrap": "^5.3.0",
     "chart.js": "^4.3.0",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "dddapp-common": "../../dist/dddapp-common/dddapp-common-v0.0.5.tgz",
+    "dddapp-common": "../../dist/dddapp-common/dddapp-common-v0.0.6.tgz",
     "font-awesome": "^4.7.0",
     "jwt-decode": "^3.1.2",
     "keycloak-angular": "^13.0.0",

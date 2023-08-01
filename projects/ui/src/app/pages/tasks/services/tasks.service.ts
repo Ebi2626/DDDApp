@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, lastValueFrom, tap, throwError } from 'rxjs';
+import { Observable, lastValueFrom, map, tap, throwError } from 'rxjs';
 import { Endpoints } from 'src/app/shared/models/endpoints.model';
 import { environment } from 'src/environments/environment';
 import {
@@ -13,6 +13,11 @@ import {
   TaskRealizationConfirmation,
   TaskType,
 } from 'dddapp-common';
+import { NewTaskForRequest } from '../models/task.model';
+import { Update } from '@ngrx/entity';
+import { UpdateStr } from '@ngrx/entity/src/models';
+
+type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +38,7 @@ export class TasksService {
     );
   }
 
-  createTask(task: Task): Observable<Task> {
+  createTask(task: NewTaskForRequest): Observable<Task> {
     return this.http.post<Task>(`${environment.api}/${Endpoints.TASKS}`, task);
   }
 
@@ -43,10 +48,20 @@ export class TasksService {
     );
   }
 
-  updateTask(task: Partial<Task>): Observable<{ task: Partial<Task> }> {
-    return this.http.patch<{ task: Partial<Task> }>(
-      `${environment.api}/${Endpoints.TASKS}/${task.id}`,
+  updateTask(task: Partial<Task>, taskId: string): Observable<UpdateStr<Task>> {
+    return this.http.patch<{ task: Partial<Task>}>(
+      `${environment.api}/${Endpoints.TASKS}/${taskId}`,
       task
+    ).pipe(
+      map(({task}) => {
+        console.log('task in updateTask: ', task);
+        const updatedTask: UpdateStr<Task> = {
+          changes: {...task},
+          id: taskId
+        }
+        console.log('task po sparsowaniu: ', updatedTask);
+        return updatedTask
+      })
     );
   }
 

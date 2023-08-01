@@ -15,10 +15,9 @@
     <h4 class="col-12 col-md-2 text-primary fs-6">Termin realizacji</h4>
     <p class="py-2 col">{{task.deadline | date: 'dd/M/yyyy'}}</p>
   </div>
-
-  <div class="row d-flex flex-row align-items-center taskRow" *ngIf="task.category">
+  <div class="row d-flex flex-row align-items-center taskRow" *ngIf="task.categories">
     <h4 class="col-12 col-md-2 text-primary fs-6">Kategoria</h4>
-    <p class="py-2 col">{{task.category}}</p>
+    <p class="py-2 col">{{task.categories.length}}</p>
   </div>
   <div class="row d-flex flex-row align-items-center taskRow" *ngIf="task.reward">
     <h4 class="col-12 col-md-2 text-primary fs-6">Nagroda</h4>

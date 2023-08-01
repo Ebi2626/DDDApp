@@ -1,6 +1,8 @@
 import { Update } from '@ngrx/entity/src';
 import { createAction, props } from '@ngrx/store';
 import { CyclicTask, SingleTask, Task } from 'dddapp-common';
+import { NewTaskForRequest } from '../models/task.model';
+import { UpdateStr } from '@ngrx/entity/src/models';
 
 export const fetchTasks = createAction('[Tasks] Fetch tasks');
 
@@ -13,7 +15,7 @@ export const fetchTasksFailed = createAction('[Tasks] Fetch tasks failed');
 
 export const createTaskRequest = createAction(
   '[Tasks] Create task request',
-  props<{ task: Task }>()
+  props<{ task: NewTaskForRequest }>()
 );
 
 export const createTask = createAction(
@@ -70,7 +72,7 @@ export const updateTaskRequest = createAction(
 
 export const updateTask = createAction(
   '[Tasks] Update task successful',
-  props<{ task: Partial<Task> }>()
+  props<UpdateStr<Task>>()
 );
 
 export const updateTaskFailed = createAction('[Tasks] Update task failed');

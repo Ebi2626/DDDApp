@@ -11,11 +11,11 @@ import { updateOne } from 'src/db/tasks/updateOne';
 @Injectable()
 export class TasksService {
   async create(createTaskDto: CreateTaskDto, userId: string) {
-    return await addOne(createTaskDto, userId)
+    return await addOne(createTaskDto, userId);
   }
 
-  async findMany(userId: string, taskIds: string[]){
-    return { tasks: await getMany(userId, taskIds)}
+  async findMany(userId: string, taskIds: string[]) {
+    return { tasks: await getMany(userId, taskIds) };
   }
 
   async findAll(userId: string) {

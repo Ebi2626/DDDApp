@@ -19,7 +19,7 @@ class SingleTaskDto implements SingleTask {
   verification_method: TaskRealizationConfirmation;
   creationDate: Date;
   completed: boolean;
-  category?: string;
+  categories: string[];
   reward?: string;
   punishment?: string;
 }
@@ -37,7 +37,7 @@ class CyclicTaskDto implements CyclicTask {
   creationDate: Date;
   completed: boolean;
   completionDate?: Date;
-  category?: string;
+  categories: string[];
   reward?: string;
   punishment?: string;
 }
@@ -58,7 +58,7 @@ class ProgressiveTaskDto implements ProgressiveTask {
   creationDate: Date;
   completed: boolean;
   completionDate?: Date;
-  category?: string;
+  categories: string[];
   reward?: string;
   punishment?: string;
 }

@@ -9,6 +9,9 @@ import { PeriodToTextPipe } from './pipes/period-to-text.pipe';
 import { LineChartComponent } from './components/charts/line-chart/line-chart.component';
 import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
 import { NgChartsModule } from 'ng2-charts';
+import { SelectListComponent } from './components/select-list/select-list.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 
 
@@ -22,10 +25,13 @@ import { NgChartsModule } from 'ng2-charts';
     PeriodToTextPipe,
     LineChartComponent,
     BarChartComponent,
+    SelectListComponent,
+    DropdownComponent,
   ],
   imports: [
     CommonModule,
     NgChartsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     ControlComponent,
@@ -35,7 +41,9 @@ import { NgChartsModule } from 'ng2-charts';
     LineChartComponent,
     TaskTypePipe,
     VerificationMethodPipe,
-    PeriodToTextPipe
+    PeriodToTextPipe,
+    SelectListComponent,
+    DropdownComponent,
   ]
 })
 export class SharedModule { }

@@ -32,10 +32,16 @@
   </div>
   <div
     class="row d-flex flex-row align-items-center targetRow"
-    *ngIf="target.category"
+    *ngIf="target.categories.length"
   >
-    <h4 class="col-12 col-md-2 text-primary fs-6">Kategoria</h4>
-    <p class="py-2 col">{{ target.category }}</p>
+    <h4 class="col-12 col-md-2 text-primary fs-6">Kategorie</h4>
+    <div class="py-2 col">
+      <ul>
+        <li *ngFor="let category of target.categories">
+          {{ category }}
+        </li>
+      </ul>
+    </div>
   </div>
   <div
     class="row d-flex flex-row align-items-center targetRow"

@@ -1,0 +1,19 @@
+<div class="dropdown">
+  <button
+    class="btn btn-primary dropdown-toggle"
+    type="button"
+    id="dropdownMenuButton1"
+    [ngClass]="{'show': isOpen}"
+    [attr.aria-expanded]="isOpen"
+    (click)="toggleDropdown()"
+    >
+    {{ label }}
+  </button>
+  <div
+    class="dropdown-menu dropdown-menu-dark"
+    aria-labelledby="dropdownMenuButton1"
+    [ngClass]="{'show': isOpen}"
+    >
+      <ng-content></ng-content>
+  </div>
+</div>

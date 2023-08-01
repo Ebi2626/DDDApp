@@ -1,17 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
-import { Task } from 'dddapp-common';
+import { Category, Task } from 'dddapp-common';
 import { TaskModalService } from '../../services/task-modal.service';
 import * as TaskActions from '../../actions/tasks.actions';
 
 @Component({
-  selector: 'dddapp-task-item[task]',
+  selector: 'dddapp-task-item[task][categories]',
   templateUrl: './task-item.component.html',
   styleUrls: ['./task-item.component.scss']
 })
 export class TaskItemComponent {
   @Input() task!: Task;
+  @Input() categories!: Category[];
   @Input() disabled: boolean = false;
 
   constructor(

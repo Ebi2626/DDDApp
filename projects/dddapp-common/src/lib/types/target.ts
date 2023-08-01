@@ -27,7 +27,7 @@ export interface Target {
   tasks: string[];
   wage: TargetWage;
   creationDate: Date | string;
-  category?: number;
+  categories: string[];
   reward?: string;
   punishment?: string;
   _progress?: number;

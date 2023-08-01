@@ -1,0 +1,24 @@
+<dddapp-spinner [hasContent]="!fetching">
+  <dddapp-no-data [hasContent]="!!list.length">
+    <ng-container *ngIf="form.get('list')" [formGroup]="form">
+      <div
+      class="dropdown-item"
+      formArrayName="list"
+      *ngFor="let item of list; let i = index"
+    >
+      <div class="form-check">
+        <input
+        class="form-check-input"
+        type="checkbox"
+        [id]="'item-' + i"
+        [formControlName]="i"
+        [attr.disabled]="!!item?.disabled"
+      />
+      <label class="form-check-label" [for]="'item-' + i">
+        {{ item.label }}
+      </label>
+      </div>
+    </div>
+  </ng-container>
+  </dddapp-no-data>
+</dddapp-spinner>

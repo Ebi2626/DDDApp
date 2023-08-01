@@ -55,6 +55,6 @@
 </ng-template>
 
 <ng-template #form>
-  <dddapp-task-form (taskForm)="taskForm = $event" (isFormValid)="isFormValid = $event" [task]="task"
-    [taskType]="task?.type || taskType!" [taskTypeOptions]="taskTypeOptions"></dddapp-task-form>
+  <dddapp-task-form (editedTask)="editedTask = $event" (newTask)="createdTask = $event" (isFormValid)="isFormValid = $event" [task]="task"
+    [taskType]="task?.type || taskType!" [taskTypeOptions]="taskTypeOptions" [categories]="categories || []"></dddapp-task-form>
 </ng-template>

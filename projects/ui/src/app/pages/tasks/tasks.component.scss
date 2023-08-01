@@ -1,0 +1,26 @@
+:host {
+  .accordion {
+    &-header {
+      position: relative;
+    }
+    &-button {
+      padding-top: 25px;
+      padding-left: 25px;
+    }
+    .categories {
+      position: absolute;
+      z-index: 10;
+      top: 5px;
+      left: 5px;
+      width: auto;
+      display: flex;
+      flex-direction: column;
+      &__item {
+        margin-bottom: 5px;
+        border-radius: 5px;
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
+}

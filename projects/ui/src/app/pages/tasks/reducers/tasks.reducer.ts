@@ -50,14 +50,8 @@ export const tasksReducer = createReducer(
     isFetching: true,
     hasError: false,
   })),
-  on(TasksActions.updateTask, (state, { task }) => {
-    const updatedTask: Update<Task> = {
-      changes: {
-        ...task,
-      },
-      id: task.id as string,
-    };
-    return adapter.updateOne(updatedTask, { ...state, isFetching: false });
+  on(TasksActions.updateTask, (state, task) => {
+    return adapter.updateOne(task, { ...state, isFetching: false });
   }),
   on(TasksActions.updateTaskFailed, (state) => ({
     ...state,

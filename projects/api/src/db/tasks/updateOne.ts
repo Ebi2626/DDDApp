@@ -9,13 +9,13 @@ export const updateOne = async (id: string, task, userId: string) => {
   }
   const db = getConnection();
   await getCollection('Tasks', db);
-  let result = [];
+  const result = [];
   const results = await db.query(aql`
   FOR c IN Tasks
     FILTER c.userId == ${userId}
     UPDATE ${id} WITH ${task} IN Tasks RETURN NEW`);
-  for await (let doc of results) {
+  for await (const doc of results) {
     result.push(doc);
   }
-  return { task: await result[0]};
+  return { task: await result[0] };
 };
