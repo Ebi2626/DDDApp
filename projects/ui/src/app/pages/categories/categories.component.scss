@@ -1,0 +1,27 @@
+:host {
+  .accordion {
+    &-header {
+      position: relative;
+
+      .category {
+        position: absolute;
+        z-index: 10;
+        left: 5px;
+        height: 100%;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        &__pointer {
+          display: block;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+        }
+      }
+    }
+    &-button {
+      padding-left: 30px;
+    }
+  }
+}

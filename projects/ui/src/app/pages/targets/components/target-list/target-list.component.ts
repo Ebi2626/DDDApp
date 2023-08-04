@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { Target, Task, TargetStateClass } from "dddapp-common";
+import { Target, Task, TargetStateClass, Category } from "dddapp-common";
 import { TargetsService } from "../../services/targets.service";
 import { TargetProgressService } from "../../services/targetProgress.service";
 import { DateTime } from "luxon";
@@ -7,7 +7,7 @@ import { ActivatedRoute } from "@angular/router";
 import { filter } from "rxjs";
 
 @Component({
-  selector: 'dddapp-target-list[targets][tasks]',
+  selector: 'dddapp-target-list[targets][tasks][categories]',
   templateUrl: './target-list.component.html',
   styleUrls: ['./target-list.component.scss'],
 })
@@ -15,6 +15,7 @@ export class TargetListComponent {
   TargetStateClass = TargetStateClass;
   @Input() targets?: Target[] | null;
   @Input() tasks?: Task[] | null;
+  @Input() categories: Category[] = [];
   @Input() onDashboard: boolean = false;
 
   openElementIndex?: number;

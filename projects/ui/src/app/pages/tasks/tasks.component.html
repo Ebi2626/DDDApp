@@ -20,6 +20,9 @@
     >
       Dodaj nowe
     </button>
+    <dddapp-categories-selector
+    [categories]="ctx.categories || []"
+  ></dddapp-categories-selector>
     <div class="accordion accordion-flush" id="taskAccordion">
       <div
         class="accordion-item"
@@ -28,7 +31,7 @@
         <h2 class="accordion-header" [id]="'taskTitle-' + i">
           <div class="categories" *ngIf="ctx.categories">
             <div
-              *ngFor="let category of ctx.categories | categoriesPerTask : task"
+              *ngFor="let category of ctx.categories | categoriesPerEntity : task"
               class="categories__item"
               [ngStyle]="{ 'background-color': category.color }"
               [attr.title]="category.title"

@@ -1,6 +1,8 @@
 import { Component, Input } from "@angular/core";
-import { Target, Task } from "dddapp-common";
+import { Category, Target, Task } from "dddapp-common";
 import { DateTime } from "luxon";
+import { ButtonMeta, ButtonMetaWithText } from "src/app/shared/components/button-group/button-group.component";
+import { hexToRgba } from '@rpearce/hex';
 
 @Component({
   selector: 'dddapp-dashboard-targets',
@@ -22,4 +24,5 @@ export class DashboardTargetsComponent {
     return this._targets;
   }
   @Input() tasks?: Task[] | null;
+  @Input() categories: Category[] = [];
 }

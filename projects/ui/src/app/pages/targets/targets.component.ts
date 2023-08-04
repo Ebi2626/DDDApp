@@ -8,8 +8,10 @@ import * as targetsActions from './actions/targets.actions';
 import * as tasksActions from '../tasks/actions/tasks.actions';
 import * as targetsSelectors from './selectors/targets.selectors';
 import * as tasksSelectors from '../tasks/selectors/tasks.selectors';
+import * as categoriesSelectors from '../categories/selectors/categories.selectors';
+import * as categoriesActions from '../categories/actions/categories.actions';
 import { TargetsService } from './services/targets.service';
-import { Task, Target  } from 'dddapp-common';
+import { Task, Target, Category  } from 'dddapp-common';
 import * as R from 'ramda';
 
 @Component({
@@ -22,6 +24,7 @@ export class TargetsComponent implements OnInit, OnDestroy {
   private _sub: Subscription = new Subscription();
   targets$: Observable<Target[]>;
   tasks$: Observable<Task[]>;
+  categories$: Observable<Category[]>;
   isFetching$: Observable<boolean>;
   modalState$: Subject<PopupState> = new Subject<PopupState>();
 
@@ -39,6 +42,7 @@ export class TargetsComponent implements OnInit, OnDestroy {
       })
     );
     this.targets$ = store.select(targetsSelectors.selectTargets);
+    this.categories$ = store.select(categoriesSelectors.selectCategories);
     this.tasks$ = store.select(tasksSelectors.selectTasks);
     this._sub.add(
       this.targetModalSerivce.modalState$
@@ -53,6 +57,7 @@ export class TargetsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.dispatch(targetsActions.fetchTargets());
     this.store.dispatch(tasksActions.fetchTasks());
+    this.store.dispatch(categoriesActions.fetchCategories());
   }
 
   addTarget = () => {

@@ -1,0 +1,12 @@
+<div class="d-flex flex-column align-items-center position-relative w-100">
+  <ul class="list-group w-100 mb-3" *ngIf="list?.length else lackOfItems">
+    <li *ngFor="let item of list; let i=index" class="list-group-item text-secondary">
+      <a [routerLink]="routerArray" [queryParams]="{id: item.id}">{{item.title}}</a>
+    </li>
+  </ul>
+  <dddapp-spinner *ngIf="isFetching" [hasContent]="!isFetching"
+    class="taskListRealization__spinner"></dddapp-spinner>
+</div>
+<ng-template #lackOfItems>
+  <p class="text-center mb-3">{{ noDataText || 'Brak elementów'}}</p>
+</ng-template>

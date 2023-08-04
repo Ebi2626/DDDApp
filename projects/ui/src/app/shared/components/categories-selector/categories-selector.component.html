@@ -1,0 +1,7 @@
+<section class="col-12 mb-2">
+  <h3 class="text-primary text-center fs-4 mb-2">Kategorie</h3>
+  <dddapp-button-group
+  [buttons]="mapCategoriesToButtons(categories)"
+  (action)="updateSelectedCategories($event)"
+  ></dddapp-button-group>
+</section>

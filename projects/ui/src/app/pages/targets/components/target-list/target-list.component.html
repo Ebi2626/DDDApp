@@ -5,10 +5,17 @@
       *ngFor="let target of targets; index as i; trackBy: trackById"
     >
       <h2 class="accordion-header" id="flush-headingOne">
+        <div class="categories" *ngIf="categories">
+          <div
+            *ngFor="let category of categories | categoriesPerEntity : target"
+            class="categories__item"
+            [ngStyle]="{ 'background-color': category.color }"
+            [attr.title]="category.title"
+          ></div>
+        </div>
         <button
           class="accordion-button fs-5 mb-2 ps-1"
           [class.collapsed]="openElementIndex != i"
-          type="button"
           [ngClass]="{
             success:
               targetsService.validateTarget(target, tasks) ===
@@ -17,32 +24,33 @@
               targetsService.validateTarget(target, tasks) ===
               TargetStateClass.FAILED
           }"
+          type="button"
           (click)="openElement(i)"
         >
-          <div class="d-flex flex-row align-items-center">
-            <ng-container
-              [ngSwitch]="targetsService.validateTarget(target, tasks)"
-            >
-              <i
-                *ngSwitchCase="TargetStateClass.FAILED"
-                class="fa fa-times-circle d-inline-block me-2"
-                aria-hidden="true"
-              ></i>
-              <i
-                *ngSwitchCase="TargetStateClass.SUCCESS"
-                class="fa fa-check-circle-o d-inline-block me-2"
-                aria-hidden="true"
-              ></i>
-              <i
-                *ngSwitchDefault
-                class="fa fa-arrow-right d-inline-block me-2"
-                aria-hidden="true"
-              ></i>
-            </ng-container>
-            <span>
-              {{ target.title }}
-            </span>
-          </div>
+        <div class="d-flex flex-row align-items-center ms-4">
+          <ng-container
+            [ngSwitch]="targetsService.validateTarget(target, tasks)"
+          >
+            <i
+              *ngSwitchCase="TargetStateClass.FAILED"
+              class="fa fa-times-circle d-inline-block me-2"
+              aria-hidden="true"
+            ></i>
+            <i
+              *ngSwitchCase="TargetStateClass.SUCCESS"
+              class="fa fa-check-circle-o d-inline-block me-2"
+              aria-hidden="true"
+            ></i>
+            <i
+              *ngSwitchDefault
+              class="fa fa-arrow-right d-inline-block me-2"
+              aria-hidden="true"
+            ></i>
+          </ng-container>
+          <span>
+            {{ target.title }}
+          </span>
+        </div>
         </button>
         <div class="progress">
           <div
@@ -66,6 +74,7 @@
           <dddapp-target-item
             [target]="target"
             [tasks]="getTargetTasks(target, tasks || [])"
+            [categories]="categories || []"
             [isOnDashboard]="onDashboard"
             [disabled]="
               targetsService.validateTarget(target, tasks) ===

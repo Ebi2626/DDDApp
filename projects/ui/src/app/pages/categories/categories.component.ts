@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Observable, Subject, Subscription, distinctUntilChanged } from 'rxjs';
+import { Component, ElementRef } from '@angular/core';
+import { Observable, Subject, Subscription, combineLatest, debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
 import { Category } from 'dddapp-common';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
@@ -9,6 +9,7 @@ import { CategoriesModalService, PopupState } from './services/categories-modal.
 import * as categoriesSelectors from './selectors/categories.selectors';
 import * as categoriesActions from './actions/categories.actions';
 import * as R from 'ramda';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'dddapp-categories',
@@ -26,7 +27,9 @@ export class CategoriesComponent {
     private store: Store<AppState>,
     private globalSpinnerService: GlobalSpinnerService,
     private categoriesModalService: CategoriesModalService,
+    private route: ActivatedRoute,
     protected categoriesService: CategoriesService,
+    private element: ElementRef,
   ) {
     this.fetching$ = store.select(categoriesSelectors.selectCategoriesFetching);
     this._sub.add(
@@ -47,6 +50,26 @@ export class CategoriesComponent {
 
   ngOnInit() {
     this.store.dispatch(categoriesActions.fetchCategories());
+    combineLatest([
+      this.route.queryParams.pipe(
+        filter((params) => params['id'])
+      ),
+      this.categories$
+    ]).pipe(
+      distinctUntilChanged((prev, curr) => R.equals(prev, curr)),
+      debounceTime(500),
+      take(1),
+    )
+    .subscribe(([params, tasks]) => {
+        const indexOfElement = tasks.findIndex(({id}) => id === params['id'])
+        const element: HTMLElement = this.element.nativeElement.querySelector(`#categoryTitle-${indexOfElement}`);
+        if(indexOfElement !== -1) {
+          this.openElement(indexOfElement);
+          if(element) {
+            element.scrollIntoView(true);
+          }
+        }
+      })
   }
 
 

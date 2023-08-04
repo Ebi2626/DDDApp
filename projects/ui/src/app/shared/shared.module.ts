@@ -12,6 +12,10 @@ import { NgChartsModule } from 'ng2-charts';
 import { SelectListComponent } from './components/select-list/select-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { ListOfLinksComponent } from './components/list-of-links/list-of-links.component';
+import { AppRoutingModule } from '../app-routing.module';
+import { ButtonGroupComponent } from './components/button-group/button-group.component';
+import { CategoriesSelectorComponent } from './components/categories-selector/categories-selector.component';
 
 
 
@@ -27,11 +31,15 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     BarChartComponent,
     SelectListComponent,
     DropdownComponent,
+    ListOfLinksComponent,
+    ButtonGroupComponent,
+    CategoriesSelectorComponent,
   ],
   imports: [
     CommonModule,
     NgChartsModule,
     ReactiveFormsModule,
+    AppRoutingModule,
   ],
   exports: [
     ControlComponent,
@@ -44,6 +52,9 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     PeriodToTextPipe,
     SelectListComponent,
     DropdownComponent,
+    ListOfLinksComponent,
+    ButtonGroupComponent,
+    CategoriesSelectorComponent,
   ]
 })
 export class SharedModule { }

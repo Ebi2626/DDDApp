@@ -38,6 +38,12 @@
       <dddapp-dropdown [label]="'Kategorie'">
         <dddapp-select-list [list]="selectList" (changedList)="updateCategories($event)"></dddapp-select-list>
       </dddapp-dropdown>
+      <p
+        class="text-danger mt-3"
+        *ngIf="form.get('categories')?.errors"
+        >
+        Możesz wybrać maksymalnie 4 kategorie.
+      </p>
     </div>
     <div class="mb-3">
       <label for="reward" class="form-label">Nagroda za terminową realizację</label>

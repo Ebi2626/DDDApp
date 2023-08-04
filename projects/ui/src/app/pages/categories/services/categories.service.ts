@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Endpoints } from 'src/app/shared/models/endpoints.model';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Category } from 'dddapp-common';
 import { NewCategoryForRequest } from '../models/category.model';
 
@@ -16,8 +16,14 @@ export class CategoriesService {
   ) { }
 
   fetchCategories(): Observable<{ categories: Category[] }> {
-    console.log('getchujey kategorie');
-    return this.http.get<{ categories: Category[] }>(`${environment.api}/${Endpoints.CATEGORIES}`);
+    return this.http.get<{ categories: Category[] }>(`${environment.api}/${Endpoints.CATEGORIES}`).pipe(
+      map(({categories}) => ({categories: categories.sort((catA) => { // Set default category as first one
+        if(catA.isDefault) {
+          return -1;
+        }
+        return 0;
+      })}))
+    );
   }
 
   createTarget(category: NewCategoryForRequest): Observable<{ category: Category }> {

@@ -14,7 +14,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <dddapp-target-form [selectedTasksIds]="selectedTasksIds"
+        <dddapp-target-form
+          [selectedTasksIds]="selectedTasksIds"
+          [categories]="categories"
           [tasks]="TargetsService.getTargetTasks(target, ctx.tasks) || []" (removedTaskId)="removeTask($event)"
           (assignTask)="assignTaskModalIsOpen = true" (isFormValid)="isFormValid = $event"
           (updatedTarget)="updatedTarget = $event" [target]="target"></dddapp-target-form>

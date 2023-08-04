@@ -5,6 +5,7 @@ import { formatDate } from '@angular/common';
 import { Task, TaskType, TaskTypeNameMap, Option, TaskRealizationConfirmationNameMap, IterationDuration, IterationDurationNames, ITERATION_LENGTH, CyclicTask, ProgressiveTask, SingleTask, CyclicTaskItemRealization, ProgressiveTaskItemRealization, Category } from 'dddapp-common';
 import { NewTaskForRequest, TaskForm } from '../../models/task.model';
 import { SelectListItem } from 'src/app/shared/components/select-list/select-list.component';
+import { ValidationService } from 'src/app/shared/services/validation.service';
 
 @Component({
   selector: 'dddapp-task-form[taskType][categories]',
@@ -65,13 +66,15 @@ export class TaskFormComponent implements OnDestroy {
   @Output()
   newTask: EventEmitter<NewTaskForRequest> = new EventEmitter<NewTaskForRequest>();
 
-  constructor(private fb: NonNullableFormBuilder) { }
+  constructor(
+    private fb: NonNullableFormBuilder
+    ) { }
 
   private getSelectList(categories: Category[]): SelectListItem[] {
     return categories.map((cat) => ({
       id: cat.id,
       label: cat.title,
-      value: !!this.task?.categories.includes(cat.id) ,
+      value: !!this.task?.categories.includes(cat.id) || cat.title === 'Ogólna',
       disabled: cat.title === 'Ogólna'
     }))
   }
@@ -82,6 +85,7 @@ export class TaskFormComponent implements OnDestroy {
     this._sub.add(
       this.form.valueChanges.subscribe((form: TaskForm) => {
         this.isFormValid.emit(!this.form?.invalid);
+
         if(this.task) {
           const updatedTask = {
             ...this.task,
@@ -114,7 +118,7 @@ export class TaskFormComponent implements OnDestroy {
       verification_method: [task?.verification_method || 0, Validators.required],
       creationDate: [task?.creationDate ? formatDate(task.creationDate, 'yyyy-MM-dd', 'pl') : formatDate(new Date(), 'yyyy-MM-dd', 'pl'), Validators.required],
       completed: [task?.completed ?? false],
-      categories: this.fb.array<boolean>([]),
+      categories: this.fb.array<boolean>([], ValidationService.maxTruthLengthArray(4)),
       reward: [task?.reward || ''],
       punishment: [task?.punishment || ''],
       completionDate: [task?.completionDate || ''],
@@ -128,7 +132,7 @@ export class TaskFormComponent implements OnDestroy {
       verification_method: [task?.verification_method || 0, Validators.required],
       creationDate: [task?.creationDate ? formatDate(task.creationDate, 'yyyy-MM-dd', 'pl') : formatDate(new Date(), 'yyyy-MM-dd', 'pl'), Validators.required],
       completed: [task?.completed ?? false],
-      categories: this.fb.array<boolean>([]),
+      categories: this.fb.array<boolean>([], ValidationService.maxTruthLengthArray(4)),
       reward: [task?.reward || ''],
       punishment: [task?.punishment || ''],
       completionDate: [task?.completionDate || ''],
@@ -145,7 +149,7 @@ export class TaskFormComponent implements OnDestroy {
       verification_method: [2, Validators.required],
       creationDate: [task?.creationDate ? formatDate(task.creationDate, 'yyyy-MM-dd', 'pl') : formatDate(new Date(), 'yyyy-MM-dd', 'pl'), Validators.required],
       completed: [task?.completed ?? false],
-      categories: this.fb.array<boolean>([]),
+      categories: this.fb.array<boolean>([], ValidationService.maxTruthLengthArray(4)),
       reward: [task?.reward || ''],
       punishment: [task?.punishment || ''],
       completionDate: [task?.completionDate || ''],
@@ -157,9 +161,6 @@ export class TaskFormComponent implements OnDestroy {
       progressStep: [(task as ProgressiveTask)?.progressStep || 0, Validators.required],
     });
 
-
-
-
     switch (taskType) {
       case 2:
         (taskCompletions as ProgressiveTaskItemRealization[])?.forEach((taskCompletion) => {
@@ -169,11 +170,11 @@ export class TaskFormComponent implements OnDestroy {
             value: this.fb.control(taskCompletion.value)
           });
           (progressiveForm.get('taskCompletions') as FormArray).push(newControl);
-          this.categories.forEach((category) => {
-            const newControl = this.fb.control(taskCategories.includes(category.id));
-            (progressiveForm.get('categories') as FormArray).push(newControl);
-          });
-        })
+        });
+        this.categories.forEach((category) => {
+          const newControl = this.fb.control(taskCategories.includes(category.id));
+          (progressiveForm.get('categories') as FormArray).push(newControl);
+        });
         return progressiveForm;
       case 1:
         (taskCompletions as CyclicTaskItemRealization[])?.forEach((taskCompletion) => {
@@ -182,12 +183,11 @@ export class TaskFormComponent implements OnDestroy {
             value: this.fb.control(taskCompletion.value),
           });
           (cyclicForm.get('taskCompletions') as FormArray).push(newControl);
-          (cyclicForm.get('taskCompletions') as FormArray).push(newControl);
-          this.categories.forEach((category) => {
-            const newControl = this.fb.control(taskCategories.includes(category.id));
-            (cyclicForm.get('categories') as FormArray).push(newControl);
-          });
-        })
+        });
+        this.categories.forEach((category) => {
+          const newControl = this.fb.control(taskCategories.includes(category.id));
+          (cyclicForm.get('categories') as FormArray).push(newControl);
+        });
         return cyclicForm;
       case 0:
         this.categories.forEach((category) => {
@@ -202,7 +202,11 @@ export class TaskFormComponent implements OnDestroy {
 
   updateCategories(selectList: SelectListItem[]) {
     const catFormArray = this.form?.get('categories') as FormArray;
-    catFormArray.setValue(selectList.map(({value}) => value));
+    catFormArray.clear();
+    selectList.forEach(({value}) => {
+      const control = this.fb.control(value);
+      catFormArray.push(control);
+    })
   }
 
   ngOnDestroy() {

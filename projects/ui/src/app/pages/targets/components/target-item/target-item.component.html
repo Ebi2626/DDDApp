@@ -36,11 +36,8 @@
   >
     <h4 class="col-12 col-md-2 text-primary fs-6">Kategorie</h4>
     <div class="py-2 col">
-      <ul>
-        <li *ngFor="let category of target.categories">
-          {{ category }}
-        </li>
-      </ul>
+      <dddapp-list-of-links [list]="getLinksForCategories(categories, target)" [routerArray]="['..', 'categories']">
+      </dddapp-list-of-links>
     </div>
   </div>
   <div

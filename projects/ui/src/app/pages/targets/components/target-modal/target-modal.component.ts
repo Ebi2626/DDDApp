@@ -7,10 +7,10 @@ import * as TargetActions from '../../actions/targets.actions';
 import * as TaskSelectors from '../../../tasks/selectors/tasks.selectors';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
-import { Task, Target } from 'dddapp-common';
+import { Task, Target, Category } from 'dddapp-common';
 
 @Component({
-  selector: 'dddapp-target-modal',
+  selector: 'dddapp-target-modal[categories]',
   templateUrl: './target-modal.component.html',
   styleUrls: ['./target-modal.component.scss']
 })
@@ -36,6 +36,7 @@ export class TargetModalComponent {
   isFetching$: Observable<boolean>;
 
   @Input() target?: Target;
+  @Input() categories: Category[] = [];
 
   constructor(
     private targetModalService: TargetModalService,

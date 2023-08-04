@@ -1,6 +1,7 @@
 <ng-container *ngIf="{
   targets: targets$ | async,
   tasks: tasks$ | async,
+  categories: categories$ | async,
   isFetching: isFetching$ | async,
   modalState: modalState$ | async
 } as ctx">
@@ -10,7 +11,14 @@
     <button [disabled]="ctx.isFetching" (click)="addTarget()" class="d-block btn btn-outline-primary mb-4 mx-auto"
       type="button">Dodaj
       nowy</button>
-      <dddapp-target-list [targets]="ctx.targets" [tasks]="ctx.tasks"></dddapp-target-list>
+      <dddapp-categories-selector
+      [categories]="ctx.categories || []"
+    ></dddapp-categories-selector>
+      <dddapp-target-list
+        [targets]="ctx.targets"
+        [tasks]="ctx.tasks"
+        [categories]="ctx.categories || []"
+        ></dddapp-target-list>
   </dddapp-no-data>
-  <dddapp-target-modal *ngIf="ctx.modalState?.isOpen" [target]="ctx.modalState?.target"></dddapp-target-modal>
+  <dddapp-target-modal *ngIf="ctx.modalState?.isOpen" [target]="ctx.modalState?.target" [categories]="ctx.categories || []"></dddapp-target-modal>
 </ng-container>

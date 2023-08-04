@@ -2,10 +2,14 @@
   <div class="col-12 mb-2">
     <h2 class="text-primary text-center">Zadania do uzupełnienia</h2>
   </div>
+  <dddapp-categories-selector
+    [categories]="categories"
+  ></dddapp-categories-selector>
   <section class="col-12 mb-5">
     <dddapp-target-list
       [targets]="targets"
       [tasks]="tasks"
+      [categories]="categories"
       [onDashboard]="true"
     ></dddapp-target-list>
   </section>

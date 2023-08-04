@@ -1,9 +1,10 @@
 <ng-container *ngIf="{
   targets: targets$ | async,
-  tasks: tasks$ | async
+  tasks: tasks$ | async,
+  categories: categories$ | async
 } as ctx" >
 
   <h1 class="text-primary text-center mb-4">Pulpit</h1>
-  <dddapp-dashboard-targets [targets]="ctx.targets || []" [tasks]="ctx.tasks || []"></dddapp-dashboard-targets>
+  <dddapp-dashboard-targets [targets]="ctx.targets || []" [tasks]="ctx.tasks || []" [categories]="ctx.categories || []"></dddapp-dashboard-targets>
   <dddapp-dashboard-statistics [targets]="ctx.targets || []" [tasks]="ctx.tasks || []"></dddapp-dashboard-statistics>
 </ng-container>

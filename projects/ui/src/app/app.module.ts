@@ -55,7 +55,9 @@ import { CategoryItemComponent } from './pages/categories/components/category-it
 import { CategoryFormComponent } from './pages/categories/components/category-form/category-form.component';
 import { CategoryModalComponent } from './pages/categories/components/category-modal/category-modal.component';
 import { CategoriesModalService } from './pages/categories/services/categories-modal.service';
-import { CategoriesPerTask } from './pages/tasks/pipes/categoriesPerTask.pipe';
+import { CategoriesPerEntity } from './pages/tasks/pipes/categoriesPerEntity.pipe';
+import { ValidationService } from './shared/services/validation.service';
+import { queryReducer } from './core/reducers/query.reducer';
 
 @NgModule({
   declarations: [
@@ -85,7 +87,7 @@ import { CategoriesPerTask } from './pages/tasks/pipes/categoriesPerTask.pipe';
     CategoryItemComponent,
     CategoryFormComponent,
     CategoryModalComponent,
-    CategoriesPerTask,
+    CategoriesPerEntity,
   ],
   imports: [
     CommonModule,
@@ -102,6 +104,7 @@ import { CategoriesPerTask } from './pages/tasks/pipes/categoriesPerTask.pipe';
       targets: targetsReducer,
       tasks: tasksReducer,
       categories: categoriesReducer,
+      query: queryReducer
     }),
     EffectsModule.forRoot([
       TargetsEffects,
@@ -117,6 +120,7 @@ import { CategoriesPerTask } from './pages/tasks/pipes/categoriesPerTask.pipe';
     TargetModalService,
     TaskModalService,
     CategoriesModalService,
+    ValidationService,
     AuthGuard,
     WelcomeGuard,
     ConfigInitService,
