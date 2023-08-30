@@ -3,7 +3,8 @@
   tasks: tasks$ | async,
   categories: categories$ | async,
   isFetching: isFetching$ | async,
-  modalState: modalState$ | async
+  modalState: modalState$ | async,
+  page: page$ | async
 } as ctx">
   <h1 class="text-primary text-center mb-4">Cele</h1>
   <dddapp-no-data [hasContent]="!!ctx.isFetching || !!ctx.targets?.length" ctaText="Dodaj cel"
@@ -19,6 +20,7 @@
         [tasks]="ctx.tasks"
         [categories]="ctx.categories || []"
         ></dddapp-target-list>
+        <dddapp-pagination *ngIf="ctx.page" (pageChange)="changePage($event)" [page]="ctx.page"></dddapp-pagination>
   </dddapp-no-data>
   <dddapp-target-modal *ngIf="ctx.modalState?.isOpen" [target]="ctx.modalState?.target" [categories]="ctx.categories || []"></dddapp-target-modal>
 </ng-container>

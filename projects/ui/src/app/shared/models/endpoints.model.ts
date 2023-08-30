@@ -3,4 +3,6 @@ export enum Endpoints {
   'TASKS' = 'tasks',
   'FILES' = 'files',
   'CATEGORIES' = 'categories',
+  'DATA' = 'data',
+  'SETTINGS' = 'settings',
 }

@@ -18,8 +18,8 @@ export const DEFAULT_PAGE_SIZE = 20;
 export const initialPage: Page = {
   current: 0,
   size: DEFAULT_PAGE_SIZE,
-  totalPages: 0,
-  totalItems: 0,
+  totalPages: 1,
+  totalItems: 1,
 }
 
 export const initialState = {

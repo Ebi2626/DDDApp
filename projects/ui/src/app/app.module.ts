@@ -58,6 +58,11 @@ import { CategoriesModalService } from './pages/categories/services/categories-m
 import { CategoriesPerEntity } from './pages/tasks/pipes/categoriesPerEntity.pipe';
 import { ValidationService } from './shared/services/validation.service';
 import { queryReducer } from './core/reducers/query.reducer';
+import { UserProfileComponent } from './pages/settings/components/user-profile/user-profile.component';
+import { UserDataComponent } from './pages/settings/components/user-data/user-data.component';
+import { AppDataComponent } from './pages/settings/components/app-data/app-data.component';
+import { SettingsEffects } from './pages/settings/effects/settings.effects';
+import { settingsReducer } from './pages/settings/reducers/settings.reducer';
 
 @NgModule({
   declarations: [
@@ -88,6 +93,9 @@ import { queryReducer } from './core/reducers/query.reducer';
     CategoryFormComponent,
     CategoryModalComponent,
     CategoriesPerEntity,
+    UserProfileComponent,
+    UserDataComponent,
+    AppDataComponent,
   ],
   imports: [
     CommonModule,
@@ -104,12 +112,14 @@ import { queryReducer } from './core/reducers/query.reducer';
       targets: targetsReducer,
       tasks: tasksReducer,
       categories: categoriesReducer,
-      query: queryReducer
+      query: queryReducer,
+      settings: settingsReducer,
     }),
     EffectsModule.forRoot([
       TargetsEffects,
       TasksEffects,
       CategorieEffects,
+      SettingsEffects,
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 50,

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TargetsService } from './targets.service';
 import { CreateTargetDto } from './dto/create-target.dto';
@@ -22,8 +23,22 @@ export class TargetsController {
   }
 
   @Get()
-  findAll(@UserId() userId: string) {
-    return this.targetsService.findAll(userId);
+  findAll(
+    @UserId() userId: string,
+    @Query('categories') categories: string,
+    @Query('page') page: string,
+    @Query('size') size: string,
+  ) {
+    if (categories && categories.length) {
+      const categoriesArrray = categories.split(',');
+      return this.targetsService.findAll(
+        userId,
+        +page,
+        +size,
+        categoriesArrray,
+      );
+    }
+    return this.targetsService.findAll(userId, +page, +size);
   }
 
   @Get(':id')

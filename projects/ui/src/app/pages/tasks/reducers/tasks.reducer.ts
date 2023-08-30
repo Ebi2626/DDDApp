@@ -3,17 +3,20 @@ import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import * as TasksActions from '../actions/tasks.actions';
 import { Task } from 'dddapp-common';
+import { Page, initialPage } from 'src/app/core/reducers/query.reducer';
 
 export const adapter: EntityAdapter<Task> = createEntityAdapter<Task>();
 
 export interface State extends EntityState<Task> {
   isFetching: boolean;
   hasError: boolean;
+  page: Page;
 }
 
 export const initialState: State = adapter.getInitialState({
   hasError: false,
   isFetching: false,
+  page: initialPage,
 });
 
 export const tasksReducer = createReducer(
@@ -28,6 +31,22 @@ export const tasksReducer = createReducer(
     isFetching: false,
   })),
   on(TasksActions.fetchTasksFailed, (state) => ({
+    ...state,
+    isFetching: false,
+    hasError: true,
+  })),
+  on(TasksActions.changePage, (state) => ({
+    ...state,
+    isFetching: true,
+    hasError: false,
+  })),
+  on(TasksActions.setNewPage, (state, { page }) => ({
+    ...state,
+    page,
+    isFetching: false,
+    hasError: false,
+  })),
+  on(TasksActions.changePageFailed, (state) => ({
     ...state,
     isFetching: false,
     hasError: true,
@@ -70,5 +89,6 @@ export const tasksReducer = createReducer(
     ...state,
     isFetching: false,
     hasError: true,
-  }))
+  })),
+  on(TasksActions.clearAllTasks, (state) => adapter.removeAll(state))
 );

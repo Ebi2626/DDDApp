@@ -12,13 +12,16 @@ import * as R from 'ramda';
 @Injectable()
 export class KeyToIdInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  replacePropertyWithGivenKey(textToReplace: string | RegExp, expectedText: string, sourceText: string){
+    return R.replace(textToReplace, expectedText, sourceText)
+  };
 
   private checkAllPropertiesAndReplaceKey(event: HttpEvent<any>, keyToReplace: string, newKey: string): HttpEvent<any> {
     if (event instanceof HttpResponse) {
       const stringObj = JSON.stringify(event.body);
       const regex = new RegExp(keyToReplace, 'g');
-      return event.clone({body: JSON.parse(R.replace(regex, newKey, stringObj))});
+      const responseWithReplacedKeyWithId = this.replacePropertyWithGivenKey(regex, newKey, stringObj)
+      return event.clone({body: JSON.parse(responseWithReplacedKeyWithId)});
     } else {
       return event;
     }

@@ -31,7 +31,6 @@ export class TargetListComponent {
       filter((params) => params['id'])
     )
     .subscribe((params) => {
-      console.log(params); // { order: "popular" }
       const indexOfTask = this.tasks?.findIndex((task) => task.id === params['id']);
       this.openElement(indexOfTask as number);
     })

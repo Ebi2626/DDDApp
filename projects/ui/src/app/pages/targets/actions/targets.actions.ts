@@ -1,6 +1,7 @@
 import { Update } from '@ngrx/entity/src';
 import { createAction, props } from '@ngrx/store';
 import { Task, Target } from 'dddapp-common';
+import { Page } from 'src/app/core/reducers/query.reducer';
 
 export const fetchTargets = createAction(
   '[Targets] Fetch targets',
@@ -13,6 +14,20 @@ export const setTargets = createAction(
 
 export const fetchTargetsFailed = createAction(
   '[Targets] Fetch targets failed'
+);
+
+export const changePage = createAction(
+  '[Targets] Change page',
+  props<{ number: number }>()
+);
+
+export const setNewPage = createAction(
+  '[Targets] Set new page',
+  props<{page: Page}>()
+);
+
+export const changePageFailed = createAction(
+  '[Targets] Changing page failed'
 );
 
 export const createTargetRequest = createAction(
@@ -69,4 +84,8 @@ export const changeTaskRealizationFailed = createAction(
 
 export const changeTaskRealizationSuccess = createAction(
   '[Targets] Change task realization success',
+);
+
+export const clearAllTargets = createAction(
+  '[Targets] Clear all targets'
 );

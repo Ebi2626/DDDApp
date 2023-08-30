@@ -11,6 +11,7 @@ import * as categoriesActions from '../categories/actions/categories.actions';
 import { PopupState, TaskModalService } from './services/task-modal.service';
 import { ActivatedRoute } from '@angular/router';
 import * as R from 'ramda';
+import { Page } from 'src/app/core/reducers/query.reducer';
 
 @Component({
   selector: 'dddapp-tasks',
@@ -25,6 +26,7 @@ export class TasksComponent {
   categories$: Observable<Category[]>;
   isFetching$: Observable<boolean>;
   modalState$: Observable<PopupState>;
+  page$: Observable<Page>;
 
   constructor(
     private store: Store<AppState>,
@@ -36,6 +38,7 @@ export class TasksComponent {
     this.tasks$ = store.select(tasksSelectors.selectTasks);
     this.modalState$ = this.taskModalSerivce.modalState$;
     this.categories$ = store.select(categoriesSelectors.selectCategories);
+    this.page$ = store.select(tasksSelectors.selectTaskPage);
     this.isFetching$ = store.select(tasksSelectors.selectTasksFetching)
       .pipe(tap((isFetching) => this.globalSpinnerService.show$.next(isFetching)))
   }
@@ -81,5 +84,10 @@ export class TasksComponent {
 
   ngOnDestroy(): void {
     this.globalSpinnerService.show$.next(false);
+  }
+
+
+  changePage(page: Page) {
+    this.store.dispatch(tasksActions.changePage({number: page.current}))
   }
 }

@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Endpoints } from 'src/app/shared/models/endpoints.model';
 import { Observable } from 'rxjs';
 import { Task, Target, TargetStateClass  } from 'dddapp-common';
 import { TargetProgressService } from './targetProgress.service';
+import { Page } from 'src/app/core/reducers/query.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,25 @@ export class TargetsService {
     private targetProgressService: TargetProgressService,
   ) { }
 
-  fetchTargets(): Observable<{ targets: Target[] }> {
-    return this.http.get<{ targets: Target[] }>(`${environment.api}/${Endpoints.TARGETS}`);
+  fetchTargets(categories: string[] = [], page: Page): Observable<{ targets: Target[], page: Page }> {
+    const targetsUrl = `${environment.api}/${Endpoints.TARGETS}`;
+    let httpOptions;
+    let params = new HttpParams();
+    params = params
+      .append('page', `${page.current}`)
+      .append('size', `${page.size}`);
+    if(categories && categories.length) {
+      const categoriesString = categories.join(',');
+      params = params.append('categories', categoriesString);
+      httpOptions = {
+        params,
+      };
+      return this.http.get<{ targets: Target[], page: Page }>(targetsUrl, httpOptions);
+    }
+    httpOptions = {
+      params,
+    };
+    return this.http.get<{ targets: Target[], page: Page }>(targetsUrl, httpOptions);
   }
 
   createTarget(target: Target): Observable<{ target: Target }> {

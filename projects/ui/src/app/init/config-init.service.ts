@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class ConfigInitService {
 
-  private config: any;
+  public config: any;
 
   constructor(private httpClient: HttpClient) { }
 

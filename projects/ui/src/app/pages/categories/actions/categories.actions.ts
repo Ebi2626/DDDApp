@@ -1,6 +1,6 @@
 import { Update } from '@ngrx/entity/src';
 import { createAction, props } from '@ngrx/store';
-import { Task, Category } from 'dddapp-common';
+import { Category } from 'dddapp-common';
 import { NewCategoryForRequest } from '../models/category.model';
 
 export const fetchCategories = createAction(
@@ -58,3 +58,6 @@ export const updateCategoryFailed = createAction(
   '[Categories] Update category failed',
 );
 
+export const clearAllCategories = createAction(
+  '[Categories] Clear all categories'
+);

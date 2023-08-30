@@ -1,5 +1,6 @@
 // General
 $primary: #19647e;
+$primary-60: #19657e66;
 $secondary: #28afb0;
 $danger: #f64055;
 
@@ -17,3 +18,21 @@ $accordion-color: white;
 $accordion-icon-color: $primary;
 $accordion-button-active-bg: $bg-color;
 $accordion-button-active-color: $secondary;
+
+// Pagination
+$pagination-bg: transparent;
+$pagination-border-color: $primary;
+$pagination-color: $primary;
+
+$pagination-hover-color: white;
+$pagination-hover-bg: $secondary;
+$pagination-hover-border-color: $secondary;
+
+$pagination-active-color: white;
+$pagination-active-bg: $primary;
+$pagination-active-border-color: $primary;
+
+$pagination-disabled-color: #ffffff66;
+$pagination-disabled-bg: $primary-60;
+$pagination-disabled-border-color: $primary-60;
+

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, lastValueFrom, map, tap, throwError } from 'rxjs';
 import { Endpoints } from 'src/app/shared/models/endpoints.model';
@@ -14,10 +14,9 @@ import {
   TaskType,
 } from 'dddapp-common';
 import { NewTaskForRequest } from '../models/task.model';
-import { Update } from '@ngrx/entity';
 import { UpdateStr } from '@ngrx/entity/src/models';
+import { Page } from 'src/app/core/reducers/query.reducer';
 
-type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
 @Injectable({
   providedIn: 'root',
@@ -25,17 +24,24 @@ type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 export class TasksService {
   constructor(private http: HttpClient) {}
 
-  fetchTasks(taskIds?: string[]): Observable<Task[]> {
-    return this.http.get<Task[]>(
-      `${environment.api}/${Endpoints.TASKS}`,
-      taskIds?.length
-        ? {
-            params: {
-              id: taskIds.join(','),
-            },
-          }
-        : {}
-    );
+  fetchTasks(categories: string[] = [], page: Page): Observable<{tasks: Task[], page: Page}> {
+    let httpOptions;
+    const tasksUrl = `${environment.api}/${Endpoints.TASKS}`;
+    let params = new HttpParams();
+    params = params.append('page', `${page.current}`);
+    params = params.append('size', `${page.size}`);
+    if(categories && categories.length) {
+      const categoriesString = categories.join(',');
+      params = params.append('categories', categoriesString);
+      httpOptions = {
+        params,
+      };
+      return this.http.get<{tasks: Task[], page: Page}>(tasksUrl, httpOptions);
+    }
+    httpOptions = {
+      params,
+    };
+    return this.http.get<{tasks: Task[], page: Page}>(tasksUrl, httpOptions);
   }
 
   createTask(task: NewTaskForRequest): Observable<Task> {
@@ -54,12 +60,10 @@ export class TasksService {
       task
     ).pipe(
       map(({task}) => {
-        console.log('task in updateTask: ', task);
         const updatedTask: UpdateStr<Task> = {
           changes: {...task},
           id: taskId
         }
-        console.log('task po sparsowaniu: ', updatedTask);
         return updatedTask
       })
     );

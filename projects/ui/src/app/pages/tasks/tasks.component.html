@@ -3,7 +3,8 @@
     tasks: tasks$ | async,
     isFetching: isFetching$ | async,
     modalState: modalState$ | async,
-    categories: categories$ | async
+    categories: categories$ | async,
+    page: page$ | async
   } as ctx"
 >
   <h1 class="text-primary text-center mb-4">Zadania</h1>
@@ -62,6 +63,7 @@
         </div>
       </div>
     </div>
+    <dddapp-pagination *ngIf="ctx.page" [page]="ctx.page" (pageChange)="changePage($event)"></dddapp-pagination>
   </dddapp-no-data>
   <dddapp-task-modal
     *ngIf="ctx.modalState?.isOpen"

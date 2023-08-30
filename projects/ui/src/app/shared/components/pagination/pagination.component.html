@@ -1,0 +1,29 @@
+<nav aria-label="Wybór stron" *ngIf="page">
+  <ul class="pagination justify-content-center mb-3 mt-4" *ngIf="page && page.totalPages > 1">
+    <li
+      class="page-item"
+      *ngIf="page.totalPages > 1"
+      [ngClass]="{'disabled': page.current === 0}"
+      >
+      <span class="page-link" aria-label="Poprzednia strona" (click)="previousPage(page)">
+        <span aria-hidden="true">&laquo;</span>
+      </span>
+    </li>
+    <li
+      class="page-item"
+      [ngClass]="{'active': page.current === pageNumber}"
+      *ngFor="let pageNumber of getCurrentPages(page)"
+      (click)="setCurrentPage(page, pageNumber)"
+      ><span class="page-link">{{pageNumber + 1}}</span>
+    </li>
+    <li
+      class="page-item"
+      *ngIf="page.totalPages > 1"
+      [ngClass]="{'disabled': page.current === page.totalPages - 1}"
+      >
+      <span class="page-link" aria-label="Następna strona" (click)="nextPage(page)">
+        <span aria-hidden="true">&raquo;</span>
+      </span>
+    </li>
+  </ul>
+</nav>

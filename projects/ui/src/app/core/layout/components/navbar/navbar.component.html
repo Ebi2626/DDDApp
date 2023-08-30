@@ -6,7 +6,7 @@
       <i class="fa text-primary" [class.fa-bars]="!isOpen" [class.fa-times]="isOpen"></i>
     </button>
     <div class="collapse navbar-collapse justify-content-end" [class.show]="isOpen" id="navbarNavDropdown">
-      <ul class="navbar-nav border-bottom border-1 border-primary" (click)="isOpen = !isOpen">
+      <ul class="navbar-nav border-bottom border-1 border-primary" (click)="isOpen = false">
         <li class="nav-item text-center" routerLinkActive="active" *ngFor="let item of navigation">
           <a class="nav-link" [routerLink]="item.route">{{ item.name }}</a>
         </li>

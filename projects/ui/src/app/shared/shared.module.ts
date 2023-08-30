@@ -16,6 +16,7 @@ import { ListOfLinksComponent } from './components/list-of-links/list-of-links.c
 import { AppRoutingModule } from '../app-routing.module';
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
 import { CategoriesSelectorComponent } from './components/categories-selector/categories-selector.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 
 
@@ -34,6 +35,7 @@ import { CategoriesSelectorComponent } from './components/categories-selector/ca
     ListOfLinksComponent,
     ButtonGroupComponent,
     CategoriesSelectorComponent,
+    PaginationComponent,
   ],
   imports: [
     CommonModule,
@@ -55,6 +57,7 @@ import { CategoriesSelectorComponent } from './components/categories-selector/ca
     ListOfLinksComponent,
     ButtonGroupComponent,
     CategoriesSelectorComponent,
+    PaginationComponent,
   ]
 })
 export class SharedModule { }

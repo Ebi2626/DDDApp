@@ -13,7 +13,7 @@ import { GlobalSpinnerService } from 'src/app/core/layout/components/global-spin
 
 
 @Component({
-  selector: 'ddda-dashboard-page',
+  selector: 'dddapp-dashboard-page',
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -45,10 +45,6 @@ export class DashboardPageComponent implements OnInit {
     this.store.dispatch(targetsActions.fetchTargets());
     this.store.dispatch(tasksActions.fetchTasks());
     this.store.dispatch(categoriesActions.fetchCategories());
-  }
-
-  ngOnChanges() {
-    console.log('reredner Dashboard Page');
   }
 
   ngOnDestroy() {

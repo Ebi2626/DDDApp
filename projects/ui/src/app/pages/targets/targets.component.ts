@@ -13,6 +13,7 @@ import * as categoriesActions from '../categories/actions/categories.actions';
 import { TargetsService } from './services/targets.service';
 import { Task, Target, Category  } from 'dddapp-common';
 import * as R from 'ramda';
+import { Page } from 'src/app/core/reducers/query.reducer';
 
 @Component({
   selector: 'dddapp-targets',
@@ -27,6 +28,7 @@ export class TargetsComponent implements OnInit, OnDestroy {
   categories$: Observable<Category[]>;
   isFetching$: Observable<boolean>;
   modalState$: Subject<PopupState> = new Subject<PopupState>();
+  page$: Observable<Page>;
 
   constructor(
     private store: Store<AppState>,
@@ -44,6 +46,7 @@ export class TargetsComponent implements OnInit, OnDestroy {
     this.targets$ = store.select(targetsSelectors.selectTargets);
     this.categories$ = store.select(categoriesSelectors.selectCategories);
     this.tasks$ = store.select(tasksSelectors.selectTasks);
+    this.page$ = store.select(targetsSelectors.selectTargetsPage);
     this._sub.add(
       this.targetModalSerivce.modalState$
         .pipe(
@@ -67,5 +70,9 @@ export class TargetsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._sub.unsubscribe();
     this.globalSpinnerService.show$.next(false);
+  }
+
+  changePage(page: Page) {
+    this.store.dispatch(targetsActions.changePage({number: page.current}))
   }
 }

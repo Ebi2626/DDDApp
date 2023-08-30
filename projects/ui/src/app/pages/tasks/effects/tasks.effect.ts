@@ -2,29 +2,53 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TasksService } from '../services/tasks.service';
 import * as TasksActions from '../actions/tasks.actions';
-import * as TasksSelectors from '../selectors/tasks.selectors';
-import { catchError, map, mergeMap, of, switchMap, withLatestFrom } from 'rxjs';
+import * as TaskSelectors from '../selectors/tasks.selectors';
+import * as QueryActions from "src/app/core/actions/query.actions";
+import * as QuerySelectors from "src/app/core/selectors/query.selectors";
+import * as SettingsActions from 'src/app/pages/settings/actions/settings.actions';
+import { catchError, concatMap, debounceTime, of, switchMap, withLatestFrom } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
-import { CyclicTask, CyclicTaskItemRealization, ProgressiveTask, SingleTask } from 'dddapp-common';
-import { Update } from '@ngrx/entity';
-import { UpdateStr } from '@ngrx/entity/src/models';
+import { CyclicTask, CyclicTaskItemRealization } from 'dddapp-common';
 
 @Injectable()
 export class TasksEffects {
   fetchTasks$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TasksActions.fetchTasks),
-      withLatestFrom(this.store.select(TasksSelectors.selectTasks)),
-      switchMap(([_, tasks]) => {
-        if (tasks.length) {
-          return of(tasks).pipe(
-            map((tasks) => TasksActions.setTasks({ tasks }))
-          );
+      ofType(TasksActions.fetchTasks, QueryActions.updateCategories, TasksActions.changePage),
+      withLatestFrom(
+        this.store.select(QuerySelectors.selectCategories),
+        this.store.select(TaskSelectors.selectTaskPage)
+        ),
+      debounceTime(200),
+      switchMap(([_, categories, page]) => {
+        let newPage;
+        switch(_.type) {
+          case TasksActions.changePage.type:
+            newPage = {
+              ...page,
+              current: _.number
+            }
+          break;
+          case QueryActions.updateCategories.type:
+            newPage = {
+              ...page,
+              current: 0
+            }
+          break;
+          default:
+            newPage = page
+          break;
         }
-        return this.tasksService.fetchTasks().pipe(
-          mergeMap((tasks) => [TasksActions.setTasks({ tasks })]),
-          catchError(() => of(TasksActions.fetchTasksFailed()))
+        return this.tasksService.fetchTasks(categories, newPage).pipe(
+          concatMap(({tasks, page}) => of(
+              TasksActions.setTasks({ tasks }),
+              TasksActions.setNewPage({ page }),
+            )),
+          catchError(() => of(
+            TasksActions.fetchTasksFailed(),
+            TasksActions.changePageFailed(),
+            ))
         );
       })
     )
@@ -161,6 +185,17 @@ export class TasksEffects {
           catchError((e) => [TasksActions.createTaskFailed()])
         )
       )
+    )
+  );
+
+
+  replaceAllTasks$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SettingsActions.importDataSuccessfull),
+      switchMap(({ importedData: { Tasks } }) => {
+        this.store.dispatch(TasksActions.clearAllTasks());
+        return of(TasksActions.setTasks({ tasks: Tasks }));
+      })
     )
   );
 

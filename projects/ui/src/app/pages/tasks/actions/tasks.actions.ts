@@ -3,6 +3,7 @@ import { createAction, props } from '@ngrx/store';
 import { CyclicTask, SingleTask, Task } from 'dddapp-common';
 import { NewTaskForRequest } from '../models/task.model';
 import { UpdateStr } from '@ngrx/entity/src/models';
+import { Page } from 'src/app/core/reducers/query.reducer';
 
 export const fetchTasks = createAction('[Tasks] Fetch tasks');
 
@@ -12,6 +13,20 @@ export const setTasks = createAction(
 );
 
 export const fetchTasksFailed = createAction('[Tasks] Fetch tasks failed');
+
+export const changePage = createAction(
+  '[Tasks] Change page',
+  props<{ number: number }>()
+);
+
+export const setNewPage = createAction(
+  '[Tasks] Set new page',
+  props<{ page: Page }>()
+);
+
+export const changePageFailed = createAction(
+  '[Tasks] Changing page failed'
+);
 
 export const createTaskRequest = createAction(
   '[Tasks] Create task request',
@@ -89,4 +104,8 @@ export const updateTaskList = createAction(
 
 export const updateTaskListFailed = createAction(
   '[Tasks] Update task list failed'
+);
+
+export const clearAllTasks = createAction(
+  '[Tasks] Clear all tasks'
 );

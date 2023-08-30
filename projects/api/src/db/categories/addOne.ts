@@ -14,7 +14,8 @@ export const addOne = async (category: any, userId: string) => {
   const result = [];
 
   const results = await db.query(aql`
-  INSERT ${categoryWithUserId} INTO Categories RETURN NEW`);
+    INSERT ${categoryWithUserId} INTO Categories RETURN NEW
+  `);
 
   for await (const doc of results) {
     result.push(doc);

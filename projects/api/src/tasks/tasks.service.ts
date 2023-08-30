@@ -18,8 +18,19 @@ export class TasksService {
     return { tasks: await getMany(userId, taskIds) };
   }
 
-  async findAll(userId: string) {
-    return await getAll(userId);
+  async findAll(
+    userId: string,
+    page: number,
+    size: number,
+    categories?: string[],
+  ) {
+    let results;
+    if (categories && categories.length) {
+      results = await getAll(userId, page, size, categories);
+      return { tasks: results.data, page: results.page };
+    }
+    results = await getAll(userId, page, size);
+    return { tasks: results.data, page: results.page };
   }
 
   async findOne(id: string, userId: string) {

@@ -13,8 +13,19 @@ export class TargetsService {
     return { target: await addOne(createTargetDto, userId) };
   }
 
-  async findAll(userId: string) {
-    return { targets: await getAll(userId) };
+  async findAll(
+    userId: string,
+    page: number,
+    size: number,
+    categories?: string[],
+  ) {
+    let results;
+    if (categories?.length) {
+      results = await getAll(userId, page, size, categories);
+      return { targets: results.data, page: results.page };
+    }
+    results = await getAll(userId, page, size);
+    return { targets: results.data, page: results.page };
   }
 
   async findOne(id: string, userId: string) {

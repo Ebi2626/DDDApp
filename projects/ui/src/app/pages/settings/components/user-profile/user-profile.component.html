@@ -1,0 +1,42 @@
+<article class="row">
+  <div class="col-12 mb-2">
+    <h2 class="text-primary text-center">Profil użytkownika</h2>
+  </div>
+  <section
+    class="col-12 mb-5"
+    *ngIf="{
+      userData: userData$ | async
+    } as ctx"
+  >
+    <div class="col-12 col-md-6 mb-4">
+      <p class="userInfo__item row">
+        <span class="userInfo__itemLabel col-12 col-sm-4 text-primary">
+          Imię:
+        </span>
+        <span class="userInfo__itemValue col">
+          {{ ctx.userData?.name }}
+        </span>
+      </p>
+      <p class="userInfo__item row">
+        <span class="userInfo__itemLabel col-12 col-sm-4 text-primary">
+          Nazwisko:
+        </span>
+        <span class="userInfo__itemValue col">
+          {{ ctx.userData?.surname }}
+        </span>
+      </p>
+      <p class="userInfo__item row">
+        <span class="userInfo__itemLabel col-12 col-sm-4 text-primary">
+          Adres e-mail:
+        </span>
+        <span class="userInfo__itemValue col">
+          {{ ctx.userData?.email }}
+        </span>
+      </p>
+    </div>
+
+    <button class="btn btn-primary d-block mx-auto" (click)="changePassword()">
+      Zmień hasło
+    </button>
+  </section>
+</article>

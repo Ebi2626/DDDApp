@@ -1,8 +1,6 @@
-import { Component, Input } from "@angular/core";
-import { Category, Target, Task } from "dddapp-common";
-import { DateTime } from "luxon";
-import { ButtonMeta, ButtonMetaWithText } from "src/app/shared/components/button-group/button-group.component";
-import { hexToRgba } from '@rpearce/hex';
+import { Component, Input } from '@angular/core';
+import { Category, Target, Task } from 'dddapp-common';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'dddapp-dashboard-targets',
@@ -10,19 +8,19 @@ import { hexToRgba } from '@rpearce/hex';
   styleUrls: ['./dashboard-targets.component.scss'],
 })
 export class DashboardTargetsComponent {
-  private _targets: Target[] = [];
-
-  @Input()
-  set targets(newTargets: Target[] | null) {
-    const now = DateTime.now();
-    this._targets = newTargets ? newTargets
-      .filter((target) => DateTime.fromISO(`${target.deadline}`) > now)
-      .filter((target) => target.tasks.length > 0)
-      : [];
-  }
-  get targets() {
-    return this._targets;
-  }
+  @Input() targets?: Target[] | null;
   @Input() tasks?: Task[] | null;
   @Input() categories: Category[] = [];
+
+  getCurrentTargets(targets: Target[], tasks: Task[]) {
+      const now = DateTime.now();
+      return targets
+        .filter(
+          (target) => DateTime.fromISO(`${target.deadline}`) > now
+        )
+        .filter((target) => {
+          const targetTasks = tasks.filter(({id}) => target.tasks.includes(id));
+          return targetTasks.filter((task) => !task.completed && DateTime.fromISO(`${task.deadline}`) > now).length > 0;
+        })
+    }
 }
