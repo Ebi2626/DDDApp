@@ -1,4 +1,4 @@
-@import './colors';
+@import "./colors";
 
-$list-group-bg: $bg-color;
-$list-group-border-color: $secondary;
+$list-group-bg: var(--bg-color, $bg-color);
+$list-group-border-color: var(--secondary, $secondary);

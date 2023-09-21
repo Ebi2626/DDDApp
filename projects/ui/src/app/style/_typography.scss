@@ -1,3 +1,9 @@
+@import "colors";
+
 .text-small {
   font-size: 0.75rem;
+}
+
+.form-text {
+  color: var(--secondary, $secondary);
 }

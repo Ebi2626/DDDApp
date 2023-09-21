@@ -1,40 +1,41 @@
-<article class="row" *ngIf="{
-  appData: appData$ | async,
-  isFetching: isFetching$ | async,
-  hasError: hasError$ | async
-} as ctx">
+<article
+  class="row"
+  *ngIf="{
+    userData: userData$ | async,
+    isFetching: isFetching$ | async,
+    hasError: hasError$ | async
+  } as ctx"
+>
   <div class="col-12 mb-2">
     <h2 class="text-primary text-center">Dane użytkownika</h2>
   </div>
-  <section
-    class="col-12 mb-5"
-  >
+  <section class="col-12 mb-5">
     <div class="col-12 col-md-6 mb-4">
-      <dddapp-spinner [hasContent]="!!ctx.appData" [show]="!!ctx.isFetching">
-      <p class="userInfo__item row align-items-center">
-        <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
-          Liczba celów:
-        </span>
-        <span class="userInfo__itemValue col">
-          {{ ctx.appData?.targets }}
-        </span>
-      </p>
-      <p class="userInfo__item row align-items-center">
-        <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
-          Liczba zadań:
-        </span>
-        <span class="userInfo__itemValue col">
-          {{ ctx.appData?.tasks }}
-        </span>
-      </p>
-      <p class="userInfo__item row align-items-center">
-        <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
-          Liczba kategorii:
-        </span>
-        <span class="userInfo__itemValue col">
-          {{ ctx.appData?.categories }}
-        </span>
-      </p>
+      <dddapp-spinner [hasContent]="!!ctx.userData" [show]="!!ctx.isFetching">
+        <p class="userInfo__item row align-items-center">
+          <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
+            Liczba celów:
+          </span>
+          <span class="userInfo__itemValue col">
+            {{ ctx.userData?.targets }}
+          </span>
+        </p>
+        <p class="userInfo__item row align-items-center">
+          <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
+            Liczba zadań:
+          </span>
+          <span class="userInfo__itemValue col">
+            {{ ctx.userData?.tasks }}
+          </span>
+        </p>
+        <p class="userInfo__item row align-items-center">
+          <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
+            Liczba kategorii:
+          </span>
+          <span class="userInfo__itemValue col">
+            {{ ctx.userData?.categories }}
+          </span>
+        </p>
       </dddapp-spinner>
     </div>
     <div class="d-flex flex-row justify-content-center">
@@ -49,4 +50,3 @@
     </div>
   </section>
 </article>
-

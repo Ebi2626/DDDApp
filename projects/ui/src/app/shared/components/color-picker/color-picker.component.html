@@ -1,0 +1,19 @@
+<div class="row align-items-center">
+  <label
+    for="exampleColorInput"
+    *ngIf="color.label?.length"
+    class="form-label col-6 col-sm-4 text-primary mb-0"
+    >{{ color.label }}</label
+  >
+  <div class="col" *ngIf="choosenValue">
+    <input
+      type="color"
+      [ngModel]="choosenValue || '#000000'"
+      (ngModelChange)="choosenValue$.next($event)"
+      class="form-control form-control-color colform-control form-control-color"
+      id="exampleColorInput"
+      [value]="color.color"
+      title="Wybierz kolor"
+    />
+  </div>
+</div>

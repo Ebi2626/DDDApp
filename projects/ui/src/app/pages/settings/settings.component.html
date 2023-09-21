@@ -1,4 +1,14 @@
 <h1 class="text-primary text-center mb-4">Ustawienia</h1>
-<dddapp-user-data></dddapp-user-data>
-<dddapp-user-profile></dddapp-user-profile>
-<dddapp-app-data></dddapp-app-data>
+<ng-container
+  *ngIf="{
+    settings: settings$ | async
+  } as ctx"
+>
+  <dddapp-user-data></dddapp-user-data>
+  <dddapp-user-profile></dddapp-user-profile>
+  <dddapp-app-data
+    *ngIf="ctx.settings"
+    [settings]="ctx.settings"
+    (updatedSettings)="updateSettings($event)"
+  ></dddapp-app-data>
+</ng-container>

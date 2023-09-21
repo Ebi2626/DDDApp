@@ -1,34 +1,37 @@
-@import '../../../../style/colors';
-@import 'node_modules/bootstrap/scss/bootstrap-utilities';
+@import "../../../../style/colors";
+@import "node_modules/bootstrap/scss/bootstrap-utilities";
 
 button {
   z-index: 10;
 }
 
 .collapse {
-  background-color: $bg-color;
+  background-color: var(--bg-color, $bg-color);
 }
 
 .navbar-nav {
   z-index: 1000;
   position: relative;
-  background: $bg-color;
+  background: var(--bg-color, $bg-color);
   margin-top: 1rem;
+  &.border-bottom.border-primary {
+    border-color: var(--primary, $primary) !important;
+  }
 
-  @include media-breakpoint-up('lg') {
+  @include media-breakpoint-up("lg") {
     margin-top: 0;
     border-radius: 0 0 0 5px;
   }
 }
 
 .nav-item {
-  border: solid 1px $primary;
+  border: solid 1px var(--primary, $primary);
   overflow: hidden;
 
   &.active {
     .nav-link {
       background: $secondary;
-      color: $bg-color;
+      color: var(--bg-color, $bg-color);
     }
   }
 
@@ -40,15 +43,15 @@ button {
     }
   }
 
-  @include media-breakpoint-up('lg') {
+  @include media-breakpoint-up("lg") {
     border: 0;
 
     &:not(:last-child) {
-      border-right: solid 1px $primary;
+      border-right: solid 1px var(--primary, $primary);
     }
 
     &:first-child {
-      border-left: solid 1px $primary;
+      border-left: solid 1px var(--primary, $primary);
       border-radius: 0 0 0 5px;
     }
   }
@@ -57,7 +60,7 @@ button {
     color: $secondary;
 
     &:hover {
-      color: $primary;
+      color: var(--primary, $primary);
     }
   }
 }

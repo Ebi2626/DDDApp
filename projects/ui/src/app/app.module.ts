@@ -18,7 +18,12 @@ import { TargetsComponent } from './pages/targets/targets.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { SettingsComponent } from './pages/settings/settings.component';
-import { StoreModule } from '@ngrx/store';
+import {
+  Action,
+  ActionReducerMap,
+  MetaReducer,
+  StoreModule,
+} from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { TargetsEffects } from './pages/targets/effects/targets.effect';
 import { targetsReducer } from './pages/targets/reducers/targets.reducer';
@@ -63,6 +68,18 @@ import { UserDataComponent } from './pages/settings/components/user-data/user-da
 import { AppDataComponent } from './pages/settings/components/app-data/app-data.component';
 import { SettingsEffects } from './pages/settings/effects/settings.effects';
 import { settingsReducer } from './pages/settings/reducers/settings.reducer';
+import { storageMetaReducer } from './core/reducers/localStorage.reducer';
+import { AppState } from './app.state';
+
+const reducers: ActionReducerMap<AppState> = {
+  targets: targetsReducer,
+  tasks: tasksReducer,
+  categories: categoriesReducer,
+  query: queryReducer,
+  settings: settingsReducer,
+};
+
+const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
 
 @NgModule({
   declarations: [
@@ -108,12 +125,8 @@ import { settingsReducer } from './pages/settings/reducers/settings.reducer';
     HttpClientModule,
     CoreModule,
     SharedModule,
-    StoreModule.forRoot({
-      targets: targetsReducer,
-      tasks: tasksReducer,
-      categories: categoriesReducer,
-      query: queryReducer,
-      settings: settingsReducer,
+    StoreModule.forRoot(reducers, {
+      metaReducers,
     }),
     EffectsModule.forRoot([
       TargetsEffects,
@@ -123,7 +136,7 @@ import { settingsReducer } from './pages/settings/reducers/settings.reducer';
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 50,
-      logOnly: environment.production
+      logOnly: environment.production,
     }),
   ],
   providers: [
@@ -141,9 +154,8 @@ import { settingsReducer } from './pages/settings/reducers/settings.reducer';
       multi: true,
       deps: [KeycloakService, ConfigInitService],
     },
-    { provide: HTTP_INTERCEPTORS, useClass: KeyToIdInterceptor, multi: true }
-
+    { provide: HTTP_INTERCEPTORS, useClass: KeyToIdInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

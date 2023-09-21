@@ -10,15 +10,14 @@ import { LineChartComponent } from './components/charts/line-chart/line-chart.co
 import { BarChartComponent } from './components/charts/bar-chart/bar-chart.component';
 import { NgChartsModule } from 'ng2-charts';
 import { SelectListComponent } from './components/select-list/select-list.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { ListOfLinksComponent } from './components/list-of-links/list-of-links.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
 import { CategoriesSelectorComponent } from './components/categories-selector/categories-selector.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
-
-
+import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 
 @NgModule({
   declarations: [
@@ -36,11 +35,13 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     ButtonGroupComponent,
     CategoriesSelectorComponent,
     PaginationComponent,
+    ColorPickerComponent,
   ],
   imports: [
     CommonModule,
     NgChartsModule,
     ReactiveFormsModule,
+    FormsModule,
     AppRoutingModule,
   ],
   exports: [
@@ -58,6 +59,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     ButtonGroupComponent,
     CategoriesSelectorComponent,
     PaginationComponent,
-  ]
+    ColorPickerComponent,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

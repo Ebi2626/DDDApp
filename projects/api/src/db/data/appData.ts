@@ -28,9 +28,9 @@ export const getAppData = async (userId: string) => {
       RETURN length
     )
     RETURN {
-      "categories": categories,
-      "targets": targets,
-      "tasks": tasks
+      "categories": FIRST(categories),
+      "targets": FIRST(targets),
+      "tasks": FIRST(tasks)
     }
   `);
   for await (const doc of results) {

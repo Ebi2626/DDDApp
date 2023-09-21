@@ -2301,10 +2301,10 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
 
-bootstrap@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.3.0.tgz#0718a7cc29040ee8dbf1bd652b896f3436a87c29"
-  integrity sha512-UnBV3E3v4STVNQdms6jSGO2CvOkjUMdDAVR2V5N4uCMdaIkaQjbcEAMqRimDHIs4uqBYzDAKCQwCB+97tJgHQw==
+bootstrap@5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.3.1.tgz#8ca07040ad15d7f75891d1504cf14c5dedfb1cfe"
+  integrity sha512-jzwza3Yagduci2x0rr9MeFSORjcHpt0lRZukZPZQJT1Dth5qzV7XcgGqYzi39KGAVYR8QEDVoO0ubFKOxzMG+g==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -2788,9 +2788,9 @@ date-format@^4.0.14:
   resolved "https://registry.yarnpkg.com/date-format/-/date-format-4.0.14.tgz#7a8e584434fb169a521c8b7aa481f355810d9400"
   integrity sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==
 
-dddapp-common@../../dist/dddapp-common/dddapp-common-v0.0.6.tgz:
-  version "0.0.6"
-  resolved "../../dist/dddapp-common/dddapp-common-v0.0.6.tgz#ad24427f8619511cf0ecee899229223d71c54bc8"
+dddapp-common@../../dist/dddapp-common/dddapp-common-v0.0.14.tgz:
+  version "0.0.14"
+  resolved "../../dist/dddapp-common/dddapp-common-v0.0.14.tgz#8496a5e1c859b0fdcc787c2b57b9d64c3cb2bc42"
   dependencies:
     tslib "^2.3.0"
 
@@ -2814,6 +2814,11 @@ debug@^3.2.6:
   integrity sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==
   dependencies:
     ms "^2.1.1"
+
+deepmerge@^4.2.2:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.3.1.tgz#44b5f2147cd3b00d4b56137685966f26fd25dd4a"
+  integrity sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==
 
 default-gateway@^6.0.3:
   version "6.0.3"
@@ -4579,6 +4584,14 @@ ng2-charts@^4.1.1:
   integrity sha512-iHwXDbmX86lfeH8VRcsaW2tJATsuAZo4kvvC/Yk2l35zOHjevja1qBvO6BAibiDazi9r9aS6ZRJOqWPsz1pP2w==
   dependencies:
     lodash-es "^4.17.15"
+    tslib "^2.3.0"
+
+ngrx-store-localstorage@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/ngrx-store-localstorage/-/ngrx-store-localstorage-16.0.0.tgz#84c95507c2eabf3701a170c78955033651d7b459"
+  integrity sha512-2aySPLexpmcXVe2ms83z0AoAWWR4yj8gg3hE6GNC6g6HIxJ0GVlA8KdDA5je0BFO1a6ew5LEiq6/b+tFlIDKEQ==
+  dependencies:
+    deepmerge "^4.2.2"
     tslib "^2.3.0"
 
 nice-napi@^1.0.2:

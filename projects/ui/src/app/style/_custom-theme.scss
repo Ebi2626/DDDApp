@@ -1,0 +1,71 @@
+// primary color utilities
+.btn {
+  &.btn-primary {
+    background-color: var(--primary, $primary) !important;
+    border-color: var(--primary, $primary) !important;
+    color: var(--bg-color, $bg-color) !important;
+  }
+  &.btn-outline-primary {
+    border-color: var(--primary, $primary) !important;
+    color: var(--primary, $primary) !important;
+    &:hover {
+      background-color: var(--primary, $primary) !important;
+      color: var(--bg-color, $bg-color) !important;
+    }
+  }
+}
+
+.text-primary,
+a,
+.nav-link {
+  color: var(--primary, $primary) !important;
+}
+.navbar-toggler.border.border-primary {
+  i {
+    color: var(--primary, $primary) !important;
+  }
+  border-color: var(--primary, $primary) !important;
+}
+
+.nav-item {
+  border-color: var(--primary, $primary) !important;
+}
+
+// secondary color utilities
+
+.btn {
+  &.btn-secondary {
+    background-color: var(--secondary, $secondary) !important;
+    border-color: var(--secondary, $secondary) !important;
+  }
+  &.btn-outline-secondary {
+    border-color: var(--secondary, $secondary) !important;
+    color: var(--secondary, $secondary) !important;
+    &:hover {
+      background-color: var(--secondary, $secondary) !important;
+      color: var(--bg-color, $bg-color) !important;
+    }
+  }
+}
+
+.text-secondary {
+  color: var(--secondary, $secondary) !important;
+}
+
+.nav-item.active {
+  .nav-link {
+    background-color: var(--secondary, $secondary) !important;
+  }
+  background-color: var(--secondary, $secondary) !important;
+}
+
+// bg color utilities
+.accordion-button,
+.accordion-item,
+.nav-item:not(.active),
+.list-group-item,
+.modal-content,
+.form-select,
+.form-control {
+  background-color: var(--bg-color, $bg-color) !important;
+}

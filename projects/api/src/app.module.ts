@@ -4,7 +4,12 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './interceptors/Logging.interceptor';
-import { AuthGuard, KeycloakConnectModule, PolicyEnforcementMode, TokenValidation } from 'nest-keycloak-connect';
+import {
+  AuthGuard,
+  KeycloakConnectModule,
+  PolicyEnforcementMode,
+  TokenValidation,
+} from 'nest-keycloak-connect';
 import { TargetsModule } from './targets/targets.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TasksModule } from './tasks/tasks.module';
@@ -53,4 +58,4 @@ import { SettingsModule } from './settings/settings.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

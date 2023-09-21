@@ -1,13 +1,13 @@
 @import "./colors";
 
-$input-bg: $bg-color;
-$input-color: white;
-$input-border-color: $primary;
-$input-focus-border-color: $secondary;
+$input-bg: var(--bg-color, $bg-color);
+$input-color: var(--text-color, $text-color);
+$input-border-color: var(--primary, $primary);
+$input-focus-border-color: var(--secondary, $secondary);
 
-$input-group-addon-color: white;
-$input-group-addon-bg: $primary;
-$input-group-addon-border-color: $primary;
+$input-group-addon-color: var(--text-color, $text-color);
+$input-group-addon-bg: var(--primary, $primary);
+$input-group-addon-border-color: var(--primary, $primary);
 
 .form-control {
   &[type="date"] {
@@ -25,15 +25,19 @@ $input-group-addon-border-color: $primary;
       transform: translateY(-50%);
       right: 10px;
       content: "\f133";
-      color: $primary;
+      color: var(--primary, $primary);
     }
   }
-  --bs-tertiary-bg: #{$primary};
+  --bs-tertiary-bg: var(--primary, $primary);
 }
 
 .form-check {
   .form-check-input {
-    border: solid 1px $primary;
+    border: solid 1px var(--primary, $primary);
+    &:checked {
+      background-color: var(--primary, $primary);
+      border-color: var(--primary, $primary);
+    }
   }
 }
 

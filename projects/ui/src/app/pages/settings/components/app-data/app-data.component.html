@@ -1,38 +1,34 @@
-<p>Komponent wyświetlający informacje o aplikacji, autorze, wersji i linkujący instrukcję</p>
-<p>Umożliwia zmianę ustawień kolorystyki aplikacji.</p>
 <article class="row">
   <div class="col-12 mb-2">
     <h2 class="text-primary text-center">Dane aplikacji</h2>
   </div>
-  <section
-    class="col-12 mb-5"
-  >
+  <section class="col-12 mb-5">
     <div class="col-12 col-md-6 mb-4">
       <p class="userInfo__item row align-items-center">
         <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
           Nazwa aplikacji:
         </span>
-        <span class="userInfo__itemValue col">
-          Nawigator Sukcesu
-        </span>
+        <span class="userInfo__itemValue col"> Nawigator Sukcesu </span>
       </p>
       <p class="userInfo__item row align-items-center">
         <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
           Wersja:
         </span>
-        <span class="userInfo__itemValue col">
-          0.0.1
-        </span>
+        <span class="userInfo__itemValue col"> 0.0.1 </span>
       </p>
       <p class="userInfo__item row align-items-center">
         <span class="userInfo__itemLabel col-6 col-sm-4 text-primary">
           Instrukcja obsługi:
         </span>
-        <a href="#" class="userInfo__itemValue col">
-          https://link.com
-        </a>
+        <a href="#" class="userInfo__itemValue col"> https://link.com </a>
       </p>
+      <div class="d-flex flex-column gap-2" *ngIf="settings">
+        <dddapp-color-picker
+          *ngFor="let itemColor of settings.colors"
+          [color]="itemColor"
+          (choosenColor)="changeColor($event)"
+        ></dddapp-color-picker>
+      </div>
     </div>
   </section>
 </article>
-

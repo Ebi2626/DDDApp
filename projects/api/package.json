@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "0.0.1",
-  "description": "REST API for Data Driven Development App",
+    "description": "REST API for Data Driven Development App",
   "author": "Edwin Harmata <edwin.harmata@gmail.com>",
   "private": true,
   "license": "UNLICENSED",
@@ -28,7 +28,7 @@
     "@nestjs/platform-express": "^9.3.8",
     "@nestjs/swagger": "^6.3.0",
     "arangojs": "^8.1.0",
-    "dddapp-common": "../../dist/dddapp-common/dddapp-common-v0.0.6.tgz",
+    "dddapp-common": "../../dist/dddapp-common/dddapp-common-v0.0.14.tgz",
     "dotenv": "^16.0.3",
     "keycloak-connect": "^21.0.2",
     "nest-keycloak-connect": "^1.9.1",

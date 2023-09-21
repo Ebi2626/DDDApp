@@ -1,4 +1,4 @@
-@import '../../../style/colors';
+@import "../../../style/colors";
 
 :host {
   .btn {
@@ -13,10 +13,10 @@
       }
       &::-webkit-scrollbar-track {
         background-color: transparent;
-        border: solid 1px $primary;
+        border: solid 1px var(--primary);
       }
       &::-webkit-scrollbar-thumb {
-        background-color: $secondary;
+        background-color: var(--secondary);
         outline: 0px solid slategrey;
       }
     }

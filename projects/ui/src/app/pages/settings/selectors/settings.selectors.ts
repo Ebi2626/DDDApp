@@ -1,21 +1,25 @@
-import { AppState } from "src/app/app.state";
-import { State } from "../reducers/settings.reducer";
-import { createSelector } from "@ngrx/store";
-
+import { AppState } from 'src/app/app.state';
+import { State } from '../reducers/settings.reducer';
+import { createSelector } from '@ngrx/store';
 
 export const selectSettingsState = (state: AppState): State => state.settings;
 
-export const selectSettingsAppData = createSelector(
+export const selectUserData = createSelector(
   selectSettingsState,
-  ({appData}: State) => appData
+  ({ userData }: State) => userData
 );
 
 export const selectSettingsIsFetching = createSelector(
   selectSettingsState,
-  ({isFetching}: State) => isFetching
+  ({ isFetching }: State) => isFetching
 );
 
 export const selectSettingsHasError = createSelector(
   selectSettingsState,
-  ({hasError}: State) => hasError
+  ({ hasError }: State) => hasError
+);
+
+export const selectUserSettings = createSelector(
+  selectSettingsState,
+  ({ settings }: State) => settings
 );

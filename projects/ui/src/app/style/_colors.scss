@@ -8,31 +8,43 @@ $bg-color: #1f1f28;
 $overlay-bg-color: #1f1f28aa;
 
 $placeholder-color: #19647e33;
-$success: #2BA66D;
+$success: #2ba66d;
+
+$text-color: white;
+
+// Global css variables
+:root {
+  --primary: #{$primary};
+  --primary-60: #{$primary-60};
+  --secondary: #{$secondary};
+  --danger: #{$danger};
+  --bg-color: #{$bg-color};
+  --text-color: #{$text-color};
+}
+
 // Components
 
 // Accordion
-$accordion-bg: $bg-color;
-$accordion-border-color: $primary;
-$accordion-color: white;
-$accordion-icon-color: $primary;
-$accordion-button-active-bg: $bg-color;
-$accordion-button-active-color: $secondary;
+$accordion-bg: var(--bg-color, $bg-color);
+$accordion-border-color: var(--primary, $primary);
+$accordion-color: var(--text-color, $text-color);
+$accordion-icon-color: var(--primary, $primary);
+$accordion-button-active-bg: var(--bg-color, $bg-color);
+$accordion-button-active-color: var(--secondary, $secondary);
 
 // Pagination
 $pagination-bg: transparent;
-$pagination-border-color: $primary;
-$pagination-color: $primary;
+$pagination-border-color: var(--primary, $primary);
+$pagination-color: var(--primary, $primary);
 
-$pagination-hover-color: white;
-$pagination-hover-bg: $secondary;
-$pagination-hover-border-color: $secondary;
+$pagination-hover-color: var(--text-color, $text-color);
+$pagination-hover-bg: var(--secondary, $secondary);
+$pagination-hover-border-color: var(--secondary, $secondary);
 
-$pagination-active-color: white;
-$pagination-active-bg: $primary;
-$pagination-active-border-color: $primary;
+$pagination-active-color: var(--text-color, $text-color);
+$pagination-active-bg: var(--primary, $primary);
+$pagination-active-border-color: var(--primary, $primary);
 
 $pagination-disabled-color: #ffffff66;
-$pagination-disabled-bg: $primary-60;
-$pagination-disabled-border-color: $primary-60;
-
+$pagination-disabled-bg: var(--primary-60, $primary-60);
+$pagination-disabled-border-color: var(--primary-60, $primary-60);
