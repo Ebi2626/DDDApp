@@ -20,7 +20,8 @@ export class DashboardTargetsComponent {
         )
         .filter((target) => {
           const targetTasks = tasks.filter(({id}) => target.tasks.includes(id));
-          return targetTasks.filter((task) => !task.completed && DateTime.fromISO(`${task.deadline}`) > now).length > 0;
+          const incompletedCurrentTasks = targetTasks.filter((task) => !task.completed && DateTime.fromISO(`${task.deadline}`) > now)
+          return incompletedCurrentTasks.length > 0 ? incompletedCurrentTasks : [];
         })
     }
 }

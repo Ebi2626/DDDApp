@@ -27,6 +27,9 @@ button {
 .nav-item {
   border: solid 1px var(--primary, $primary);
   overflow: hidden;
+  .nav-link {
+    cursor: pointer;
+  }
 
   &.active {
     .nav-link {
