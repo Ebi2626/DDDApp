@@ -1,0 +1,86 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Document
+    style(type="text/css").
+      * {
+        text-align: center;
+        font-family: Sans-serif;
+      }
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: auto;
+        max-width: 800px;
+        margin: 20px auto;
+        border: solid 3px #19647e;
+        border-radius: 5px;
+      }
+      .header {
+        color: white;
+        font-size: 3rem;
+        font-weight: bold;
+        background-color: #19647e;
+        padding: 2rem;
+        margin: 0;
+      }
+      .body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+
+      }
+      .text-primary {
+        color: #19647e
+      }
+      .text-danger {
+        display: inline-block;
+        margin: 0 0.25rem;
+        color: #f64055;
+      }
+      .text-success {
+        color: #2ba66d;
+      }
+      .btn.btn-primary {
+        display: inline-block;
+        width: calc(100% - 4rem);
+        max-width: 400px;
+        padding: 1rem;
+        text-align: center;
+        margin: 2rem auto;
+        background-color: #19647e;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+      }
+      .welcome {
+        font-size: 1.5rem;
+      }
+      .extra-margin {
+        display: inline-block;
+        margin-bottom: 0.25rem;
+      }
+  body
+    div.wrapper
+      h1.header #{subject}
+      div.body
+        p.text-primary.welcome
+          b Cześć #{name}!
+        p Nadchodzi termin realizacji obranego przez Ciebie celu.
+        p
+          span Cel "#{targetTitle}" po dniu
+          span.text-danger #{targetDueDate}
+          span nie będzie mógł zostać zrealizowany i zostanie oznaczone jako niewykonany.
+        p Pamiętaj, że Twoją motywacją do jego realizacji było:
+        p
+          i.text-success #{targetMotivation}
+        p Mamy nadzieję, że znajdziesz w sobie siły, by osiągnać obrany cel!
+        p
+          span.extra-margin Z pozdrowieniami,
+          br
+          b Zespół Nawigatora Sukcesu
+        a(href='http://localhost:4201/').btn.btn-primary Przejdź do apki
