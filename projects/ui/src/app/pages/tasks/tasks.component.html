@@ -8,22 +8,20 @@
   } as ctx"
 >
   <h1 class="text-primary text-center mb-4">Zadania</h1>
-  <dddapp-no-data
-    [hasContent]="!!ctx.isFetching || !!ctx.tasks?.length"
-    ctaText="Dodaj zadanie"
-    [ctaAction]="addTask.bind(this)"
+  <button
+    [disabled]="ctx.isFetching"
+    (click)="addTask()"
+    class="d-block btn btn-outline-primary mb-4 mx-auto"
+    type="button"
   >
-    <button
-      [disabled]="ctx.isFetching"
-      (click)="addTask()"
-      class="d-block btn btn-outline-primary mb-4 mx-auto"
-      type="button"
-    >
-      Dodaj nowe
-    </button>
-    <dddapp-categories-selector
+    Dodaj nowe
+  </button>
+  <dddapp-categories-selector
     [categories]="ctx.categories || []"
   ></dddapp-categories-selector>
+  <dddapp-no-data
+    [hasContent]="!!ctx.isFetching || !!ctx.tasks?.length"
+  >
     <div class="accordion accordion-flush" id="taskAccordion">
       <div
         class="accordion-item"
@@ -32,7 +30,9 @@
         <h2 class="accordion-header" [id]="'taskTitle-' + i">
           <div class="categories" *ngIf="ctx.categories">
             <div
-              *ngFor="let category of ctx.categories | categoriesPerEntity : task"
+              *ngFor="
+                let category of ctx.categories | categoriesPerEntity : task
+              "
               class="categories__item"
               [ngStyle]="{ 'background-color': category.color }"
               [attr.title]="category.title"
@@ -63,7 +63,11 @@
         </div>
       </div>
     </div>
-    <dddapp-pagination *ngIf="ctx.page" [page]="ctx.page" (pageChange)="changePage($event)"></dddapp-pagination>
+    <dddapp-pagination
+      *ngIf="ctx.page"
+      [page]="ctx.page"
+      (pageChange)="changePage($event)"
+    ></dddapp-pagination>
   </dddapp-no-data>
   <dddapp-task-modal
     *ngIf="ctx.modalState?.isOpen"

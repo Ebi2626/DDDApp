@@ -2880,9 +2880,9 @@ data-uri-to-buffer@3:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-3.0.1.tgz#594b8973938c5bc2c33046535785341abc4f3636"
   integrity sha512-WboRycPNsVw3B3TL559F7kuBUM4d8CgMEvk6xEJlOp7OBPjt6G7z8WMWlD2rOFZLk6OYfFIUGsCOWzcQH9K2og==
 
-dddapp-common@./packages/dddapp-common-v0.0.14.tgz:
-  version "0.0.14"
-  resolved "./packages/dddapp-common-v0.0.14.tgz#8496a5e1c859b0fdcc787c2b57b9d64c3cb2bc42"
+dddapp-common@./packages/dddapp-common-v0.0.15.tgz:
+  version "0.0.15"
+  resolved "./packages/dddapp-common-v0.0.15.tgz#37f1e348d0b2b3dbc5c50861c4cfe2f6b3f7a9aa"
   dependencies:
     tslib "^2.3.0"
 

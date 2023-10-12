@@ -24,6 +24,7 @@ export interface ButtonMeta {
   color: string;
   label: string;
   action: ButtonToggleAction;
+  disabled?: boolean;
 }
 
 export interface ButtonMetaWithText extends ButtonMeta {
@@ -34,7 +35,7 @@ export interface ButtonMetaWithText extends ButtonMeta {
   selector: 'dddapp-button-group',
   templateUrl: './button-group.component.html',
   styleUrls: ['./button-group.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonGroupComponent {
   form: FormGroup;

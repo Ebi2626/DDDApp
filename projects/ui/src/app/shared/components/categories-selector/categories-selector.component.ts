@@ -33,11 +33,12 @@ export class CategoriesSelectorComponent {
       {
         action: {
           id: category.id,
-          isActive: false
+          isActive: category.isDefault
         },
         color: category.color,
         text: this.getContrastTextColor(category.color),
-        label: category.title
+        label: category.title,
+        disabled: category.isDefault
       }
     ));
   }
@@ -54,6 +55,5 @@ export class CategoriesSelectorComponent {
     }
     this.selectedCategories.emit(this._selectedCategories);
     this.store.dispatch(QueryActions.updateCategories({categories: this._selectedCategories}));
-    console.log('emitujemy: ', this._selectedCategories);
   }
 }

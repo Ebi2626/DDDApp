@@ -15,6 +15,7 @@
         borderColor: buttons[i].color,
         color: btn.value ? buttons[i].text : buttons[i].color
       }"
+      [attr.disabled]="buttons[i].disabled ? true : null"
       (click)="buttonClick(btn.value, i)"
     >
       {{ buttons[i].label }}

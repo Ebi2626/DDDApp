@@ -142,9 +142,7 @@ export class TaskListRealizationComponent implements OnDestroy {
       const taskDate = DateTime.fromISO(`${dueDate}`);
       return taskDate > periodBegin && taskDate <= periodEnd;
     });
-    console.log(tasksPerPeriod);
     return (tasksPerPeriod || []) as Array<ProgressiveTaskItemRealization>
-
   }
 
   private computeDates = (period: number): [beginningDate: DateTime, endDate: DateTime] => {

@@ -7,14 +7,13 @@
   page: page$ | async
 } as ctx">
   <h1 class="text-primary text-center mb-4">Cele</h1>
-  <dddapp-no-data [hasContent]="!!ctx.isFetching || !!ctx.targets?.length" ctaText="Dodaj cel"
-    [ctaAction]="addTarget.bind(this)">
     <button [disabled]="ctx.isFetching" (click)="addTarget()" class="d-block btn btn-outline-primary mb-4 mx-auto"
       type="button">Dodaj
       nowy</button>
       <dddapp-categories-selector
       [categories]="ctx.categories || []"
     ></dddapp-categories-selector>
+    <dddapp-no-data [hasContent]="!!ctx.isFetching || !!ctx.targets?.length">
       <dddapp-target-list
         [targets]="ctx.targets"
         [tasks]="ctx.tasks"

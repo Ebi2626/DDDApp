@@ -1,6 +1,6 @@
-export const WEEK_DURATION = 604800000;
-export const MONTH_DURATION = 4 * WEEK_DURATION;
-export const YEAR_DURATION = 12 * MONTH_DURATION;
+export const WEEK_DURATION = 604800000; // time in millis from luxon
+export const MONTH_DURATION = 2592000000;
+export const YEAR_DURATION = 31536000000;
 
 export enum TaskPeriod {
   WEEK_DURATION,
