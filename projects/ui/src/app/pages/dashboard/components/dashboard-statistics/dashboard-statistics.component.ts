@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { Target, Task } from 'dddapp-common';
 import { BehaviorSubject, Subject, Subscription, combineLatest, distinctUntilChanged } from 'rxjs';
@@ -12,7 +12,7 @@ import { EmptyTargetDatasetsPerState, EmptyTargetDatasetsProgress, EmptyTargetsP
   styleUrls: ['./dashboard-statistics.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardStatisticsComponent {
+export class DashboardStatisticsComponent implements OnDestroy {
 
   private sub: Subscription = new Subscription();
 
@@ -106,7 +106,7 @@ export class DashboardStatisticsComponent {
     );
   }
 
-  ngOnChanges() {
-    console.log('reredner Dashboard Statistics')
+  ngOnDestroy() {
+    this?.sub.unsubscribe();
   }
 }

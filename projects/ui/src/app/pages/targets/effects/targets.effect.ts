@@ -52,9 +52,6 @@ export class TargetsEffects {
             break;
         }
         return this.targetsService.fetchTargets(categories, newPage).pipe(
-          tap(({targets}) => {
-            console.log('We are dispatching setTargets in fetchTargets with: ', {targets});
-          }),
           concatMap(({ targets, page }) =>
             of(
               TargetsActions.setTargets({ targets }),

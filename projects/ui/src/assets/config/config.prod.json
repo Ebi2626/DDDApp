@@ -1,4 +1,5 @@
 {
+  "KEYCLOAK_URL": "http://localhost:8080",
   "KEYCLOAK_REALM": "${KEYCLOAK_REALM}",
   "KEYCLOAK_CLIENT_ID": "${KEYCLOAK_CLIENT_ID}"
 }
