@@ -34,7 +34,7 @@ import { HttpModule } from '@nestjs/axios';
       isGlobal: true,
     }),
     KeycloakConnectModule.register({
-      authServerUrl: 'http://localhost:8080/auth', // might be http://localhost:8080/auth for older keycloak versions
+      authServerUrl: `${process.env.KEYCLOAK_URL}/auth`, // might be http://localhost:8080/auth for older keycloak versions
       realm: 'dddapp',
       clientId: 'dddapp_server',
       secret: 'SDUHKxQbawPshf84bJLEV1dr5S4T2c1W',

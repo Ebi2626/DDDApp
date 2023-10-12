@@ -69,7 +69,14 @@
         "id": "7a4bbb2e-bbc8-478f-8b21-0e0c216a5a40",
         "name": "default-roles-dddapp",
         "description": "${role_default-roles-dddapp}",
-        "composite": false,
+        "composite": true,
+        "composites": {
+          "client": {
+            "dddapp_client": [
+              "uma_protection"
+            ]
+          }
+        },
         "clientRole": false,
         "containerId": "dddapp",
         "attributes": {}
@@ -96,6 +103,15 @@
         "id": "7a4cb2cb-8b86-4d3b-9494-509c82becf6d",
         "name": "offline_access",
         "description": "${role_offline-access}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "dddapp",
+        "attributes": {}
+      },
+      {
+        "id": "cbcf1739-cb0b-425b-9eee-ee845f13b933",
+        "name": "PASSWORD_RESET",
+        "description": "Role which allow to reset password",
         "composite": false,
         "clientRole": false,
         "containerId": "dddapp",
@@ -322,12 +338,26 @@
           "description": "Default admin app role",
           "composite": true,
           "composites": {
+            "realm": [
+              "PASSWORD_RESET",
+              "uma_authorization",
+              "ADMIN",
+              "default-roles-dddapp"
+            ],
             "client": {
               "dddapp_server": [
                 "APP_ADMIN"
               ]
             }
           },
+          "clientRole": true,
+          "containerId": "f26656e1-579f-4db2-9a7f-8342b3b3f5c7",
+          "attributes": {}
+        },
+        {
+          "id": "d8559125-a1cf-4280-9e4d-d62f57b24c4c",
+          "name": "uma_protection",
+          "composite": false,
           "clientRole": true,
           "containerId": "f26656e1-579f-4db2-9a7f-8342b3b3f5c7",
           "attributes": {}
@@ -460,13 +490,14 @@
     "id": "7a4bbb2e-bbc8-478f-8b21-0e0c216a5a40",
     "name": "default-roles-dddapp",
     "description": "${role_default-roles-dddapp}",
-    "composite": false,
+    "composite": true,
     "clientRole": false,
     "containerId": "dddapp"
   },
   "requiredCredentials": [
     "password"
   ],
+  "passwordPolicy": "length(8)",
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyInitialCounter": 0,
@@ -503,30 +534,38 @@
   "webAuthnPolicyPasswordlessAcceptableAaguids": [],
   "users": [
     {
-      "id": "d4d578e5-bb9c-4b64-a2af-6d5f80e8fff3",
-      "createdTimestamp": 1613627116195,
-      "username": "service-account-dddapp_client",
+      "id": "ff785141-4138-4378-a4e5-6d26b38fe81c",
+      "createdTimestamp": 1695844108650,
+      "username": "service-account-dddapp_server",
       "enabled": true,
       "totp": false,
       "emailVerified": false,
-      "serviceAccountClientId": "dddapp_client",
+      "serviceAccountClientId": "dddapp_server",
       "disableableCredentialTypes": [],
       "requiredActions": [],
       "realmRoles": [
-        "uma_authorization",
-        "offline_access"
+        "default-roles-dddapp"
       ],
       "clientRoles": {
-        "account": [
-          "view-profile",
-          "manage-account"
+        "realm-management": [
+          "view-users"
         ],
-        "dddapp_client": [
+        "dddapp_server": [
           "uma_protection"
         ]
       },
       "notBefore": 0,
       "groups": []
+    }
+  ],
+  "scopeMappings": [
+    {
+      "clientScope": "email",
+      "roles": [
+        "uma_authorization",
+        "ADMIN",
+        "default-roles-dddapp"
+      ]
     }
   ],
   "clients": [
@@ -713,11 +752,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
       "redirectUris": [
         "http://localhost:80/*",
-        "http://localhost:4201/*",
         "http://127.0.0.1:80/*",
+        "http://localhost:4201/*",
         "http://127.0.0.1:4201/*"
       ],
       "webOrigins": [
@@ -730,8 +768,7 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": true,
-      "authorizationServicesEnabled": true,
-      "publicClient": false,
+      "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
@@ -760,11 +797,27 @@
         "saml.onetimeuse.condition": "false"
       },
       "authenticationFlowBindingOverrides": {
-        "direct_grant": "27937199-bbaf-4c67-abea-a11a47c1f31f"
+        "direct_grant": "d39e9347-71f8-42e0-bca3-113a9ae895b2"
       },
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
       "protocolMappers": [
+        {
+          "id": "da552646-dd71-4500-bbf4-d8bb5727871c",
+          "name": "PASSWORD_RESET",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "usermodel.realmRoleMapping.rolePrefix": "dddapp",
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "PASSWORD_RESET",
+            "jsonType.label": "String"
+          }
+        },
         {
           "id": "12924e44-1096-4416-a645-6975a5ffaad6",
           "name": "Client ID",
@@ -822,50 +875,7 @@
         "phone",
         "offline_access",
         "microprofile-jwt"
-      ],
-      "authorizationSettings": {
-        "allowRemoteResourceManagement": true,
-        "policyEnforcementMode": "ENFORCING",
-        "resources": [
-          {
-            "name": "Default Resource",
-            "type": "urn:dddapp_client:resources:default",
-            "ownerManagedAccess": false,
-            "attributes": {},
-            "_id": "8f29358b-ee43-4668-8a25-6fc26073a1bc",
-            "uris": [
-              "/*"
-            ]
-          }
-        ],
-        "policies": [
-          {
-            "id": "bf60fbc2-07be-4f9c-9c78-1cb82d1ff901",
-            "name": "Default Policy",
-            "description": "A policy that grants access only for users within this realm",
-            "type": "js",
-            "logic": "POSITIVE",
-            "decisionStrategy": "AFFIRMATIVE",
-            "config": {
-              "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
-            }
-          },
-          {
-            "id": "dabe4f79-c880-4601-8a91-a60483dd528e",
-            "name": "Default Permission",
-            "description": "A permission that applies to the default resource type",
-            "type": "resource",
-            "logic": "POSITIVE",
-            "decisionStrategy": "UNANIMOUS",
-            "config": {
-              "defaultResourceType": "urn:dddapp_client:resources:default",
-              "applyPolicies": "[\"Default Policy\"]"
-            }
-          }
-        ],
-        "scopes": [],
-        "decisionStrategy": "UNANIMOUS"
-      }
+      ]
     },
     {
       "id": "f26656e1-579f-4db2-9a7f-8342b3b3f5c7",
@@ -874,15 +884,19 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": [],
+      "secret": "**********",
+      "redirectUris": [
+        "http://localhost:4201"
+      ],
       "webOrigins": [],
       "notBefore": 0,
-      "bearerOnly": true,
+      "bearerOnly": false,
       "consentRequired": false,
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
       "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
@@ -892,7 +906,7 @@
         "saml.multivalued.roles": "false",
         "saml.force.post.binding": "false",
         "saml.encrypt": "false",
-        "oauth2.device.authorization.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "true",
         "backchannel.logout.revoke.offline.tokens": "false",
         "saml.server.signature": "false",
         "saml.server.signature.keyinfo.ext": "false",
@@ -911,10 +925,111 @@
         "saml.onetimeuse.condition": "false"
       },
       "authenticationFlowBindingOverrides": {
-        "direct_grant": "27937199-bbaf-4c67-abea-a11a47c1f31f"
+        "direct_grant": "d39e9347-71f8-42e0-bca3-113a9ae895b2"
       },
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "4b3ceb32-fa00-4bf3-8ed5-6c68de663948",
+          "name": "full name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-full-name-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "id": "0322a788-290d-4071-9703-9ef681fead3e",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientId",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "0de2efa8-1385-4ff8-993d-97459a743b0e",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "ce386c3b-6362-4407-ba6c-7c2f65743e2e",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "d5a26976-0c4b-4ade-a01c-7b4963b8a15c",
+          "name": "username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "username",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "preferred_username",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "713bbce9-9604-41a1-910f-f090d96b0af9",
+          "name": "email",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "email",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "email",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "b01440da-c055-4524-af3e-e59b63aaeee9",
+          "name": "given name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "firstName",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "given_name",
+            "jsonType.label": "String"
+          }
+        }
+      ],
       "defaultClientScopes": [
         "web-origins",
         "roles",
@@ -926,7 +1041,50 @@
         "phone",
         "offline_access",
         "microprofile-jwt"
-      ]
+      ],
+      "authorizationSettings": {
+        "allowRemoteResourceManagement": true,
+        "policyEnforcementMode": "ENFORCING",
+        "resources": [
+          {
+            "name": "Default Resource",
+            "type": "urn:dddapp_server:resources:default",
+            "ownerManagedAccess": false,
+            "attributes": {},
+            "_id": "120bbaed-0a9e-406c-8821-9fec79fded12",
+            "uris": [
+              "/*"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "75453780-b8fa-4e7a-b53f-6780ee3883f6",
+            "name": "Default Policy",
+            "description": "A policy that grants access only for users within this realm",
+            "type": "js",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
+            }
+          },
+          {
+            "id": "d9fab08e-a23d-434d-b8a3-7e31f4d928b7",
+            "name": "Default Permission",
+            "description": "A permission that applies to the default resource type",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "defaultResourceType": "urn:dddapp_server:resources:default",
+              "applyPolicies": "[\"Default Policy\"]"
+            }
+          }
+        ],
+        "scopes": [],
+        "decisionStrategy": "UNANIMOUS"
+      }
     },
     {
       "id": "9681f268-524f-429f-9805-72c84c907acd",
@@ -1729,8 +1887,8 @@
     "GRANT_CONSENT_ERROR",
     "IDENTITY_PROVIDER_FIRST_LOGIN_ERROR"
   ],
-  "adminEventsEnabled": false,
-  "adminEventsDetailsEnabled": false,
+  "adminEventsEnabled": true,
+  "adminEventsDetailsEnabled": true,
   "identityProviders": [],
   "identityProviderMappers": [],
   "components": {
@@ -1763,14 +1921,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-user-attribute-mapper",
-            "saml-role-list-mapper",
-            "saml-user-property-mapper",
-            "oidc-usermodel-property-mapper",
             "oidc-usermodel-attribute-mapper",
             "oidc-sha256-pairwise-sub-mapper",
+            "oidc-full-name-mapper",
             "oidc-address-mapper",
-            "oidc-full-name-mapper"
+            "saml-role-list-mapper",
+            "saml-user-attribute-mapper",
+            "saml-user-property-mapper",
+            "oidc-usermodel-property-mapper"
           ]
         }
       },
@@ -1794,14 +1952,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-address-mapper",
-            "saml-user-attribute-mapper",
-            "saml-user-property-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "oidc-usermodel-property-mapper",
             "saml-role-list-mapper",
+            "oidc-usermodel-attribute-mapper",
+            "oidc-address-mapper",
+            "saml-user-property-mapper",
             "oidc-full-name-mapper",
-            "oidc-sha256-pairwise-sub-mapper"
+            "oidc-sha256-pairwise-sub-mapper",
+            "saml-user-attribute-mapper",
+            "oidc-usermodel-property-mapper"
           ]
         }
       },
@@ -1839,14 +1997,6 @@
             "true"
           ]
         }
-      }
-    ],
-    "org.keycloak.userprofile.UserProfileProvider": [
-      {
-        "id": "70d8f68a-965b-4af3-86c6-e25ba31dd155",
-        "providerId": "declarative-user-profile",
-        "subComponents": {},
-        "config": {}
       }
     ],
     "org.keycloak.keys.KeyProvider": [
@@ -1894,7 +2044,7 @@
   ],
   "authenticationFlows": [
     {
-      "id": "684368a9-c19d-4e52-b57f-40290e4a5dd3",
+      "id": "1dbc1d07-6568-43e1-8234-5653470c601e",
       "alias": "Account verification options",
       "description": "Method with which to verity the existing account",
       "providerId": "basic-flow",
@@ -1920,7 +2070,7 @@
       ]
     },
     {
-      "id": "c42bc84b-d780-455a-be73-25d5b736ef5e",
+      "id": "a636e786-3cdf-4b0d-a2d4-3d773af0715d",
       "alias": "Authentication Options",
       "description": "Authentication options.",
       "providerId": "basic-flow",
@@ -1954,7 +2104,7 @@
       ]
     },
     {
-      "id": "e25d9ad9-5dd6-4aeb-bce9-37405a863933",
+      "id": "d78d17c9-5fe4-4bd4-b490-685968bab950",
       "alias": "Browser - Conditional OTP",
       "description": "Flow to determine if the OTP is required for the authentication",
       "providerId": "basic-flow",
@@ -1980,7 +2130,7 @@
       ]
     },
     {
-      "id": "8d4989c1-6581-4880-9702-e599b22435bd",
+      "id": "e7e24632-4bbc-4bbc-bf25-73e96ed2424d",
       "alias": "Direct Grant - Conditional OTP",
       "description": "Flow to determine if the OTP is required for the authentication",
       "providerId": "basic-flow",
@@ -2006,7 +2156,7 @@
       ]
     },
     {
-      "id": "f83fbd00-fdab-4407-945f-87aee99bf4e5",
+      "id": "12f7dd1d-4e12-4cc3-b17f-35bd5a135e7f",
       "alias": "First broker login - Conditional OTP",
       "description": "Flow to determine if the OTP is required for the authentication",
       "providerId": "basic-flow",
@@ -2032,7 +2182,7 @@
       ]
     },
     {
-      "id": "084f7a54-1aa7-4739-8632-fc3ab3ccc058",
+      "id": "e04aeb0d-0ced-458e-9ced-2895fb80cb9b",
       "alias": "Handle Existing Account",
       "description": "Handle what to do if there is existing account with same email/username like authenticated identity provider",
       "providerId": "basic-flow",
@@ -2058,7 +2208,7 @@
       ]
     },
     {
-      "id": "4f50a2c9-94bb-47e9-929f-161814284a5e",
+      "id": "192eb47b-2f3a-4483-a768-12e1bc809dfe",
       "alias": "Reset - Conditional OTP",
       "description": "Flow to determine if the OTP should be reset or not. Set to REQUIRED to force.",
       "providerId": "basic-flow",
@@ -2084,7 +2234,7 @@
       ]
     },
     {
-      "id": "49d51c71-b612-4936-b0dc-38d3cbf3e03c",
+      "id": "c98e1c80-da60-48b4-b457-bac0fb780389",
       "alias": "User creation or linking",
       "description": "Flow for the existing/non-existing user alternatives",
       "providerId": "basic-flow",
@@ -2111,7 +2261,7 @@
       ]
     },
     {
-      "id": "03d047c9-920b-4190-a6cf-b382ba163bb7",
+      "id": "54d6bbed-abe7-428b-b6f5-28dc336116dd",
       "alias": "Verify Existing Account by Re-authentication",
       "description": "Reauthentication of existing account",
       "providerId": "basic-flow",
@@ -2137,7 +2287,7 @@
       ]
     },
     {
-      "id": "14ecf673-3333-4d2b-aa84-6b1ecb71f405",
+      "id": "aa2ab7b5-91aa-4398-b08d-edf96fc1f5f0",
       "alias": "browser",
       "description": "browser based authentication",
       "providerId": "basic-flow",
@@ -2179,7 +2329,7 @@
       ]
     },
     {
-      "id": "c8afdb7b-ca75-4008-ba83-a7821714807b",
+      "id": "6806d1f1-efca-46dc-af2f-a19f8f872529",
       "alias": "clients",
       "description": "Base authentication for clients",
       "providerId": "client-flow",
@@ -2221,7 +2371,7 @@
       ]
     },
     {
-      "id": "27937199-bbaf-4c67-abea-a11a47c1f31f",
+      "id": "d39e9347-71f8-42e0-bca3-113a9ae895b2",
       "alias": "direct grant",
       "description": "OpenID Connect Resource Owner Grant",
       "providerId": "basic-flow",
@@ -2255,7 +2405,7 @@
       ]
     },
     {
-      "id": "d8110595-7055-43dd-bc8c-41691304f839",
+      "id": "c27d2abb-1140-4ce6-a150-35b8e0527b73",
       "alias": "docker auth",
       "description": "Used by Docker clients to authenticate against the IDP",
       "providerId": "basic-flow",
@@ -2273,7 +2423,7 @@
       ]
     },
     {
-      "id": "55038a27-c4ed-4385-8ce9-1c8ece5e6543",
+      "id": "648e1c90-0ecf-40fc-858e-539d34434227",
       "alias": "first broker login",
       "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
       "providerId": "basic-flow",
@@ -2300,7 +2450,7 @@
       ]
     },
     {
-      "id": "d190512f-3381-4fc7-b335-5cd398c7305f",
+      "id": "c6390da0-19e9-4348-9440-2277a3b07ac3",
       "alias": "forms",
       "description": "Username, password, otp and other auth forms.",
       "providerId": "basic-flow",
@@ -2326,7 +2476,7 @@
       ]
     },
     {
-      "id": "bafd2bc3-daf5-464c-a662-b9e0b2a913a8",
+      "id": "bfc5c741-14c2-47a7-aba9-bab820a74f83",
       "alias": "http challenge",
       "description": "An authentication flow based on challenge-response HTTP Authentication Schemes",
       "providerId": "basic-flow",
@@ -2352,7 +2502,7 @@
       ]
     },
     {
-      "id": "f34dfff3-a2be-4ba6-afd1-1d4c7424ce9e",
+      "id": "147db4be-b80e-4aa9-993d-fca6865f7bff",
       "alias": "registration",
       "description": "registration flow",
       "providerId": "basic-flow",
@@ -2371,7 +2521,7 @@
       ]
     },
     {
-      "id": "0d7fb126-e877-4764-91f4-d8d0e70a6360",
+      "id": "f53c01ac-fd12-4ef2-9059-980d8681a7d3",
       "alias": "registration form",
       "description": "registration form",
       "providerId": "form-flow",
@@ -2413,7 +2563,7 @@
       ]
     },
     {
-      "id": "1db27995-495d-49c1-a53f-cb5504ca6920",
+      "id": "8abd94e9-8e36-473e-ba12-e52ef3eba806",
       "alias": "reset credentials",
       "description": "Reset credentials for a user if they forgot their password or something",
       "providerId": "basic-flow",
@@ -2455,7 +2605,7 @@
       ]
     },
     {
-      "id": "bb4b97fa-05bb-419d-a2ac-e3bc417891ed",
+      "id": "e32883b3-2a92-4969-8f37-fa757aaf7986",
       "alias": "saml ecp",
       "description": "SAML ECP Profile Authentication Flow",
       "providerId": "basic-flow",
@@ -2475,14 +2625,14 @@
   ],
   "authenticatorConfig": [
     {
-      "id": "953d152b-76bb-46f5-9350-160bf9564488",
+      "id": "5bd686b0-4cc3-47f0-b357-0a01d434afe1",
       "alias": "create unique user config",
       "config": {
         "require.password.update.after.registration": "false"
       }
     },
     {
-      "id": "48f6d706-c859-44b5-a865-0fc7df5176c9",
+      "id": "3b12c32a-e60d-40d3-85c2-066ebed8a1ae",
       "alias": "review profile config",
       "config": {
         "update.profile.on.first.login": "missing"
@@ -2576,7 +2726,7 @@
     "frontendUrl": "http://localhost:8080/auth"
   },
   "keycloakVersion": "16.1.1",
-  "userManagedAccessAllowed": false,
+  "userManagedAccessAllowed": true,
   "clientProfiles": {
     "profiles": []
   },

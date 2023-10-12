@@ -130,7 +130,6 @@ export const getTasksNotifications = async (period: NotificationPeriod): Promise
     for await (const doc of queryResult) {
       notificationTimeResults.push(doc);
     }
-    console.log(notificationTimeResults);
     return notificationTimeResults;
   };
 

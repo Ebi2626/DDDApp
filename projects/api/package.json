@@ -32,7 +32,7 @@
     "@nestjs/swagger": "^6.3.0",
     "arangojs": "^8.1.0",
     "axios": "^1.5.1",
-    "dddapp-common": "../../dist/dddapp-common/dddapp-common-v0.0.14.tgz",
+    "dddapp-common": "./packages/dddapp-common-v0.0.14.tgz",
     "dotenv": "^16.0.3",
     "keycloak-connect": "^21.0.2",
     "nest-keycloak-connect": "^1.9.1",

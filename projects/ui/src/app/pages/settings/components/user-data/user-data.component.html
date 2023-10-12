@@ -36,6 +36,24 @@
             {{ ctx.userData?.categories }}
           </span>
         </p>
+        <div class="row align-items-center">
+          <label
+            for="userNotificationTime"
+            class="form-label col-6 col-sm-4 text-primary mb-0"
+          >
+            Godzina wysyłania powiadomień:
+          </label>
+          <div class="col">
+            <input
+              mask="Hh"
+              type="text"
+              class="form-control form-control-hour"
+              id="userNotificationTime"
+              [ngModel]="notificationHour"
+              (ngModelChange)="newNotificationHour$.next(+$event)"
+            />
+          </div>
+        </div>
       </dddapp-spinner>
     </div>
     <div class="d-flex flex-row justify-content-center">

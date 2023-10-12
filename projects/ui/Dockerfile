@@ -6,6 +6,7 @@ WORKDIR /app/ui
 
 # Copy file with dependencies
 COPY package.json /app/ui/
+COPY ./packages/ /app/ui/packages/
 
 # Install app dependencies
 RUN yarn install --network-timeout 100000

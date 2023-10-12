@@ -4,11 +4,17 @@
     settings: settings$ | async
   } as ctx"
 >
-  <dddapp-user-data></dddapp-user-data>
+  <ng-container *ngIf="ctx.settings?.notificationTime?.hour">
+    <dddapp-user-data
+      [notificationHour]="ctx.settings!.notificationTime.hour"
+      (newNotificationHour)="updateNotificationHour($event)"
+    ></dddapp-user-data>
+  </ng-container>
   <dddapp-user-profile></dddapp-user-profile>
-  <dddapp-app-data
-    *ngIf="ctx.settings"
-    [settings]="ctx.settings"
-    (updatedSettings)="updateSettings($event)"
-  ></dddapp-app-data>
+  <ng-container *ngIf="ctx.settings">
+    <dddapp-app-data
+      [settings]="ctx.settings"
+      (updatedSettings)="updateSettings($event)"
+    ></dddapp-app-data>
+  </ng-container>
 </ng-container>

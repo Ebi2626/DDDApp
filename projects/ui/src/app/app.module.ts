@@ -70,6 +70,9 @@ import { SettingsEffects } from './pages/settings/effects/settings.effects';
 import { settingsReducer } from './pages/settings/reducers/settings.reducer';
 import { storageMetaReducer } from './core/reducers/localStorage.reducer';
 import { AppState } from './app.state';
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+
+export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 const reducers: ActionReducerMap<AppState> = {
   targets: targetsReducer,
@@ -138,6 +141,7 @@ const metaReducers: MetaReducer<any>[] = [storageMetaReducer];
       maxAge: 50,
       logOnly: environment.production,
     }),
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     TargetModalService,

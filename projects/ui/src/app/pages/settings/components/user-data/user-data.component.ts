@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
 import * as SettingsActions from '../../actions/settings.actions';
 import * as SettingsSelectors from '../../selectors/settings.selectors';
 import * as R from 'ramda';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, debounceTime, distinctUntilChanged, skip } from 'rxjs';
 import { UserData } from '../app-data/app-data.component';
 
 export const collectionsToExport: string[] = ['Categories', 'Targets', 'Tasks'];
@@ -16,9 +16,18 @@ export const collectionsToExport: string[] = ['Categories', 'Targets', 'Tasks'];
   styleUrls: ['./user-data.component.scss'],
 })
 export class UserDataComponent implements OnInit {
+  private _sub: Subscription = new Subscription();
   userData$: Observable<UserData>;
   isFetching$: Observable<boolean>;
   hasError$: Observable<boolean>;
+
+  @Input()
+  notificationHour!: number;
+
+  newNotificationHour$: BehaviorSubject<number> = new BehaviorSubject(this.notificationHour);
+
+  @Output()
+  newNotificationHour: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(
     private dataService: DataService,
@@ -94,5 +103,18 @@ export class UserDataComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(SettingsActions.fetchUserData());
+    this._sub.add(
+      this.newNotificationHour$.pipe(
+        skip(1),
+        debounceTime(300),
+        distinctUntilChanged()
+      ).subscribe((newNotificationHour) => {
+        this.newNotificationHour.emit(newNotificationHour);
+      })
+    )
+  }
+
+  ngOnDestroy() {
+    this._sub?.unsubscribe();
   }
 }

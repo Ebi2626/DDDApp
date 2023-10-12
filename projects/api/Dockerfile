@@ -6,6 +6,7 @@ WORKDIR /app/api
 
 # Copy file with dependencies
 COPY package.json /app/api/
+COPY ./packages/ /app/api/packages/
 
 # Install app dependencies
 RUN yarn install --network-timeout 100000
